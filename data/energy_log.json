@@ -37,5 +37,18 @@
     "watts": 1128.2,
     "volts": 223.4,
     "amps": 5.112
+  },
+  {
+    "ts": "2026-04-14T12:48:13+05:30",
+    "ts_epoch": 1776151093,
+    "slot": "T1_day",
+    "slot_label": "Day (T1)",
+    "rate": 6.75,
+    "delta_kwh": 0.0,
+    "cost": 0.0,
+    "cumulative_kwh": 1.0,
+    "watts": 1102.0,
+    "volts": 218.6,
+    "amps": 5.069
   }
 ]
