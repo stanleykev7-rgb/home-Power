@@ -6,7 +6,7 @@ Track your AC power usage via Wipro Smart Plug + KSEB ToD billing — no Raspber
 
 ```
 GitHub Actions (every 15 min)
-  → Tuya Cloud API (fetch cumulative kWh counter)
+  → Tuya Cloud API (fetch cumulative kWh counter) 
   → Compute delta since last reading
   → Tag with KSEB ToD slot (T1/T2/T3)
   → Append to data/energy_log.json
