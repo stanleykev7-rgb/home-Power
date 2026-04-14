@@ -133,5 +133,20 @@
     "amps": 4.414,
     "power_cut": false,
     "note": ""
+  },
+  {
+    "ts": "2026-04-14T23:34:09+05:30",
+    "ts_epoch": 1776189849,
+    "slot": "T3_night",
+    "slot_label": "Night (T3)",
+    "rate": 7.5,
+    "delta_kwh": 0.13,
+    "cost": 0.975,
+    "cumulative_kwh": 1.48,
+    "watts": 870.2,
+    "volts": 234.6,
+    "amps": 3.785,
+    "power_cut": false,
+    "note": ""
   }
 ]
