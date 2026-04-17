@@ -868,5 +868,20 @@
     "amps": 3.564,
     "power_cut": false,
     "note": ""
+  },
+  {
+    "ts": "2026-04-17T21:43:42+05:30",
+    "ts_epoch": 1776442422,
+    "slot": "T2_peak",
+    "slot_label": "Peak (T2)",
+    "rate": 9.375,
+    "delta_kwh": 0.02,
+    "cost": 0.1875,
+    "cumulative_kwh": 1.26,
+    "watts": 754.4,
+    "volts": 220.0,
+    "amps": 3.721,
+    "power_cut": false,
+    "note": ""
   }
 ]
