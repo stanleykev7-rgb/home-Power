@@ -2,8 +2,10 @@ name: Fetch AC Energy Data
 
 on:
   schedule:
-    - cron: '*/15 * * * *'   # every 15 minutes
-  workflow_dispatch:           # allow manual trigger
+    - cron: '*/15 * * * *'   # fallback
+  workflow_dispatch:           # manual trigger
+  repository_dispatch:         # triggered by cron-job.org
+    types: [energy-fetch]
 
 jobs:
   fetch:
@@ -28,7 +30,7 @@ jobs:
           TUYA_API_ID: ${{ secrets.TUYA_API_ID }}
           TUYA_API_SECRET: ${{ secrets.TUYA_API_SECRET }}
           TUYA_DEVICE_ID: ${{ secrets.TUYA_DEVICE_ID }}
-          TUYA_REGION: ${{ secrets.TUYA_REGION }}   # set to: in
+          TUYA_REGION: ${{ secrets.TUYA_REGION }}
         run: python fetch_energy.py
 
       - name: Commit updated data
