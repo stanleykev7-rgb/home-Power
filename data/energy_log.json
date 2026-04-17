@@ -928,5 +928,20 @@
     "amps": 0.06,
     "power_cut": true,
     "note": "power_cut_estimated"
+  },
+  {
+    "ts": "2026-04-18T01:56:07+05:30",
+    "ts_epoch": 1776457567,
+    "slot": "T3_night",
+    "slot_label": "Night (T3)",
+    "rate": 7.5,
+    "delta_kwh": 0.0,
+    "cost": 0.0,
+    "cumulative_kwh": 0.04,
+    "watts": 8.3,
+    "volts": 228.1,
+    "amps": 0.059,
+    "power_cut": false,
+    "note": ""
   }
 ]
