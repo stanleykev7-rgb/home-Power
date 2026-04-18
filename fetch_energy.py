@@ -157,19 +157,17 @@ def main():
         "note":           event_note,
     }
 
-  # TEMP TEST
+# TEMP TEST
     try:
-        import json as _json
-        start_ts = int((now_utc - timedelta(hours=8)).timestamp() * 1000)
-        end_ts   = int(now_utc.timestamp() * 1000)
-        ev = cloud.getdevicelog(DEVICE_ID, start=start_ts, end=end_ts, size=100)
-        add_ele_events = [x for x in ev.get("result", {}).get("logs", []) if x["code"] == "add_ele"]
-        print(f"ADD_ELE EVENTS last 1hr: {len(add_ele_events)}")
-        for e in add_ele_events:
-            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+        from datetime import date
+        today = date.today().strftime("%Y%m%d")
+        result = cloud.cloudrequest(
+            f"/v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}",
+            "GET"
+        )
+        print("DAILY STAT:", result)
     except Exception as ex:
-        print("EVENT TEST ERROR:", ex)
+        print("DAILY STAT ERROR:", ex)
       
       
     log.append(entry)
