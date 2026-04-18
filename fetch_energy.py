@@ -95,37 +95,48 @@ def main():
     cur_current_raw = dps.get("cur_current", 0)
     cur_amps        = cur_current_raw / 1000.0
 
-    # Load log
-    log = load_log()
-
-    # ── power cut detection ───────────────────────────────────────────────────
-    power_cut    = False
-    delta_kwh    = 0.0
-    event_note   = ""
+ # ── Load log and compute delta ────────────────────────────────────────────
+    log        = load_log()
+    power_cut  = False
+    delta_kwh  = 0.0
+    event_note = ""
 
     if log:
-        last         = log[-1]
-        prev_cumul   = last["cumulative_kwh"]
-        prev_ts      = datetime.fromisoformat(last["ts"])
-        elapsed_hrs  = (now_ist - prev_ts).total_seconds() / 3600
+        last        = log[-1]
+        prev_cumul  = last["cumulative_kwh"]
+        prev_ts     = datetime.fromisoformat(last["ts"])
+        elapsed_hrs = (now_ist - prev_ts).total_seconds() / 3600
+        last_watts  = last.get("watts", 0) or 0
 
-        if cumulative_kwh < prev_cumul * 0.5 and prev_cumul > 0.1:
-            # Counter reset detected — power cut or plug restart
-            power_cut  = True
-            event_note = "power_cut_estimated"
-            # Estimate from instantaneous wattage × elapsed time
-            # Use average of last known watts and current watts
-            last_watts    = last.get("watts", 0) or 0
-            avg_watts     = (last_watts + cur_watts) / 2
-            delta_kwh     = max(0.0, (avg_watts / 1000.0) * elapsed_hrs)
-            print(f"⚠️  Power cut detected! Counter reset {prev_cumul:.3f} → {cumulative_kwh:.3f} kWh")
-            print(f"   Estimating {delta_kwh:.4f} kWh from avg {avg_watts:.1f}W over {elapsed_hrs:.2f}hrs")
+        if cumulative_kwh < prev_cumul:
+            # Counter went backwards — power cut or plug restart
+            if last_watts > 50:
+                # AC was ON before cut — estimate consumption
+                power_cut  = True
+                event_note = "power_cut_estimated"
+                avg_watts  = (last_watts + cur_watts) / 2
+                delta_kwh  = max(0.0, (avg_watts / 1000.0) * elapsed_hrs)
+                print(f"⚠️  Power cut — AC was ON. Estimating {delta_kwh:.4f} kWh from {avg_watts:.1f}W over {elapsed_hrs:.2f}hrs")
+            else:
+                # AC was OFF before cut — nothing to estimate
+                delta_kwh  = 0.0
+                event_note = "power_cut_ac_off"
+                print(f"ℹ️  Counter reset but AC was OFF — delta = 0")
         else:
             delta_kwh = max(0.0, cumulative_kwh - prev_cumul)
+
+            # Guard — if delta > 2.0 kWh it's almost certainly a baseline
+            # capture after a missed reset, not real consumption
+            if delta_kwh > 2.0:
+                print(f"⚠️  Delta {delta_kwh:.3f} kWh too large — likely baseline capture. Setting to 0.")
+                delta_kwh  = 0.0
+                event_note = "baseline_reset"
+
     else:
-        # First run — no delta
+        # First ever run — just store baseline
         delta_kwh  = 0.0
         event_note = "first_run"
+        print(f"ℹ️  First run — storing baseline {cumulative_kwh:.3f} kWh")
 
     cost = round(delta_kwh * rate, 4)
 
