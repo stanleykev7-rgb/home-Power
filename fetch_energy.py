@@ -155,7 +155,13 @@ def main():
         "power_cut":      power_cut,
         "note":           event_note,
     }
-
+# TEMP TEST — remove after testing
+    try:
+        test = cloud.getstatistic(DEVICE_ID, "add_ele", "days", "20260401", "20260418")
+        print("STATS RESULT:", test)
+    except Exception as e:
+        print("STATS NOT AVAILABLE:", e)
+      
     log.append(entry)
     save_log(log)
 
