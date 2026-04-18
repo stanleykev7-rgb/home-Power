@@ -157,53 +157,103 @@ def main():
         "note":           event_note,
     }
 
-# TEMP TEST - pagination check
+# TEMP TEST - pagination and signature check
+    import time as _time
+    import inspect
+
+    # Test 1 - check getdevicelog signature
     try:
-        import time as _time
+        sig = inspect.signature(cloud.getdevicelog)
+        print("TEST1 SIGNATURE:", sig)
+    except Exception as e:
+        print("TEST1 ERROR:", e)
+
+    # Test 2 - check getdevicelog source for pagination param name
+    try:
+        import inspect
+        src = inspect.getsource(cloud.getdevicelog)
+        print("TEST2 SOURCE:", src[:500])
+    except Exception as e:
+        print("TEST2 ERROR:", e)
+
+    # Test 3 - try 'last_row_key' as pagination param
+    try:
         start_of_day = int(now_ist.replace(
             hour=0, minute=0, second=0, microsecond=0
         ).timestamp() * 1000)
         end_now = int(_time.time() * 1000)
-        
-        all_events = []
-        next_key = None
-        page = 1
-        
-        while True:
-            if next_key:
-                r = cloud.getdevicelog(
-                    DEVICE_ID,
-                    start=start_of_day,
-                    end=end_now,
-                    size=100,
-                    next_key=next_key
-                )
-            else:
-                r = cloud.getdevicelog(
-                    DEVICE_ID,
-                    start=start_of_day,
-                    end=end_now,
-                    size=100
-                )
-            
-            result = r.get("result", {})
-            logs = [x for x in result.get("logs", []) if x["code"] == "add_ele"]
-            all_events.extend(logs)
-            has_next = result.get("has_next", False)
-            next_key = result.get("current_row_key", None)
-            
-            print(f"Page {page}: {len(logs)} add_ele events, has_next={has_next}")
-            page += 1
-            
-            if not has_next or page > 10:
-                break
-        
-        print(f"TOTAL add_ele events today: {len(all_events)}")
-        for e in all_events:
-            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
-    except Exception as ex:
-        print("PAGINATION ERROR:", ex)
+        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
+        result1 = r1.get("result", {})
+        row_key = result1.get("current_row_key")
+        has_next = result1.get("has_next")
+        print(f"TEST3 page1: has_next={has_next}, row_key={row_key[:20] if row_key else None}")
+        if has_next and row_key:
+            r2 = cloud.getdevicelog(
+                DEVICE_ID,
+                start=start_of_day,
+                end=end_now,
+                size=100,
+                last_row_key=row_key
+            )
+            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+            print(f"TEST3 page2: {len(logs2)} add_ele events")
+            for e in logs2:
+                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+    except Exception as e:
+        print("TEST3 ERROR:", e)
+
+    # Test 4 - try 'start_row_key' as pagination param
+    try:
+        start_of_day = int(now_ist.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).timestamp() * 1000)
+        end_now = int(_time.time() * 1000)
+        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
+        result1 = r1.get("result", {})
+        row_key = result1.get("current_row_key")
+        has_next = result1.get("has_next")
+        if has_next and row_key:
+            r2 = cloud.getdevicelog(
+                DEVICE_ID,
+                start=start_of_day,
+                end=end_now,
+                size=100,
+                start_row_key=row_key
+            )
+            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+            print(f"TEST4 page2: {len(logs2)} add_ele events")
+            for e in logs2:
+                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+    except Exception as e:
+        print("TEST4 ERROR:", e)
+
+    # Test 5 - try passing row_key as positional argument
+    try:
+        start_of_day = int(now_ist.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).timestamp() * 1000)
+        end_now = int(_time.time() * 1000)
+        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
+        result1 = r1.get("result", {})
+        row_key = result1.get("current_row_key")
+        has_next = result1.get("has_next")
+        if has_next and row_key:
+            r2 = cloud.getdevicelog(
+                DEVICE_ID,
+                start=start_of_day,
+                end=end_now,
+                size=100,
+                rowkey=row_key
+            )
+            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+            print(f"TEST5 page2: {len(logs2)} add_ele events")
+            for e in logs2:
+                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+    except Exception as e:
+        print("TEST5 ERROR:", e)
       
       
     log.append(entry)
