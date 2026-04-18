@@ -13,6 +13,7 @@ Power cut handling:
   If add_ele counter resets (current < previous × 0.5),
   estimate consumption from instantaneous wattage × elapsed time.
 """
+
 import json
 import os, json, sys
 from datetime import datetime, timezone, timedelta
@@ -156,6 +157,20 @@ def main():
         "note":           event_note,
     }
 
+  # TEMP TEST
+    try:
+        import json as _json
+        start_ts = int((now_utc - timedelta(hours=1)).timestamp() * 1000)
+        end_ts   = int(now_utc.timestamp() * 1000)
+        ev = cloud.getdevicelog(DEVICE_ID, start=start_ts, end=end_ts, size=50)
+        add_ele_events = [x for x in ev.get("result", {}).get("logs", []) if x["code"] == "add_ele"]
+        print(f"ADD_ELE EVENTS last 1hr: {len(add_ele_events)}")
+        for e in add_ele_events:
+            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+    except Exception as ex:
+        print("EVENT TEST ERROR:", ex)
+      
       
     log.append(entry)
     save_log(log)
