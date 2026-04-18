@@ -160,7 +160,7 @@ def main():
   # TEMP TEST
     try:
         import json as _json
-        start_ts = int((now_utc - timedelta(hours=1)).timestamp() * 1000)
+        start_ts = int((now_utc - timedelta(hours=8)).timestamp() * 1000)
         end_ts   = int(now_utc.timestamp() * 1000)
         ev = cloud.getdevicelog(DEVICE_ID, start=start_ts, end=end_ts, size=50)
         add_ele_events = [x for x in ev.get("result", {}).get("logs", []) if x["code"] == "add_ele"]
