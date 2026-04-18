@@ -157,12 +157,72 @@ def main():
         "note":           event_note,
     }
 
-# TEMP TEST
+# TEMP TEST - trying multiple approaches to get daily stats
+    from datetime import date
+    today = date.today().strftime("%Y%m%d")
+    
+    # Test 1 - no leading slash
     try:
-        methods = [m for m in dir(cloud) if 'request' in m.lower() or 'get' in m.lower()]
-        print("REQUEST METHODS:", methods)
-    except Exception as ex:
-        print("ERROR:", ex)
+        r1 = cloud.cloudrequest(
+            f"v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
+        )
+        print("TEST1 (no slash):", r1)
+    except Exception as e:
+        print("TEST1 ERROR:", e)
+
+    # Test 2 - leading slash
+    try:
+        r2 = cloud.cloudrequest(
+            f"/v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
+        )
+        print("TEST2 (slash):", r2)
+    except Exception as e:
+        print("TEST2 ERROR:", e)
+
+    # Test 3 - different endpoint format
+    try:
+        r3 = cloud.cloudrequest(
+            f"/v1.0/devices/{DEVICE_ID}/statistics/days",
+            "GET",
+            f"code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
+        )
+        print("TEST3 (separate params):", r3)
+    except Exception as e:
+        print("TEST3 ERROR:", e)
+
+    # Test 4 - getdevicelog for today only, filter add_ele
+    try:
+        import time as _time
+        from datetime import datetime, timedelta
+        start_of_day = int(datetime.now(IST).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).timestamp() * 1000)
+        end_now = int(_time.time() * 1000)
+        r4 = cloud.getdevicelog(
+            DEVICE_ID,
+            start=start_of_day,
+            end=end_now,
+            size=100
+        )
+        add_ele_events = [
+            x for x in r4.get("result", {}).get("logs", [])
+            if x["code"] == "add_ele"
+        ]
+        print(f"TEST4 (full day events): {len(add_ele_events)} add_ele events")
+        for e in add_ele_events:
+            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+    except Exception as e:
+        print("TEST4 ERROR:", e)
+
+    # Test 5 - v2.0 endpoint
+    try:
+        r5 = cloud.cloudrequest(
+            f"/v2.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}"
+        )
+        print("TEST5 (v2.0):", r5)
+    except Exception as e:
+        print("TEST5 ERROR:", e)
       
       
     log.append(entry)
