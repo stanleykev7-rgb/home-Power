@@ -13,7 +13,7 @@ Power cut handling:
   If add_ele counter resets (current < previous × 0.5),
   estimate consumption from instantaneous wattage × elapsed time.
 """
-
+import json
 import os, json, sys
 from datetime import datetime, timezone, timedelta
 import tinytuya
@@ -157,11 +157,13 @@ def main():
     }
 # TEMP TEST
     try:
-        # Print all available cloud methods
-        methods = [m for m in dir(cloud) if not m.startswith('_')]
-        print("CLOUD METHODS:", methods)
+        from datetime import timedelta
+        start_ts = int((now_utc - timedelta(hours=24)).timestamp() * 1000)
+        end_ts   = int(now_utc.timestamp() * 1000)
+        log_data = cloud.getdevicelog(DEVICE_ID, start=start_ts, end=end_ts, size=20)
+        print("DEVICE LOG:", json.dumps(log_data)[:1000])
     except Exception as e:
-        print("ERROR:", e)
+        print("DEVICE LOG ERROR:", e)
       
     log.append(entry)
     save_log(log)
