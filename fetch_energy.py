@@ -162,13 +162,10 @@ def main():
         from datetime import date
         today = date.today().strftime("%Y%m%d")
         result = cloud.cloudrequest(
-            f"/v1.0/devices/{DEVICE_ID}/statistics/days",
+            f"/v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}&stat_type=sum",
             "GET",
-            params={
-                "code": "add_ele",
-                "start_day": today,
-                "end_day": today
-            }
+            None,
+            None
         )
         print("DAILY STAT:", result)
     except Exception as ex:
