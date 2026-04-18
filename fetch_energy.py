@@ -159,35 +159,13 @@ def main():
 
 # TEMP TEST
     try:
-        import requests
-        import hmac
-        import hashlib
-        import time as _time
         from datetime import date
-
         today = date.today().strftime("%Y%m%d")
-        url = f"https://openapi.tuyain.com/v1.0/devices/{DEVICE_ID}/statistics/days"
-        params = f"code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
-        
-        ts = str(int(_time.time() * 1000))
-        token = cloud.token
-        string_to_sign = API_ID + token + ts
-        sign = hmac.new(
-            API_SECRET.encode(),
-            string_to_sign.encode(),
-            hashlib.sha256
-        ).hexdigest().upper()
-
-        headers = {
-            "client_id": API_ID,
-            "access_token": token,
-            "sign": sign,
-            "t": ts,
-            "sign_ver": "v1",
-            "Content-Type": "application/json"
-        }
-        r = requests.get(f"{url}?{params}", headers=headers)
-        print("DAILY STAT:", r.json())
+        # Use tinytuya's internal request method
+        result = cloud._getrequest(
+            f"v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
+        )
+        print("DAILY STAT:", result)
     except Exception as ex:
         print("DAILY STAT ERROR:", ex)
       
