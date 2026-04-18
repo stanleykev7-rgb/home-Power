@@ -159,15 +159,10 @@ def main():
 
 # TEMP TEST
     try:
-        from datetime import date
-        today = date.today().strftime("%Y%m%d")
-        # Use tinytuya's internal request method
-        result = cloud._getrequest(
-            f"v1.0/devices/{DEVICE_ID}/statistics/days?code=add_ele&start_day={today}&end_day={today}&stat_type=sum"
-        )
-        print("DAILY STAT:", result)
+        methods = [m for m in dir(cloud) if 'request' in m.lower() or 'get' in m.lower()]
+        print("REQUEST METHODS:", methods)
     except Exception as ex:
-        print("DAILY STAT ERROR:", ex)
+        print("ERROR:", ex)
       
       
     log.append(entry)
