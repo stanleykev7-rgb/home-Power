@@ -155,15 +155,7 @@ def main():
         "power_cut":      power_cut,
         "note":           event_note,
     }
-# TEMP TEST
-    try:
-        from datetime import timedelta
-        start_ts = int((now_utc - timedelta(hours=24)).timestamp() * 1000)
-        end_ts   = int(now_utc.timestamp() * 1000)
-        log_data = cloud.getdevicelog(DEVICE_ID, start=start_ts, end=end_ts, size=20)
-        print("DEVICE LOG:", json.dumps(log_data)[:1000])
-    except Exception as e:
-        print("DEVICE LOG ERROR:", e)
+
       
     log.append(entry)
     save_log(log)
