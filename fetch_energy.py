@@ -157,103 +157,73 @@ def main():
         "note":           event_note,
     }
 
-# TEMP TEST - pagination and signature check
+# TEMP TEST - pagination with max_fetches
     import time as _time
-    import inspect
 
-    # Test 1 - check getdevicelog signature
+    # Test 1 - let tinytuya auto-paginate with max_fetches
     try:
-        sig = inspect.signature(cloud.getdevicelog)
-        print("TEST1 SIGNATURE:", sig)
+        start_of_day = int(now_ist.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).timestamp() * 1000)
+        end_now = int(_time.time() * 1000)
+        r = cloud.getdevicelog(
+            DEVICE_ID,
+            start=start_of_day,
+            end=end_now,
+            size=100,
+            max_fetches=10
+        )
+        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+        print(f"TEST1 auto-paginate: {len(logs)} add_ele events")
+        for e in logs:
+            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
     except Exception as e:
         print("TEST1 ERROR:", e)
 
-    # Test 2 - check getdevicelog source for pagination param name
+    # Test 2 - start_row_key with None to get oldest first
     try:
-        import inspect
-        src = inspect.getsource(cloud.getdevicelog)
-        print("TEST2 SOURCE:", src[:500])
+        start_of_day = int(now_ist.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).timestamp() * 1000)
+        end_now = int(_time.time() * 1000)
+        r = cloud.getdevicelog(
+            DEVICE_ID,
+            start=start_of_day,
+            end=end_now,
+            size=100,
+            max_fetches=10,
+            start_row_key=""
+        )
+        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+        print(f"TEST2 empty start_key: {len(logs)} add_ele events")
+        for e in logs:
+            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
     except Exception as e:
         print("TEST2 ERROR:", e)
 
-    # Test 3 - try 'last_row_key' as pagination param
+    # Test 3 - check what params does
     try:
         start_of_day = int(now_ist.replace(
             hour=0, minute=0, second=0, microsecond=0
         ).timestamp() * 1000)
         end_now = int(_time.time() * 1000)
-        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
-        result1 = r1.get("result", {})
-        row_key = result1.get("current_row_key")
-        has_next = result1.get("has_next")
-        print(f"TEST3 page1: has_next={has_next}, row_key={row_key[:20] if row_key else None}")
-        if has_next and row_key:
-            r2 = cloud.getdevicelog(
-                DEVICE_ID,
-                start=start_of_day,
-                end=end_now,
-                size=100,
-                last_row_key=row_key
-            )
-            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-            print(f"TEST3 page2: {len(logs2)} add_ele events")
-            for e in logs2:
-                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+        r = cloud.getdevicelog(
+            DEVICE_ID,
+            start=start_of_day,
+            end=end_now,
+            size=100,
+            max_fetches=10,
+            params={"query_type": 1}
+        )
+        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
+        print(f"TEST3 with params: {len(logs)} add_ele events")
+        for e in logs:
+            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
+            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
     except Exception as e:
         print("TEST3 ERROR:", e)
-
-    # Test 4 - try 'start_row_key' as pagination param
-    try:
-        start_of_day = int(now_ist.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).timestamp() * 1000)
-        end_now = int(_time.time() * 1000)
-        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
-        result1 = r1.get("result", {})
-        row_key = result1.get("current_row_key")
-        has_next = result1.get("has_next")
-        if has_next and row_key:
-            r2 = cloud.getdevicelog(
-                DEVICE_ID,
-                start=start_of_day,
-                end=end_now,
-                size=100,
-                start_row_key=row_key
-            )
-            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-            print(f"TEST4 page2: {len(logs2)} add_ele events")
-            for e in logs2:
-                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
-    except Exception as e:
-        print("TEST4 ERROR:", e)
-
-    # Test 5 - try passing row_key as positional argument
-    try:
-        start_of_day = int(now_ist.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).timestamp() * 1000)
-        end_now = int(_time.time() * 1000)
-        r1 = cloud.getdevicelog(DEVICE_ID, start=start_of_day, end=end_now, size=100)
-        result1 = r1.get("result", {})
-        row_key = result1.get("current_row_key")
-        has_next = result1.get("has_next")
-        if has_next and row_key:
-            r2 = cloud.getdevicelog(
-                DEVICE_ID,
-                start=start_of_day,
-                end=end_now,
-                size=100,
-                rowkey=row_key
-            )
-            logs2 = [x for x in r2.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-            print(f"TEST5 page2: {len(logs2)} add_ele events")
-            for e in logs2:
-                ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-                print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
-    except Exception as e:
-        print("TEST5 ERROR:", e)
       
       
     log.append(entry)
