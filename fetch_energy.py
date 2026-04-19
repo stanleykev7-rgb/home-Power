@@ -124,7 +124,7 @@ def main():
             "start":      fetch_start_ms,
             "end":        fetch_end_ms,
             "size":       100,
-            "max_fetches": 20,
+            "max_fetches": 1,
         }
         if row_key:
             kwargs["start_row_key"] = row_key
