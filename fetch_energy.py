@@ -157,72 +157,20 @@ def main():
         "note":           event_note,
     }
 
-# TEMP TEST - pagination with max_fetches
+# TEMP TEST - divisor check
     import time as _time
-
-    # Test 1 - let tinytuya auto-paginate with max_fetches
+    # Get device properties/specifications to find scale
     try:
-        start_of_day = int(now_ist.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).timestamp() * 1000)
-        end_now = int(_time.time() * 1000)
-        r = cloud.getdevicelog(
-            DEVICE_ID,
-            start=start_of_day,
-            end=end_now,
-            size=100,
-            max_fetches=10
-        )
-        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-        print(f"TEST1 auto-paginate: {len(logs)} add_ele events")
-        for e in logs:
-            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+        props = cloud.getproperties(DEVICE_ID)
+        print("PROPERTIES:", str(props)[:2000])
     except Exception as e:
-        print("TEST1 ERROR:", e)
-
-    # Test 2 - start_row_key with None to get oldest first
+        print("PROPS ERROR:", e)
+    
     try:
-        start_of_day = int(now_ist.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).timestamp() * 1000)
-        end_now = int(_time.time() * 1000)
-        r = cloud.getdevicelog(
-            DEVICE_ID,
-            start=start_of_day,
-            end=end_now,
-            size=100,
-            max_fetches=10,
-            start_row_key=""
-        )
-        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-        print(f"TEST2 empty start_key: {len(logs)} add_ele events")
-        for e in logs:
-            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
+        funcs = cloud.getfunctions(DEVICE_ID)
+        print("FUNCTIONS:", str(funcs)[:2000])
     except Exception as e:
-        print("TEST2 ERROR:", e)
-
-    # Test 3 - check what params does
-    try:
-        start_of_day = int(now_ist.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).timestamp() * 1000)
-        end_now = int(_time.time() * 1000)
-        r = cloud.getdevicelog(
-            DEVICE_ID,
-            start=start_of_day,
-            end=end_now,
-            size=100,
-            max_fetches=10,
-            params={"query_type": 1}
-        )
-        logs = [x for x in r.get("result",{}).get("logs",[]) if x["code"]=="add_ele"]
-        print(f"TEST3 with params: {len(logs)} add_ele events")
-        for e in logs:
-            ts_e = datetime.fromtimestamp(e['event_time']/1000, tz=IST)
-            print(f"  {ts_e.strftime('%H:%M:%S')} → {e['value']}")
-    except Exception as e:
+        print("FUNCS ERROR:", e)
         print("TEST3 ERROR:", e)
       
       
