@@ -446,5 +446,37 @@
     "session_start": false,
     "session_gap_mins": 10.0,
     "source": "tuya_event"
+  },
+  {
+    "ts": "2026-04-19T20:01:09+05:30",
+    "ts_epoch": 1776609069,
+    "slot": "T2_peak",
+    "slot_label": "Peak (T2)",
+    "rate": 9.375,
+    "kwh": 0.125,
+    "cost": 1.1719,
+    "watts": 758.5,
+    "volts": 227.0,
+    "amps": 3.739,
+    "ac_on": true,
+    "session_start": false,
+    "session_gap_mins": 10.0,
+    "source": "tuya_event"
+  },
+  {
+    "ts": "2026-04-19T20:11:09+05:30",
+    "ts_epoch": 1776609669,
+    "slot": "T2_peak",
+    "slot_label": "Peak (T2)",
+    "rate": 9.375,
+    "kwh": 0.125,
+    "cost": 1.1719,
+    "watts": 758.5,
+    "volts": 227.0,
+    "amps": 3.739,
+    "ac_on": true,
+    "session_start": false,
+    "session_gap_mins": 10.0,
+    "source": "tuya_event"
   }
 ]
