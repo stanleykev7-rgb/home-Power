@@ -37,6 +37,6 @@ jobs:
         run: |
           git config user.name "energy-bot"
           git config user.email "energy-bot@users.noreply.github.com"
-          git add data/energy_log.json
+          git add data/energy_log_ac1.json
           git diff --staged --quiet || git commit -m "⚡ energy update $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
