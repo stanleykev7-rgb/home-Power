@@ -123,7 +123,7 @@ def main():
         kwargs = {
             "start": fetch_start_ms,
             "end":   fetch_end_ms,
-            "size":  20,
+            "size":  100,
             "max_fetches": 1,
         }
         if row_key:
@@ -143,7 +143,7 @@ def main():
         print(f"  Page {page}: {len(ele_events)} add_ele events, has_next={has_next}")
         page += 1
 
-        if not has_next or not row_key or page > 20:
+        if not has_next or not row_key or page > 100:
             break
 
     print(f"Total new add_ele events: {len(all_events)}")
