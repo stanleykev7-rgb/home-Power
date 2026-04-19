@@ -2338,5 +2338,20 @@
     "amps": 3.481,
     "power_cut": false,
     "note": ""
+  },
+  {
+    "ts": "2026-04-19T13:28:58+05:30",
+    "ts_epoch": 1776585538,
+    "slot": "T1_day",
+    "slot_label": "Day (T1)",
+    "rate": 6.75,
+    "delta_kwh": 0.01,
+    "cost": 0.0675,
+    "cumulative_kwh": 1.27,
+    "watts": 754.8,
+    "volts": 224.5,
+    "amps": 3.495,
+    "power_cut": false,
+    "note": ""
   }
 ]
