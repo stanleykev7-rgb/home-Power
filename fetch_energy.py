@@ -119,11 +119,11 @@ def main():
     row_key    = None
     page       = 1
 
-    while True:
+   while True:
         kwargs = {
-            "start":      fetch_start_ms,
-            "end":        fetch_end_ms,
-            "size":       100,
+            "start": fetch_start_ms,
+            "end":   fetch_end_ms,
+            "size":  20,
             "max_fetches": 1,
         }
         if row_key:
