@@ -101,7 +101,7 @@ def main():
     log = load_log()
 
     # Determine fetch window start
-    if log:
+    if False:
         # Start from last entry's timestamp (with 1 min overlap to avoid gaps)
         last_epoch = log[-1]["ts_epoch"]
         fetch_start_ms = (last_epoch - 60) * 1000
