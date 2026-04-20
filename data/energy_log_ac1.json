@@ -1102,5 +1102,21 @@
     "session_start": false,
     "session_gap_mins": 30.0,
     "source": "tuya_event"
+  },
+  {
+    "ts": "2026-04-20T12:45:10+05:30",
+    "ts_epoch": 1776669310,
+    "slot": "T1_day",
+    "slot_label": "Day (T1)",
+    "rate": 6.75,
+    "kwh": 0.1,
+    "cost": 0.675,
+    "watts": 8.5,
+    "volts": 232.7,
+    "amps": 0.064,
+    "ac_on": true,
+    "session_start": true,
+    "session_gap_mins": 19.2,
+    "source": "tuya_event"
   }
 ]
