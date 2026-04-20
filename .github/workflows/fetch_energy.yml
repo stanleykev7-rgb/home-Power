@@ -2,7 +2,7 @@ name: Fetch AC Energy Data
 
 on:
   schedule:
-    - cron: '*/15 * * * *'   # fallback
+    - cron: '2,12,22,32,42,52 * * * *'   # fallback
   workflow_dispatch:           # manual trigger
   repository_dispatch:         # triggered by cron-job.org
     types: [energy-fetch]
