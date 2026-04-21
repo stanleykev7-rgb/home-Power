@@ -214,10 +214,6 @@ def main():
     except Exception as e:
         print("TEST ERROR:", e)
 
-    # ── Step 4: If no new events, add a status-only heartbeat entry ───────────
-    if not new_entries:
-
-
   
     # ── Step 4: If no new events, add a status-only heartbeat entry ───────────
     if not new_entries:
