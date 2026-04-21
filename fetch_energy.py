@@ -200,7 +200,7 @@ def main():
         flag = "🔋" if is_session_start else "  "
         print(f"  {flag} {event_ts_ist.strftime('%H:%M')} | {TOD[slot]['label']} | {kwh:.3f} kWh | ₹{cost:.4f}")
 
-# TEMP TEST
+    # TEMP TEST
     try:
         test = cloud.getdevicelog(
             DEVICE_ID,
