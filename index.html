@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AC Energy Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ── dark mode (default) ── */
+:root {
+  --bg:      #07080a;
+  --panel:   #0d1014;
+  --panel2:  #111519;
+  --border:  #1a2030;
+  --border2: #222c3a;
+  --t1:      #38bdf8;
+  --t2:      #fb923c;
+  --t3:      #c084fc;
+  --text:    #e2e8f5;
+  --muted:   #3d4a5c;
+  --muted2:  #607080;
+  --accent:  #fb923c;
+  --green:   #34d399;
+  --red:     #f87171;
+  --yellow:  #fbbf24;
+  --mono:    'JetBrains Mono', monospace;
+  --display: 'Instrument Serif', serif;
+  --sans:    'Outfit', sans-serif;
+  --shadow:  0 1px 3px rgba(0,0,0,0.4);
+  --mode-icon: '☀';
+}
+
+/* ── light mode ── */
+:root.light {
+  --bg:      #f4f6fa;
+  --panel:   #ffffff;
+  --panel2:  #f0f3f8;
+  --border:  #dde3ed;
+  --border2: #c8d2e0;
+  --t1:      #0284c7;
+  --t2:      #ea580c;
+  --t3:      #9333ea;
+  --text:    #1a2235;
+  --muted:   #c0cbd8;
+  --muted2:  #7a8fa8;
+  --accent:  #ea580c;
+  --green:   #059669;
+  --red:     #dc2626;
+  --yellow:  #d97706;
+  --shadow:  0 1px 4px rgba(0,0,0,0.1);
+  --mode-icon: '☾';
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 400;
+  min-height: 100vh;
+  padding: 0 0 80px;
+  transition: background 0.2s, color 0.2s;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── header ── */
+.header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(251,146,60,0.35);
+}
+.header-title { font-family: var(--display); font-size: 1.35rem; font-weight: 400; letter-spacing: -0.2px; line-height: 1.2; }
+.header-title span { color: var(--accent); font-style: italic; }
+.header-sub { font-family: var(--mono); font-size: 0.62rem; color: var(--muted2); margin-top: 2px; letter-spacing: 0.3px; }
+.header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.live-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--panel2); border: 1px solid var(--border2);
+  color: var(--green); font-family: var(--mono); font-size: 0.65rem;
+  padding: 5px 12px; border-radius: 20px;
+  transition: background 0.2s;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; flex-shrink: 0; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── theme toggle ── */
+.btn-theme {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+  color: var(--muted2);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.btn-theme:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── legend ── */
+.legend {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  transition: background 0.2s;
+}
+.leg { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 0.63rem; color: var(--muted2); }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── tabs ── */
+.tab-bar {
+  display: flex; gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  overflow-x: auto;
+  transition: background 0.2s;
+}
+.tab-btn {
+  padding: 11px 18px;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted2);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+  letter-spacing: 0.1px;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* ── content ── */
+.content { padding: 20px 24px; max-width: 1200px; }
+.hidden { display: none; }
+
+/* ── live reading ── */
+.live-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.live-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+.live-card-val { font-family: var(--display); font-size: 1.7rem; font-weight: 400; line-height: 1; color: var(--text); }
+.live-card-unit { font-family: var(--mono); font-size: 0.6rem; color: var(--muted2); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.8px; }
+.slot-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex; flex-direction: column; justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background 0.2s;
+}
+.slot-name { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
+.slot-rate { font-family: var(--mono); font-size: 0.65rem; color: var(--muted2); }
+.slot-time { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 2px; }
+
+/* ── stat cards ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+.stat-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+.stat-card.total::after  { background: linear-gradient(90deg, var(--t1), var(--t2), var(--t3)); }
+.stat-card.t1::after     { background: var(--t1); }
+.stat-card.t2::after     { background: var(--t2); }
+.stat-card.t3::after     { background: var(--t3); }
+.stat-label { font-family: var(--sans); font-size: 0.68rem; font-weight: 500; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; }
+.stat-val { font-family: var(--display); font-size: 1.9rem; font-weight: 400; line-height: 1; }
+.stat-val .unit { font-family: var(--sans); font-size: 0.75rem; font-weight: 400; color: var(--muted2); margin-left: 2px; }
+.stat-sub { font-family: var(--mono); font-size: 0.62rem; color: var(--muted2); margin-top: 6px; }
+
+/* ── panel ── */
+.pane {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+.pane-title {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: var(--muted2);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.pane-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.chart-wrap { position: relative; height: 220px; }
+
+/* ── heatmap ── */
+.heatmap-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px; margin-bottom: 12px;
+}
+.heatmap-limit {
+  display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 0.72rem; color: var(--muted2);
+}
+.heatmap-limit input {
+  width: 60px; background: var(--panel2); border: 1px solid var(--border2);
+  color: var(--text); font-family: var(--mono); font-size: 0.7rem;
+  padding: 4px 8px; border-radius: 5px; text-align: center;
+  transition: background 0.2s;
+}
+.heatmap-legend { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 0.6rem; color: var(--muted2); }
+.hmap-dot { width: 10px; height: 10px; border-radius: 2px; }
+.heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.hmap-day-label {
+  font-family: var(--sans); font-size: 0.62rem; font-weight: 500;
+  color: var(--muted2); text-align: center; padding: 2px 0;
+}
+.hmap-cell {
+  aspect-ratio: 1; border-radius: 4px; cursor: pointer;
+  position: relative; transition: transform 0.1s; min-height: 28px;
+}
+.hmap-cell:hover { transform: scale(1.15); z-index: 10; }
+.hmap-cell.empty { background: var(--panel2); opacity: 0.3; }
+.hmap-cell.no-data { background: var(--panel2); border: 1px solid var(--border); }
+.light .hmap-cell.no-data { background: #e8edf5; border-color: #d0d8e8; }
+.hmap-cell.low  { background: #0d2d1a; border: 1px solid #1a5030; }
+.hmap-cell.ok   { background: #14532d; border: 1px solid #166534; }
+.hmap-cell.high { background: #78350f; border: 1px solid #92400e; }
+.hmap-cell.over { background: #7f1d1d; border: 1px solid #991b1b; }
+.light .hmap-cell.low  { background: #bbf7d0; border-color: #86efac; }
+.light .hmap-cell.ok   { background: #4ade80; border-color: #22c55e; }
+.light .hmap-cell.high { background: #fed7aa; border-color: #fb923c; }
+.light .hmap-cell.over { background: #fca5a5; border-color: #f87171; }
+.hmap-date { position: absolute; top: 2px; left: 3px; font-family: var(--mono); font-size: 0.5rem; color: rgba(255,255,255,0.4); }
+.light .hmap-date { color: rgba(0,0,0,0.35); }
+
+/* ── tooltip ── */
+.tooltip {
+  position: fixed; background: var(--panel);
+  border: 1px solid var(--border2); border-radius: 10px;
+  padding: 10px 14px; font-family: var(--sans); font-size: 0.72rem;
+  pointer-events: none; z-index: 100; display: none; min-width: 165px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+.tooltip.show { display: block; }
+.tt-date { font-family: var(--mono); font-size: 0.62rem; color: var(--muted2); margin-bottom: 7px; }
+.tt-row { display: flex; justify-content: space-between; gap: 16px; padding: 2px 0; }
+.tt-label { color: var(--muted2); }
+.tt-val { font-weight: 500; }
+
+/* ── date picker ── */
+.date-picker {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 12px 16px; background: var(--panel2);
+  border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 16px; font-family: var(--sans); font-size: 0.75rem; color: var(--muted2);
+  transition: background 0.2s;
+}
+.date-picker input[type=date] {
+  background: var(--panel); border: 1px solid var(--border2);
+  color: var(--text); font-family: var(--mono); font-size: 0.72rem;
+  padding: 5px 10px; border-radius: 6px; outline: none; transition: background 0.2s;
+}
+.btn-apply {
+  padding: 6px 16px; border-radius: 6px; border: none;
+  background: var(--accent); color: #fff;
+  font-family: var(--sans); font-size: 0.75rem; font-weight: 500; cursor: pointer;
+}
+
+/* ── bill cards ── */
+.bill-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.bill-card {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; transition: background 0.2s;
+}
+.bill-card.best { border-color: var(--accent); background: var(--panel); }
+.bill-badge {
+  font-family: var(--mono); font-size: 0.58rem;
+  background: var(--panel2); color: var(--accent); border: 1px solid var(--accent)44;
+  padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
+}
+.bill-card-label { font-family: var(--sans); font-size: 0.7rem; color: var(--muted2); margin-bottom: 8px; line-height: 1.4; }
+.bill-card-val { font-family: var(--display); font-size: 1.8rem; font-weight: 400; }
+.bill-card-sub { font-family: var(--mono); font-size: 0.62rem; color: var(--muted2); margin-top: 4px; }
+
+/* ── breakdown ── */
+.breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.brow {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.75rem;
+}
+.brow:last-child { border-bottom: none; }
+.brow-label { color: var(--muted2); }
+.brow-val { font-weight: 500; }
+
+/* ── log table ── */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.68rem; }
+th { text-align: left; padding: 7px 10px; color: var(--muted2); font-weight: 400; font-family: var(--sans); font-size: 0.7rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; transition: background 0.1s; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--panel2); }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.62rem; font-weight: 500; }
+.b-t1 { background: var(--t1)20; color: var(--t1); }
+.b-t2 { background: var(--t2)20; color: var(--t2); }
+.b-t3 { background: var(--t3)20; color: var(--t3); }
+.session-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-right: 4px; }
+
+/* ── buttons ── */
+.btn-clear {
+  padding: 7px 14px; border-radius: 7px;
+  border: 1px solid var(--border2); background: transparent;
+  color: var(--muted2); font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+/* ── modal ── */
+.modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 200;
+  align-items: center; justify-content: center; backdrop-filter: blur(2px);
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: var(--panel); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 28px; max-width: 400px; width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25); transition: background 0.2s;
+}
+.modal h3 { font-family: var(--display); font-size: 1.2rem; font-weight: 400; margin-bottom: 10px; }
+.modal p { font-family: var(--sans); font-size: 0.78rem; color: var(--muted2); line-height: 1.7; margin-bottom: 20px; }
+.modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+.btn-cancel { padding: 8px 18px; border-radius: 7px; border: 1px solid var(--border2); background: transparent; color: var(--muted2); font-family: var(--sans); font-size: 0.75rem; cursor: pointer; }
+.btn-confirm { padding: 8px 18px; border-radius: 7px; border: none; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 0.75rem; font-weight: 500; cursor: pointer; }
+
+@media (max-width: 600px) {
+  .content { padding: 14px 16px; }
+  .bill-3 { grid-template-columns: 1fr; }
+  .breakdown { grid-template-columns: 1fr; }
+  .live-card-val { font-size: 1.4rem; }
+  .header { padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-icon">❄</div>
+    <div>
+      <div class="header-title">AC Energy <span>Tracker</span></div>
+      <div class="header-sub">KSEB ToD Billing · Wipro Smart Plug · India</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap" class="header-right">
+    <div class="live-pill"><div class="live-dot"></div><span id="last-updated">Loading…</span></div>
+    <button class="btn-theme" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode">☀</button>
+    <button class="btn-clear" onclick="showClear()">Clear</button>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:var(--t1)"></div>T1 Day · 6am–6pm · ₹6.75</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--t2)"></div>T2 Peak · 6–10pm · ₹9.375</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--t3)"></div>T3 Night · 10pm–6am · ₹7.50</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Session start</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--yellow)"></div>Gap estimated</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('today')">Today</button>
+  <button class="tab-btn" onclick="switchTab('month')">Monthly</button>
+  <button class="tab-btn" onclick="switchTab('billing')">Billing Period</button>
+  <button class="tab-btn" onclick="switchTab('log')">Log</button>
+  <button class="tab-btn" onclick="switchTab('master')" style="opacity:0.4">Master ↗</button>
+</div>
+
+<div class="content">
+
+<!-- TODAY -->
+<div id="view-today">
+  <div class="live-grid" id="live-grid"></div>
+  <div class="stat-grid" id="today-stats"></div>
+  <div class="pane">
+    <div class="pane-title">10-min consumption (kWh)</div>
+    <div class="chart-wrap"><canvas id="chart-today"></canvas></div>
+  </div>
+</div>
+
+<!-- MONTHLY -->
+<div id="view-month" class="hidden">
+  <div class="date-picker">
+    <span>From:</span>
+    <input type="date" id="month-from">
+    <span>To:</span>
+    <input type="date" id="month-to">
+    <button class="btn-apply" onclick="renderMonth()">Apply</button>
+  </div>
+  <div class="pane">
+    <div class="pane-title">Daily consumption (kWh)</div>
+    <div class="chart-wrap"><canvas id="chart-month"></canvas></div>
+  </div>
+  <div class="pane" id="month-heatmap-pane">
+    <div class="pane-title">Usage heatmap</div>
+    <div id="month-heatmap"></div>
+  </div>
+  <div class="pane">
+    <div class="pane-title">Summary</div>
+    <div id="month-summary"></div>
+  </div>
+</div>
+
+<!-- BILLING PERIOD -->
+<div id="view-billing" class="hidden">
+  <div class="date-picker">
+    <span>Billing start:</span>
+    <input type="date" id="bill-from">
+    <span>End:</span>
+    <input type="date" id="bill-to">
+    <button class="btn-apply" onclick="renderBilling()">Apply</button>
+    <span style="font-size:0.62rem;color:var(--muted)">KSEB bi-monthly cycle</span>
+  </div>
+  <div class="bill-3" id="bill-3-cards"></div>
+  <div class="pane">
+    <div class="pane-title">Daily breakdown</div>
+    <div class="chart-wrap"><canvas id="chart-billing"></canvas></div>
+  </div>
+  <div class="pane" id="bill-heatmap-pane">
+    <div class="pane-title">Usage heatmap</div>
+    <div id="bill-heatmap"></div>
+  </div>
+  <div class="pane">
+    <div class="pane-title">ToD breakdown</div>
+    <div class="breakdown" id="bill-breakdown"></div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div id="view-log" class="hidden">
+  <div class="pane">
+    <div class="pane-title">Interval log (last 200 entries)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Time (IST)</th>
+            <th>Slot</th>
+            <th>kWh</th>
+            <th>Cost ₹</th>
+            <th>Watts</th>
+            <th>Volts</th>
+            <th>Session</th>
+          </tr>
+        </thead>
+        <tbody id="log-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MASTER -->
+<div id="view-master" class="hidden">
+  <div class="pane" style="text-align:center;padding:60px 20px">
+    <div style="font-size:2rem;margin-bottom:12px">🏗</div>
+    <div style="font-size:0.8rem;color:var(--muted2)">Master view coming when you add more ACs.<br>Add devices as <code>TUYA_DEVICE_ID_AC2</code>, <code>TUYA_DEVICE_ID_AC3</code> secrets.</div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip"></div>
+
+<!-- Clear modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>Clear all data?</h3>
+    <p>This will reset <code>energy_log_ac1.json</code> to empty. Go to your GitHub repo → data/energy_log_ac1.json → edit → replace with <code>[]</code> → commit.<br><br>The next run will start fresh from midnight today.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="hideClear()">Cancel</button>
+      <button class="btn-confirm" onclick="hideClear()">Got it</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── constants ─────────────────────────────────────────────────────────────────
+const RATES = { T1_day: 6.75, T2_peak: 9.375, T3_night: 7.50 };
+const SLOT_COLORS     = { T1_day: '#38bdf8', T2_peak: '#fb923c', T3_night: '#c084fc' };
+const SLOT_COLORS_EST = { T1_day: '#0e4f6a', T2_peak: '#6b3010', T3_night: '#4a2a6b' };
+const SLOT_LABELS = { T1_day: 'Day (T1)', T2_peak: 'Peak (T2)', T3_night: 'Night (T3)' };
+const BADGE = { T1_day: 'b-t1', T2_peak: 'b-t2', T3_night: 'b-t3' };
+const SLOT_TIMES = { T1_day: '6am–6pm', T2_peak: '6–10pm', T3_night: '10pm–6am' };
+
+// Use total_kwh (includes gap estimate) if available, else kwh
+function getKwh(r)    { return r.total_kwh !== undefined ? r.total_kwh : (r.kwh || 0); }
+function getGapKwh(r) { return r.gap_kwh || 0; }
+
+let allData = [];
+let charts = {};
+let dailyLimit = parseFloat(localStorage.getItem('daily_limit') || '3.0');
+
+// ── data ──────────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const r = await fetch(`data/energy_log_ac1.json?_=${Date.now()}`);
+    allData = await r.json();
+    render();
+  } catch(e) {
+    document.getElementById('last-updated').textContent = 'Error loading data';
+  }
+}
+
+// ── helpers ───────────────────────────────────────────────────────────────────
+function todayIST() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+}
+function fmtTime(ts) {
+  return new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' });
+}
+function fmtDate(ts) {
+  return new Date(ts).toLocaleDateString('en-IN', { day:'2-digit', month:'short', timeZone:'Asia/Kolkata' });
+}
+function fmtDateShort(ts) {
+  return new Date(ts).toLocaleDateString('en-CA', { timeZone:'Asia/Kolkata' });
+}
+function sum(arr, key) { return arr.reduce((a,b) => a+(b[key]||0), 0); }
+function r2(n) { return Math.round(n * 100) / 100; }
+function r4(n) { return Math.round(n * 10000) / 10000; }
+
+function filterRange(from, to) {
+  return allData.filter(r => {
+    const d = r.ts.slice(0,10);
+    return (!from || d >= from) && (!to || d <= to);
+  });
+}
+
+function groupByDay(rows) {
+  const m = {};
+  rows.forEach(r => {
+    const d = r.ts.slice(0,10);
+    if (!m[d]) m[d] = { T1_day:0, T2_peak:0, T3_night:0, total:0, cost:0, gap:0 };
+    const kwh = getKwh(r);
+    m[d][r.slot] += kwh;
+    m[d].total   += kwh;
+    m[d].cost    += r.cost || 0;
+    m[d].gap     += getGapKwh(r);
+  });
+  return m;
+}
+
+// ── render ────────────────────────────────────────────────────────────────────
+function render() {
+  if (!allData.length) {
+    document.getElementById('last-updated').textContent = 'No data yet';
+    return;
+  }
+  const last = allData[allData.length-1];
+  document.getElementById('last-updated').textContent =
+    `${fmtDate(last.ts)} ${fmtTime(last.ts)}`;
+  renderToday();
+  renderMonth();
+  renderBilling();
+  renderLog();
+}
+
+// ── TODAY ─────────────────────────────────────────────────────────────────────
+function renderToday() {
+  const today = todayIST();
+  const rows  = allData.filter(r => r.ts.startsWith(today));
+  const last  = rows[rows.length-1] || allData[allData.length-1] || {};
+
+  // Live grid
+  const slot = last.slot || 'T1_day';
+  document.getElementById('live-grid').innerHTML = `
+    <div class="live-card">
+      <div class="live-card-val" style="color:var(--accent)">${last.watts || 0}</div>
+      <div class="live-card-unit">Watts (live)</div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-val">${last.volts || 0}</div>
+      <div class="live-card-unit">Volts</div>
+    </div>
+    <div class="live-card">
+      <div class="live-card-val">${last.amps || 0}</div>
+      <div class="live-card-unit">Amps</div>
+    </div>
+    <div class="slot-card" style="border-color:${SLOT_COLORS[slot]}22">
+      <div class="slot-name" style="color:${SLOT_COLORS[slot]}">${SLOT_LABELS[slot]}</div>
+      <div class="slot-rate">₹${RATES[slot]}/unit</div>
+      <div class="slot-time">${SLOT_TIMES[slot]}</div>
+    </div>`;
+
+  // Stats — use total_kwh
+  const bySlot   = { T1_day:0, T2_peak:0, T3_night:0 };
+  const totGapKwh = rows.reduce((a,r) => a + getGapKwh(r), 0);
+  rows.forEach(r => { bySlot[r.slot] = (bySlot[r.slot]||0) + getKwh(r); });
+  const totKwh  = rows.reduce((a,r) => a + getKwh(r), 0);
+  const totCost = sum(rows, 'cost');
+  const sessions = rows.filter(r => r.session_start).length;
+  const estNote = totGapKwh > 0.01 ? ` · ~${r4(totGapKwh)} est.` : '';
+
+  document.getElementById('today-stats').innerHTML = `
+    <div class="stat-card total">
+      <div class="stat-label">Today total</div>
+      <div class="stat-val">${r2(totKwh)}<span class="unit">kWh</span></div>
+      <div class="stat-sub">₹${r2(totCost)} · ${sessions} session${sessions!==1?'s':''}${estNote}</div>
+    </div>
+    <div class="stat-card t1">
+      <div class="stat-label">T1 Day</div>
+      <div class="stat-val">${r4(bySlot.T1_day)}<span class="unit">kWh</span></div>
+      <div class="stat-sub">₹${r2(bySlot.T1_day * RATES.T1_day)}</div>
+    </div>
+    <div class="stat-card t2">
+      <div class="stat-label">T2 Peak</div>
+      <div class="stat-val">${r4(bySlot.T2_peak)}<span class="unit">kWh</span></div>
+      <div class="stat-sub">₹${r2(bySlot.T2_peak * RATES.T2_peak)}</div>
+    </div>
+    <div class="stat-card t3">
+      <div class="stat-label">T3 Night</div>
+      <div class="stat-val">${r4(bySlot.T3_night)}<span class="unit">kWh</span></div>
+      <div class="stat-sub">₹${r2(bySlot.T3_night * RATES.T3_night)}</div>
+    </div>`;
+
+  // Chart — stacked: tracked (solid) + gap estimate (dimmed)
+  if (charts.today) charts.today.destroy();
+  const ctx = document.getElementById('chart-today').getContext('2d');
+  charts.today = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => fmtTime(r.ts)),
+      datasets: [
+        {
+          label: 'Tracked',
+          data: rows.map(r => r.kwh || 0),
+          backgroundColor: rows.map(r => r.session_start ? '#34d399' : SLOT_COLORS[r.slot]),
+          borderRadius: 3,
+          borderSkipped: false,
+          stack: 'energy',
+        },
+        {
+          label: 'Estimated gap',
+          data: rows.map(r => getGapKwh(r)),
+          backgroundColor: rows.map(r => SLOT_COLORS_EST[r.slot]),
+          borderRadius: 3,
+          borderSkipped: false,
+          stack: 'energy',
+        }
+      ]
+    },
+    options: barOptions(rows)
+  });
+}
+
+// ── MONTHLY ───────────────────────────────────────────────────────────────────
+function renderMonth() {
+  const now = new Date();
+  const defFrom = now.toLocaleDateString('en-CA', {timeZone:'Asia/Kolkata'}).slice(0,7) + '-01';
+  const defTo   = todayIST();
+  const from = document.getElementById('month-from').value || defFrom;
+  const to   = document.getElementById('month-to').value   || defTo;
+  if (!document.getElementById('month-from').value) document.getElementById('month-from').value = defFrom;
+  if (!document.getElementById('month-to').value)   document.getElementById('month-to').value   = defTo;
+
+  const rows   = filterRange(from, to);
+  const dayMap = groupByDay(rows);
+  const days   = Object.keys(dayMap).sort();
+
+  // Chart
+  if (charts.month) charts.month.destroy();
+  const ctx = document.getElementById('chart-month').getContext('2d');
+  charts.month = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: days.map(d => d.slice(5)),
+      datasets: [
+        { label:'T1 Day',   data: days.map(d=>dayMap[d].T1_day),   backgroundColor:'#38bdf8', borderRadius:2 },
+        { label:'T2 Peak',  data: days.map(d=>dayMap[d].T2_peak),  backgroundColor:'#fb923c', borderRadius:2 },
+        { label:'T3 Night', data: days.map(d=>dayMap[d].T3_night), backgroundColor:'#c084fc', borderRadius:2 },
+      ]
+    },
+    options: stackedOptions()
+  });
+
+  // Heatmap
+  document.getElementById('month-heatmap').innerHTML = buildHeatmap(dayMap, from, to, 'month');
+
+  // Summary — use getKwh
+  const t1k = rows.filter(r=>r.slot==='T1_day').reduce((a,r)=>a+getKwh(r),0);
+  const t2k = rows.filter(r=>r.slot==='T2_peak').reduce((a,r)=>a+getKwh(r),0);
+  const t3k = rows.filter(r=>r.slot==='T3_night').reduce((a,r)=>a+getKwh(r),0);
+  const totKwh  = t1k+t2k+t3k;
+  const totCost = t1k*RATES.T1_day + t2k*RATES.T2_peak + t3k*RATES.T3_night;
+  const avgDay  = days.length ? totKwh/days.length : 0;
+  const totGap  = rows.reduce((a,r)=>a+getGapKwh(r),0);
+
+  document.getElementById('month-summary').innerHTML = `
+    <div class="breakdown">
+      <div>
+        <div class="brow"><span class="brow-label">T1 Day</span><span class="brow-val">${r4(t1k)} kWh · ₹${r2(t1k*RATES.T1_day)}</span></div>
+        <div class="brow"><span class="brow-label">T2 Peak</span><span class="brow-val">${r4(t2k)} kWh · ₹${r2(t2k*RATES.T2_peak)}</span></div>
+        <div class="brow"><span class="brow-label">T3 Night</span><span class="brow-val">${r4(t3k)} kWh · ₹${r2(t3k*RATES.T3_night)}</span></div>
+      </div>
+      <div>
+        <div class="brow"><span class="brow-label">Days tracked</span><span class="brow-val">${days.length}</span></div>
+        <div class="brow"><span class="brow-label">Total units</span><span class="brow-val">${r4(totKwh)} kWh</span></div>
+        <div class="brow"><span class="brow-label">Avg per day</span><span class="brow-val">${r4(avgDay)} kWh</span></div>
+        ${totGap > 0.01 ? `<div class="brow"><span class="brow-label" style="color:var(--yellow)">Est. gap additions</span><span class="brow-val" style="color:var(--yellow)">~${r4(totGap)} kWh</span></div>` : ''}
+        <div class="brow"><span class="brow-label">Total cost</span><span class="brow-val" style="color:var(--accent);font-size:1rem">₹${r2(totCost)}</span></div>
+      </div>
+    </div>`;
+}
+
+// ── BILLING ───────────────────────────────────────────────────────────────────
+function renderBilling() {
+  const defTo   = todayIST();
+  const fd = new Date(defTo); fd.setDate(fd.getDate()-59);
+  const defFrom = fd.toLocaleDateString('en-CA', {timeZone:'Asia/Kolkata'});
+  const from = document.getElementById('bill-from').value || defFrom;
+  const to   = document.getElementById('bill-to').value   || defTo;
+  if (!document.getElementById('bill-from').value) document.getElementById('bill-from').value = defFrom;
+  if (!document.getElementById('bill-to').value)   document.getElementById('bill-to').value   = defTo;
+
+  const rows   = filterRange(from, to);
+  const dayMap = groupByDay(rows);
+  const days   = Object.keys(dayMap).sort();
+
+  const t1k = rows.filter(r=>r.slot==='T1_day').reduce((a,r)=>a+getKwh(r),0);
+  const t2k = rows.filter(r=>r.slot==='T2_peak').reduce((a,r)=>a+getKwh(r),0);
+  const t3k = rows.filter(r=>r.slot==='T3_night').reduce((a,r)=>a+getKwh(r),0);
+  const totKwh  = t1k+t2k+t3k;
+  const totCost = t1k*RATES.T1_day + t2k*RATES.T2_peak + t3k*RATES.T3_night;
+  const flatCost = totKwh * 7.50;
+  const t1r = totKwh > 0 ? t1k/totKwh : 0;
+  const t2r = totKwh > 0 ? t2k/totKwh : 0;
+  const t3r = totKwh > 0 ? t3k/totKwh : 0;
+
+  // 3 bill estimates
+  document.getElementById('bill-3-cards').innerHTML = `
+    <div class="bill-card">
+      <div class="bill-card-label">Our method<br>ToD-tagged intervals</div>
+      <div class="bill-card-val">₹${r2(totCost)}</div>
+      <div class="bill-card-sub">${r4(totKwh)} kWh tracked</div>
+    </div>
+    <div class="bill-card">
+      <div class="bill-card-label">Flat rate<br>${r4(totKwh)} kWh × ₹7.50</div>
+      <div class="bill-card-val">₹${r2(flatCost)}</div>
+      <div class="bill-card-sub">No ToD benefit</div>
+    </div>
+    <div class="bill-card best">
+      <div class="bill-badge">best estimate</div>
+      <div class="bill-card-label">ToD-optimised<br>actual slot split</div>
+      <div class="bill-card-val">₹${r2(totCost)}</div>
+      <div class="bill-card-sub">T1 ${Math.round(t1r*100)}% · T2 ${Math.round(t2r*100)}% · T3 ${Math.round(t3r*100)}%</div>
+    </div>`;
+
+  // Chart
+  if (charts.billing) charts.billing.destroy();
+  const ctx = document.getElementById('chart-billing').getContext('2d');
+  charts.billing = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: days.map(d => d.slice(5)),
+      datasets: [
+        { label:'T1 Day',   data: days.map(d=>dayMap[d].T1_day),   backgroundColor:'#38bdf8', borderRadius:2 },
+        { label:'T2 Peak',  data: days.map(d=>dayMap[d].T2_peak),  backgroundColor:'#fb923c', borderRadius:2 },
+        { label:'T3 Night', data: days.map(d=>dayMap[d].T3_night), backgroundColor:'#c084fc', borderRadius:2 },
+      ]
+    },
+    options: stackedOptions()
+  });
+
+  // Heatmap
+  document.getElementById('bill-heatmap').innerHTML = buildHeatmap(dayMap, from, to, 'billing');
+
+  // Breakdown
+  document.getElementById('bill-breakdown').innerHTML = `
+    <div>
+      <div class="brow"><span class="brow-label">T1 Day units</span><span class="brow-val">${r4(t1k)} kWh</span></div>
+      <div class="brow"><span class="brow-label">T1 Day cost</span><span class="brow-val">₹${r2(t1k*RATES.T1_day)}</span></div>
+      <div class="brow"><span class="brow-label">T2 Peak units</span><span class="brow-val">${r4(t2k)} kWh</span></div>
+      <div class="brow"><span class="brow-label">T2 Peak cost</span><span class="brow-val">₹${r2(t2k*RATES.T2_peak)}</span></div>
+      <div class="brow"><span class="brow-label">T3 Night units</span><span class="brow-val">${r4(t3k)} kWh</span></div>
+      <div class="brow"><span class="brow-label">T3 Night cost</span><span class="brow-val">₹${r2(t3k*RATES.T3_night)}</span></div>
+    </div>
+    <div>
+      <div class="brow"><span class="brow-label">Period</span><span class="brow-val">${from} → ${to}</span></div>
+      <div class="brow"><span class="brow-label">Days tracked</span><span class="brow-val">${days.length}</span></div>
+      <div class="brow"><span class="brow-label">Total units</span><span class="brow-val">${r4(totKwh)} kWh</span></div>
+      <div class="brow"><span class="brow-label">Avg per day</span><span class="brow-val">${days.length ? r4(totKwh/days.length) : 0} kWh</span></div>
+      <div class="brow"><span class="brow-label">Sessions</span><span class="brow-val">${rows.filter(r=>r.session_start).length}</span></div>
+      <div class="brow"><span class="brow-label">Total bill</span><span class="brow-val" style="color:var(--accent);font-size:1.1rem">₹${r2(totCost)}</span></div>
+    </div>`;
+}
+
+// ── HEATMAP ───────────────────────────────────────────────────────────────────
+function buildHeatmap(dayMap, from, to, id) {
+  const lim = dailyLimit;
+  const fromDate = new Date(from + 'T00:00:00+05:30');
+  const toDate   = new Date(to   + 'T00:00:00+05:30');
+
+  // Build week-aligned grid
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = `
+    <div class="heatmap-header">
+      <div class="heatmap-limit">
+        Daily limit: <input type="number" id="limit-${id}" value="${lim}" min="0.1" max="20" step="0.1" onchange="updateLimit(this.value,'${id}')"> kWh
+      </div>
+      <div class="heatmap-legend">
+        <div class="hmap-dot" style="background:#0d2d1a;border:1px solid #1a5030"></div><span>Low</span>
+        <div class="hmap-dot" style="background:#14532d;border:1px solid #166534"></div><span>OK</span>
+        <div class="hmap-dot" style="background:#78350f;border:1px solid #92400e"></div><span>High</span>
+        <div class="hmap-dot" style="background:#7f1d1d;border:1px solid #991b1b"></div><span>Over</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px">
+      ${dayNames.map(d=>`<div class="hmap-day-label">${d}</div>`).join('')}
+    </div>
+    <div class="heatmap-grid" id="hgrid-${id}">`;
+
+  // Pad to start on Sunday
+  const startDay = fromDate.getDay();
+  for (let i = 0; i < startDay; i++) {
+    html += `<div class="hmap-cell empty"></div>`;
+  }
+
+  // Fill days
+  let d = new Date(fromDate);
+  while (d <= toDate) {
+    const dateStr = d.toLocaleDateString('en-CA', {timeZone:'Asia/Kolkata'});
+    const dayData = dayMap[dateStr];
+    const kwh = dayData ? dayData.total : null;
+    const dateNum = d.getDate();
+
+    let cls = 'no-data';
+    if (kwh !== null) {
+      if (kwh < lim * 0.5)       cls = 'low';
+      else if (kwh < lim * 0.9)  cls = 'ok';
+      else if (kwh < lim)        cls = 'high';
+      else                        cls = 'over';
+    }
+
+    const kwhStr = kwh !== null ? kwh.toFixed(3) : '–';
+    const costStr = dayData ? `₹${r2(dayData.cost)}` : '–';
+    const t1s = dayData ? dayData.T1_day.toFixed(3) : '–';
+    const t2s = dayData ? dayData.T2_peak.toFixed(3) : '–';
+    const t3s = dayData ? dayData.T3_night.toFixed(3) : '–';
+
+    html += `<div class="hmap-cell ${cls}"
+      data-date="${dateStr}"
+      data-kwh="${kwhStr}"
+      data-cost="${costStr}"
+      data-t1="${t1s}" data-t2="${t2s}" data-t3="${t3s}"
+      onmouseenter="showTooltip(event,this)"
+      onmouseleave="hideTooltip()">
+      <span class="hmap-date">${dateNum}</span>
+    </div>`;
+
+    d.setDate(d.getDate() + 1);
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function updateLimit(val, id) {
+  dailyLimit = parseFloat(val) || 3.0;
+  localStorage.setItem('daily_limit', dailyLimit);
+  // Re-render heatmaps only
+  const rows = allData;
+  if (id === 'month') {
+    const from = document.getElementById('month-from').value;
+    const to   = document.getElementById('month-to').value;
+    const dayMap = groupByDay(filterRange(from, to));
+    document.getElementById('month-heatmap').innerHTML = buildHeatmap(dayMap, from, to, 'month');
+  } else {
+    const from = document.getElementById('bill-from').value;
+    const to   = document.getElementById('bill-to').value;
+    const dayMap = groupByDay(filterRange(from, to));
+    document.getElementById('bill-heatmap').innerHTML = buildHeatmap(dayMap, from, to, 'billing');
+  }
+}
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
+function showTooltip(e, el) {
+  const tt = document.getElementById('tooltip');
+  tt.innerHTML = `
+    <div class="tt-date">${el.dataset.date}</div>
+    <div class="tt-row"><span class="tt-label">Total</span><span class="tt-val">${el.dataset.kwh} kWh</span></div>
+    <div class="tt-row"><span class="tt-label">Cost</span><span class="tt-val">${el.dataset.cost}</span></div>
+    <div class="tt-row"><span class="tt-label" style="color:#22d3ee">T1 Day</span><span class="tt-val">${el.dataset.t1} kWh</span></div>
+    <div class="tt-row"><span class="tt-label" style="color:#fb923c">T2 Peak</span><span class="tt-val">${el.dataset.t2} kWh</span></div>
+    <div class="tt-row"><span class="tt-label" style="color:#a78bfa">T3 Night</span><span class="tt-val">${el.dataset.t3} kWh</span></div>`;
+  tt.classList.add('show');
+  posTooltip(e);
+}
+function posTooltip(e) {
+  const tt = document.getElementById('tooltip');
+  let x = e.clientX + 12, y = e.clientY + 12;
+  if (x + 200 > window.innerWidth) x = e.clientX - 170;
+  if (y + 160 > window.innerHeight) y = e.clientY - 150;
+  tt.style.left = x + 'px';
+  tt.style.top  = y + 'px';
+}
+function hideTooltip() {
+  document.getElementById('tooltip').classList.remove('show');
+}
+document.addEventListener('mousemove', e => {
+  if (document.getElementById('tooltip').classList.contains('show')) posTooltip(e);
+});
+
+// ── LOG ───────────────────────────────────────────────────────────────────────
+function renderLog() {
+  const recent = [...allData].reverse().slice(0, 200);
+  document.getElementById('log-body').innerHTML = recent.length
+    ? recent.map(r => {
+        const kwh     = getKwh(r);
+        const gapKwh  = getGapKwh(r);
+        const estTag  = r.gap_estimated
+          ? `<span class="badge" style="background:#2d1f00;color:var(--yellow)">+${gapKwh.toFixed(3)} est</span>`
+          : '';
+        const sessTag = r.session_start
+          ? '<span class="session-dot"></span>'
+          : '';
+        return `<tr${r.gap_estimated ? ' style="background:rgba(251,191,36,0.04)"' : ''}>
+          <td>${fmtDate(r.ts)} ${fmtTime(r.ts)}</td>
+          <td><span class="badge ${BADGE[r.slot]}">${SLOT_LABELS[r.slot]}</span></td>
+          <td>${kwh.toFixed(4)}</td>
+          <td>₹${(r.cost||0).toFixed(4)}</td>
+          <td>${r.watts||'–'}</td>
+          <td>${r.volts||'–'}</td>
+          <td>${sessTag}${estTag}</td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No data</td></tr>';
+}
+
+// ── CHART OPTIONS ─────────────────────────────────────────────────────────────
+function isLight() { return document.documentElement.classList.contains('light'); }
+function gridColor() { return isLight() ? '#dde3ed' : '#1a2030'; }
+function tickColor() { return isLight() ? '#7a8fa8' : '#3d4a5c'; }
+function ttBg()     { return isLight() ? '#ffffff' : '#0d1014'; }
+function ttBorder() { return isLight() ? '#dde3ed' : '#1a2030'; }
+function ttTitle()  { return isLight() ? '#1a2235' : '#e2e8f5'; }
+function ttBody()   { return isLight() ? '#607080' : '#7a8fa8'; }
+
+function barOptions(rows) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: ttBg(), borderColor: ttBorder(), borderWidth: 1,
+        titleColor: ttTitle(), bodyColor: ttBody(),
+        callbacks: {
+          label: ctx => {
+            const r = rows[ctx.dataIndex];
+            return ` ${ctx.parsed.y.toFixed(4)} kWh · ₹${((ctx.parsed.y||0)*(r?RATES[r.slot]:6.75)).toFixed(4)}${r?.session_start?' · 🔋 Session start':''}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: tickColor(), font:{family:'JetBrains Mono',size:9} }, grid:{color: gridColor()} },
+      y: { ticks: { color: tickColor(), font:{family:'JetBrains Mono',size:9} }, grid:{color: gridColor()} }
+    }
+  };
+}
+
+function stackedOptions() {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: tickColor(), font:{family:'Outfit',size:11} } },
+      tooltip: { backgroundColor: ttBg(), borderColor: ttBorder(), borderWidth:1, titleColor: ttTitle(), bodyColor: ttBody() }
+    },
+    scales: {
+      x: { stacked:true, ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}}, grid:{color:gridColor()} },
+      y: { stacked:true, ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}}, grid:{color:gridColor()} }
+    }
+  };
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  ['today','month','billing','log','master'].forEach(t => {
+    document.getElementById('view-'+t).classList.toggle('hidden', t!==tab);
+  });
+  document.querySelectorAll('.tab-btn').forEach((el,i) => {
+    el.classList.toggle('active', ['today','month','billing','log','master'][i]===tab);
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function showClear() { document.getElementById('modal-bg').classList.add('show'); }
+function hideClear() { document.getElementById('modal-bg').classList.remove('show'); }
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  document.getElementById('theme-btn').textContent = isLight ? '☾' : '☀';
+  // Redraw charts with updated colors
+  render();
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.classList.add('light');
+    document.getElementById('theme-btn').textContent = '☾';
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+initTheme();
+loadData();
+setInterval(loadData, 5 * 60 * 1000);
+</script>
+</body>
+</html>
