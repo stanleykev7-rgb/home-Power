@@ -200,20 +200,6 @@ def main():
         flag = "🔋" if is_session_start else "  "
         print(f"  {flag} {event_ts_ist.strftime('%H:%M')} | {TOD[slot]['label']} | {kwh:.3f} kWh | ₹{cost:.4f}")
 
-    # TEMP TEST
-    try:
-        test = cloud.getdevicelog(
-            DEVICE_ID,
-            start=int((now_utc - timedelta(hours=1)).timestamp() * 1000),
-            end=int(now_utc.timestamp() * 1000),
-            size=20,
-            max_fetches=1
-        )
-        all_codes = list(set(x['code'] for x in test.get('result',{}).get('logs',[])))
-        print("AVAILABLE CODES:", all_codes)
-    except Exception as e:
-        print("TEST ERROR:", e)
-
   
     # ── Step 4: If no new events, add a status-only heartbeat entry ───────────
     if not new_entries:
