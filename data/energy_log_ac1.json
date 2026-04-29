@@ -12253,7 +12253,7 @@
     "gap_kwh": 0.0,
     "total_kwh": 0.004,
     "cost": 0.027,
-    "watts": 7.6,
+    "watts": 8.0,
     "volts": 223.1,
     "amps": 0.053,
     "ac_on": true,
