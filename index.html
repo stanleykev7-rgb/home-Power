@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AC Energy Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#07080a;--panel:#0d1014;--panel2:#111519;--border:#1a2030;--border2:#222c3a;--ac1:#38bdf8;--ac2:#a78bfa;--ac3:#34d399;--t1:#38bdf8;--t2:#fb923c;--t3:#c084fc;--text:#e2e8f5;--muted:#3d4a5c;--muted2:#607080;--accent:#fb923c;--green:#34d399;--red:#f87171;--yellow:#fbbf24;--mono:'JetBrains Mono',monospace;--display:'Instrument Serif',serif;--sans:'Outfit',sans-serif;--shadow:0 1px 3px rgba(0,0,0,.4)}
+:root.light{--bg:#f4f6fa;--panel:#fff;--panel2:#f0f3f8;--border:#dde3ed;--border2:#c8d2e0;--ac1:#0284c7;--ac2:#7c3aed;--ac3:#059669;--t1:#0284c7;--t2:#ea580c;--t3:#9333ea;--text:#1a2235;--muted:#c0cbd8;--muted2:#7a8fa8;--accent:#ea580c;--green:#059669;--red:#dc2626;--yellow:#d97706;--shadow:0 1px 4px rgba(0,0,0,.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding:0 0 80px;-webkit-font-smoothing:antialiased;transition:background .2s,color .2s}
+.header{background:var(--panel);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow);transition:background .2s}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.hdr-icon{width:38px;height:38px;background:linear-gradient(135deg,#fb923c,#f97316);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(251,146,60,.35)}
+.hdr-title{font-family:var(--display);font-size:1.35rem;font-weight:400;letter-spacing:-.2px;line-height:1.2}
+.hdr-title span{color:var(--accent);font-style:italic}
+.hdr-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-top:2px}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.live-pill{display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--border2);color:var(--green);font-family:var(--mono);font-size:.65rem;padding:5px 12px;border-radius:20px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-theme{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--panel2);color:var(--muted2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.btn-theme:hover{border-color:var(--accent);color:var(--accent)}
+.btn-clear{padding:7px 14px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-family:var(--sans);font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;padding:10px 24px;border-bottom:1px solid var(--border);background:var(--panel);transition:background .2s}
+.leg{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.63rem;color:var(--muted2)}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tab-bar{display:flex;padding:0 24px;border-bottom:1px solid var(--border);background:var(--panel);overflow-x:auto;transition:background .2s}
+.tab-btn{padding:11px 16px;font-family:var(--sans);font-size:.8rem;font-weight:500;color:var(--muted2);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;margin-bottom:-1px}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn.master-tab{color:#a78bfa}
+.tab-btn.master-tab.active{color:#a78bfa;border-bottom-color:#a78bfa}
+.content{padding:20px 24px;max-width:1200px}
+.hidden{display:none}
+.device-selector{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.device-selector label{font-family:var(--mono);font-size:.7rem;color:var(--muted2)}
+.dev-select{background:var(--panel);border:1px solid var(--border2);color:var(--text);font-family:var(--sans);font-size:.8rem;padding:7px 14px;border-radius:8px;outline:none;cursor:pointer;transition:background .2s}
+.dev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.dev-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow);transition:background .2s}
+.dev-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.dev-card.ac1::before{background:var(--ac1)}
+.dev-card.ac2::before{background:var(--ac2)}
+.dev-card.ac3::before{background:var(--ac3)}
+.dev-card-name{font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.on-pill{font-size:.6rem;padding:2px 8px;border-radius:10px;background:#0d2015;color:var(--green);border:1px solid #1a4028}
+.off-pill{font-size:.6rem;padding:2px 8px;border-radius:10px;background:var(--panel2);color:var(--muted2);border:1px solid var(--border)}
+.dev-watts{font-family:var(--display);font-size:2rem;font-weight:400;line-height:1;margin-bottom:10px}
+.dev-watts .w-unit{font-family:var(--sans);font-size:.85rem;color:var(--muted2);margin-left:2px}
+.dev-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:.72rem}
+.dev-row:last-of-type{border-bottom:none}
+.dev-row-lbl{color:var(--muted2)}
+.dev-row-val{font-family:var(--mono);font-weight:500}
+.slot-badge{display:inline-block;padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:.62rem;font-weight:500;margin-top:8px}
+.b-t1{background:var(--t1)20;color:var(--t1)}
+.b-t2{background:var(--t2)20;color:var(--t2)}
+.b-t3{background:var(--t3)20;color:var(--t3)}
+.session-info{font-family:var(--mono);font-size:.6rem;color:var(--green);margin-top:5px;display:flex;align-items:center;gap:4px}
+.session-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+.combined-strip{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 20px;box-shadow:var(--shadow)}
+.cs-title{font-family:var(--sans);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);margin-bottom:14px}
+.cs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.cs-item{text-align:center}
+.cs-name{font-size:.65rem;color:var(--muted2);margin-bottom:6px}
+.cs-bar-wrap{height:50px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px}
+.cs-bar{width:24px;border-radius:3px 3px 0 0}
+.cs-kwh{font-family:var(--display);font-size:1.1rem;font-weight:400}
+.cs-cost{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-top:3px}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);font-size:.8rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow);transition:background .2s}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.stat-card.total::after{background:linear-gradient(90deg,var(--t1),var(--t2),var(--t3))}
+.stat-card.t1::after{background:var(--t1)}
+.stat-card.t2::after{background:var(--t2)}
+.stat-card.t3::after{background:var(--t3)}
+.stat-label{font-family:var(--sans);font-size:.65rem;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+.stat-val{font-family:var(--display);font-size:1.9rem;font-weight:400;line-height:1}
+.stat-val .unit{font-family:var(--sans);font-size:.75rem;color:var(--muted2);margin-left:2px}
+.stat-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-top:6px}
+.pane{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow);transition:background .2s}
+.pane-title{font-family:var(--sans);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--muted2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.pane-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.chart-wrap{position:relative;height:220px}
+.date-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;font-family:var(--sans);font-size:.75rem;color:var(--muted2);transition:background .2s}
+.date-picker input[type=date]{background:var(--panel);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:.72rem;padding:5px 10px;border-radius:6px;outline:none;transition:background .2s}
+.btn-apply{padding:6px 16px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-family:var(--sans);font-size:.75rem;font-weight:500;cursor:pointer}
+.bill-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.bill-card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:background .2s}
+.bill-card.best{border-color:var(--accent);background:var(--panel)}
+.bill-badge{font-family:var(--mono);font-size:.58rem;background:var(--panel2);color:var(--accent);border:1px solid var(--accent)44;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.bill-card-label{font-family:var(--sans);font-size:.7rem;color:var(--muted2);margin-bottom:8px;line-height:1.4}
+.bill-card-val{font-family:var(--display);font-size:1.8rem;font-weight:400}
+.bill-card-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-top:4px}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--sans);font-size:.75rem}
+.brow:last-child{border-bottom:none}
+.brow-label{color:var(--muted2)}
+.brow-val{font-weight:500}
+.heatmap-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.heatmap-limit{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-size:.72rem;color:var(--muted2)}
+.heatmap-limit input{width:60px;background:var(--panel2);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:.7rem;padding:4px 8px;border-radius:5px;text-align:center}
+.heatmap-legend{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.6rem;color:var(--muted2)}
+.hmap-dot{width:10px;height:10px;border-radius:2px}
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.hmap-day-label{font-family:var(--sans);font-size:.62rem;font-weight:500;color:var(--muted2);text-align:center;padding:2px 0}
+.hmap-cell{aspect-ratio:1;border-radius:4px;cursor:pointer;position:relative;transition:transform .1s;min-height:28px}
+.hmap-cell:hover{transform:scale(1.15);z-index:10}
+.hmap-cell.empty{background:var(--panel2);opacity:.3}
+.hmap-cell.no-data{background:var(--panel2);border:1px solid var(--border)}
+.hmap-cell.low{background:#0d2d1a;border:1px solid #1a5030}
+.hmap-cell.ok{background:#14532d;border:1px solid #166534}
+.hmap-cell.high{background:#78350f;border:1px solid #92400e}
+.hmap-cell.over{background:#7f1d1d;border:1px solid #991b1b}
+.light .hmap-cell.no-data{background:#e8edf5;border-color:#d0d8e8}
+.light .hmap-cell.low{background:#bbf7d0;border-color:#86efac}
+.light .hmap-cell.ok{background:#4ade80;border-color:#22c55e}
+.light .hmap-cell.high{background:#fed7aa;border-color:#fb923c}
+.light .hmap-cell.over{background:#fca5a5;border-color:#f87171}
+.hmap-date{position:absolute;top:2px;left:3px;font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.4)}
+.light .hmap-date{color:rgba(0,0,0,.35)}
+.tooltip{position:fixed;background:var(--panel);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;font-family:var(--sans);font-size:.72rem;pointer-events:none;z-index:100;display:none;min-width:165px;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.tooltip.show{display:block}
+.tt-date{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-bottom:7px}
+.tt-row{display:flex;justify-content:space-between;gap:16px;padding:2px 0}
+.tt-label{color:var(--muted2)}
+.tt-val{font-weight:500}
+.master-ac-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.mac-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.65rem;color:var(--muted2)}
+.mac-dot{width:10px;height:10px;border-radius:2px}
+.master-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.master-stat{background:var(--panel2);border-radius:10px;padding:12px 14px;border-left:3px solid transparent;transition:background .2s}
+.master-stat.ac1{border-left-color:var(--ac1)}
+.master-stat.ac2{border-left-color:var(--ac2)}
+.master-stat.ac3{border-left-color:var(--ac3)}
+.ms-name{font-size:.65rem;color:var(--muted2);margin-bottom:4px}
+.ms-val{font-family:var(--display);font-size:1.3rem;font-weight:400}
+.ms-cost{font-family:var(--mono);font-size:.62rem;color:var(--muted2);margin-top:2px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.68rem}
+th{text-align:left;padding:7px 10px;color:var(--muted2);font-weight:400;font-family:var(--sans);font-size:.7rem;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;transition:background .1s}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--panel2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.62rem;font-weight:500}
+.b-ac1{background:var(--ac1)20;color:var(--ac1)}
+.b-ac2{background:var(--ac2)20;color:var(--ac2)}
+.b-ac3{background:var(--ac3)20;color:var(--ac3)}
+.sdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-bg.show{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:28px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.modal h3{font-family:var(--display);font-size:1.2rem;font-weight:400;margin-bottom:10px}
+.modal p{font-family:var(--sans);font-size:.78rem;color:var(--muted2);line-height:1.7;margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end}
+.btn-cancel{padding:8px 18px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-family:var(--sans);font-size:.75rem;cursor:pointer}
+.btn-confirm{padding:8px 18px;border-radius:7px;border:none;background:var(--accent);color:#fff;font-family:var(--sans);font-size:.75rem;font-weight:500;cursor:pointer}
+@media(max-width:600px){.content{padding:14px 16px}.bill-3{grid-template-columns:1fr}.breakdown{grid-template-columns:1fr}.master-stat-grid{grid-template-columns:1fr}.dev-grid{grid-template-columns:1fr}.header{padding:12px 16px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="hdr-left">
+    <div class="hdr-icon">❄</div>
+    <div>
+      <div class="hdr-title">AC Energy <span>Tracker</span></div>
+      <div class="hdr-sub">KSEB ToD Billing · 3 Wipro Smart Plugs · India</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-pill"><div class="live-dot"></div><span id="last-updated">Loading…</span></div>
+    <button class="btn-theme" id="theme-btn" onclick="toggleTheme()" title="Toggle">☀</button>
+    <button class="btn-clear" onclick="showClear()">Clear</button>
+  </div>
+</div>
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:var(--t1)"></div>T1 Day·6am–6pm·₹6.75</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--t2)"></div>T2 Peak·6–10pm·₹9.375</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--t3)"></div>T3 Night·10pm–6am·₹7.50</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Session start</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--yellow)"></div>Gap estimated</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--ac1)"></div>Main Room</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--ac2)"></div>Bedroom 1</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--ac3)"></div>Kevin's Room</div>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('devices')">Devices</button>
+  <button class="tab-btn" onclick="switchTab('today')">Today</button>
+  <button class="tab-btn" onclick="switchTab('month')">Monthly</button>
+  <button class="tab-btn" onclick="switchTab('billing')">Billing</button>
+  <button class="tab-btn master-tab" onclick="switchTab('master')">Master ✦</button>
+  <button class="tab-btn" onclick="switchTab('log')">Log</button>
+</div>
+<div class="content">
+<!-- DEVICES -->
+<div id="view-devices">
+  <div class="dev-grid" id="dev-cards"></div>
+  <div class="combined-strip" id="combined-strip"></div>
+</div>
+<!-- TODAY -->
+<div id="view-today" class="hidden">
+  <div class="device-selector">
+    <label>Device:</label>
+    <select class="dev-select" id="today-device" onchange="renderToday()">
+      <option value="all">All Devices</option>
+      <option value="ac1">Main Room AC</option>
+      <option value="ac2">Bedroom 1 AC</option>
+      <option value="ac3">Kevin's Room AC</option>
+    </select>
+  </div>
+  <div class="stat-grid" id="today-stats"></div>
+  <div class="pane">
+    <div class="pane-title">10-min consumption (kWh)</div>
+    <div class="chart-wrap"><canvas id="chart-today"></canvas></div>
+  </div>
+  <div class="pane">
+    <div class="pane-title">Live reading</div>
+    <div id="live-reading" style="font-family:var(--mono);font-size:.85rem;color:var(--muted2)">—</div>
+  </div>
+</div>
+<!-- MONTHLY -->
+<div id="view-month" class="hidden">
+  <div class="device-selector">
+    <label>Device:</label>
+    <select class="dev-select" id="month-device" onchange="renderMonth()">
+      <option value="all">All Devices</option>
+      <option value="ac1">Main Room AC</option>
+      <option value="ac2">Bedroom 1 AC</option>
+      <option value="ac3">Kevin's Room AC</option>
+    </select>
+  </div>
+  <div class="date-picker">
+    <span>From:</span><input type="date" id="month-from">
+    <span>To:</span><input type="date" id="month-to">
+    <button class="btn-apply" onclick="renderMonth()">Apply</button>
+  </div>
+  <div class="pane"><div class="pane-title">Daily consumption (kWh)</div><div class="chart-wrap"><canvas id="chart-month"></canvas></div></div>
+  <div class="pane"><div class="pane-title">Usage heatmap</div><div id="month-heatmap"></div></div>
+  <div class="pane"><div class="pane-title">Summary</div><div id="month-summary"></div></div>
+</div>
+<!-- BILLING -->
+<div id="view-billing" class="hidden">
+  <div class="device-selector">
+    <label>Device:</label>
+    <select class="dev-select" id="bill-device" onchange="renderBilling()">
+      <option value="all">All Devices</option>
+      <option value="ac1">Main Room AC</option>
+      <option value="ac2">Bedroom 1 AC</option>
+      <option value="ac3">Kevin's Room AC</option>
+    </select>
+  </div>
+  <div class="date-picker">
+    <span>Billing start:</span><input type="date" id="bill-from">
+    <span>End:</span><input type="date" id="bill-to">
+    <button class="btn-apply" onclick="renderBilling()">Apply</button>
+    <span style="font-size:.62rem;color:var(--muted)">KSEB bi-monthly cycle</span>
+  </div>
+  <div class="bill-3" id="bill-3-cards"></div>
+  <div class="pane"><div class="pane-title">Daily breakdown</div><div class="chart-wrap"><canvas id="chart-billing"></canvas></div></div>
+  <div class="pane"><div class="pane-title">Usage heatmap</div><div id="bill-heatmap"></div></div>
+  <div class="pane"><div class="pane-title">ToD breakdown</div><div class="breakdown" id="bill-breakdown"></div></div>
+</div>
+<!-- MASTER -->
+<div id="view-master" class="hidden">
+  <div class="master-ac-legend">
+    <div class="mac-item"><div class="mac-dot" style="background:var(--ac1)"></div>Main Room AC</div>
+    <div class="mac-item"><div class="mac-dot" style="background:var(--ac2)"></div>Bedroom 1 AC</div>
+    <div class="mac-item"><div class="mac-dot" style="background:var(--ac3)"></div>Kevin's Room AC</div>
+  </div>
+  <div class="master-stat-grid" id="master-stats"></div>
+  <div class="pane"><div class="pane-title">Combined daily — all 3 ACs (last 30 days)</div><div class="chart-wrap"><canvas id="chart-master"></canvas></div></div>
+  <div class="bill-3" id="master-bill-cards"></div>
+  <div class="pane"><div class="pane-title">Per-device ToD breakdown (last 60 days)</div><div id="master-breakdown"></div></div>
+</div>
+<!-- LOG -->
+<div id="view-log" class="hidden">
+  <div class="device-selector">
+    <label>Filter:</label>
+    <select class="dev-select" id="log-device" onchange="renderLog()">
+      <option value="all">All Devices</option>
+      <option value="ac1">Main Room AC</option>
+      <option value="ac2">Bedroom 1 AC</option>
+      <option value="ac3">Kevin's Room AC</option>
+    </select>
+  </div>
+  <div class="pane">
+    <div class="pane-title">Interval log (last 300 entries)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Time (IST)</th><th>Device</th><th>Slot</th><th>kWh</th><th>Cost ₹</th><th>Watts</th><th>Volts</th><th>Note</th></tr></thead>
+        <tbody id="log-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+<div class="tooltip" id="tooltip"></div>
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>Clear data?</h3>
+    <p>Go to your GitHub repo → <code>data/</code> folder → edit each <code>energy_log_acX.json</code> → replace with <code>[]</code> → commit.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="hideClear()">Cancel</button>
+      <button class="btn-confirm" onclick="hideClear()">Got it</button>
+    </div>
+  </div>
+</div>
+<script>
+const DEVICES={ac1:{name:'Main Room AC',short:'Main',color:'#38bdf8',file:'data/energy_log_ac1.json'},ac2:{name:'Bedroom 1 AC',short:'Bed 1',color:'#a78bfa',file:'data/energy_log_ac2.json'},ac3:{name:"Kevin's Room AC",short:'Kevin',color:'#34d399',file:'data/energy_log_ac3.json'}};
+const RATES={T1_day:6.75,T2_peak:9.375,T3_night:7.50};
+const SLOT_COLORS={T1_day:'#38bdf8',T2_peak:'#fb923c',T3_night:'#c084fc'};
+const SLOT_COLORS_EST={T1_day:'#0e4f6a',T2_peak:'#6b3010',T3_night:'#4a2a6b'};
+const SLOT_LABELS={T1_day:'Day (T1)',T2_peak:'Peak (T2)',T3_night:'Night (T3)'};
+const BADGE_SLOT={T1_day:'b-t1',T2_peak:'b-t2',T3_night:'b-t3'};
+const SLOT_TIMES={T1_day:'6am–6pm',T2_peak:'6–10pm',T3_night:'10pm–6am'};
+function getKwh(r){return r.total_kwh!==undefined?r.total_kwh:(r.kwh||0);}
+function getGapKwh(r){return r.gap_kwh||0;}
+let data={ac1:[],ac2:[],ac3:[]};
+let charts={};
+let dailyLimit=parseFloat(localStorage.getItem('daily_limit')||'3.0');
+async function loadData(){
+  try{
+    const results=await Promise.all(Object.entries(DEVICES).map(async([key,dev])=>{
+      try{const r=await fetch(dev.file+'?_='+Date.now());return[key,await r.json()];}catch{return[key,[]];}
+    }));
+    results.forEach(([key,rows])=>{data[key]=rows;});
+    render();
+  }catch(e){document.getElementById('last-updated').textContent='Error loading data';}
+}
+function todayIST(){return new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});}
+function fmtTime(ts){return new Date(ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'});}
+function fmtDate(ts){return new Date(ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',timeZone:'Asia/Kolkata'});}
+function r2(n){return Math.round(n*100)/100;}
+function r4(n){return Math.round(n*10000)/10000;}
+function getAllRows(){return[...data.ac1,...data.ac2,...data.ac3].sort((a,b)=>a.ts_epoch-b.ts_epoch);}
+function getRows(k){if(k==='all')return getAllRows();return data[k]||[];}
+function filterRange(rows,from,to){return rows.filter(r=>{const d=r.ts.slice(0,10);return(!from||d>=from)&&(!to||d<=to);});}
+function groupByDay(rows){
+  const m={};
+  rows.forEach(r=>{
+    const d=r.ts.slice(0,10);
+    if(!m[d])m[d]={T1_day:0,T2_peak:0,T3_night:0,total:0,cost:0,gap:0};
+    const kwh=getKwh(r);m[d][r.slot]+=kwh;m[d].total+=kwh;m[d].cost+=r.cost||0;m[d].gap+=getGapKwh(r);
+  });
+  return m;
+}
+function sumKwh(rows,slot){return rows.filter(r=>!slot||r.slot===slot).reduce((a,r)=>a+getKwh(r),0);}
+function render(){
+  const allRows=getAllRows();
+  if(!allRows.length){document.getElementById('last-updated').textContent='No data yet';return;}
+  const last=allRows[allRows.length-1];
+  document.getElementById('last-updated').textContent=fmtDate(last.ts)+' '+fmtTime(last.ts);
+  renderDevices();renderToday();renderMonth();renderBilling();renderMaster();renderLog();
+}
+function renderDevices(){
+  const today=todayIST();
+  document.getElementById('dev-cards').innerHTML=Object.entries(DEVICES).map(([key,dev])=>{
+    const rows=data[key],last=rows[rows.length-1]||{};
+    const tr=rows.filter(r=>r.ts.startsWith(today));
+    const tkwh=tr.reduce((a,r)=>a+getKwh(r),0),tcost=tr.reduce((a,r)=>a+(r.cost||0),0);
+    const acOn=last.ac_on&&(last.watts||0)>50,watts=last.watts||0,slot=last.slot||'T1_day';
+    const sessions=tr.filter(r=>r.session_start),ls=sessions[sessions.length-1];
+    let sinfo='';
+    if(acOn&&ls){const d=(new Date()-new Date(ls.ts))/60000,h=Math.floor(d/60),m=Math.round(d%60);sinfo=`<div class="session-info"><span class="session-dot"></span>Active ${h>0?h+'h ':''}${m}m</div>`;}
+    else sinfo='<div style="font-family:var(--mono);font-size:.6rem;color:var(--muted2);margin-top:6px">Standby</div>';
+    return`<div class="dev-card ${key}"><div class="dev-card-name">${dev.name}<span class="${acOn?'on-pill':'off-pill'}">${acOn?'ON':'OFF'}</span></div><div class="dev-watts" style="color:${acOn?dev.color:'var(--muted2)'}"> ${watts}<span class="w-unit">W</span></div><div class="dev-row"><span class="dev-row-lbl">Volts</span><span class="dev-row-val">${last.volts||'–'} V</span></div><div class="dev-row"><span class="dev-row-lbl">Amps</span><span class="dev-row-val">${last.amps||'–'} A</span></div><div class="dev-row"><span class="dev-row-lbl">Today</span><span class="dev-row-val">${r4(tkwh)} kWh</span></div><div class="dev-row"><span class="dev-row-lbl">Cost</span><span class="dev-row-val">₹${r2(tcost)}</span></div><span class="slot-badge ${BADGE_SLOT[slot]}">${SLOT_LABELS[slot]}</span>${sinfo}</div>`;
+  }).join('');
+  const strips=Object.entries(DEVICES).map(([key,dev])=>{
+    const tr=data[key].filter(r=>r.ts.startsWith(today));
+    const kwh=tr.reduce((a,r)=>a+getKwh(r),0),cost=tr.reduce((a,r)=>a+(r.cost||0),0);
+    return{key,dev,kwh,cost};
+  });
+  const maxK=Math.max(...strips.map(s=>s.kwh),0.01);
+  const tk=strips.reduce((a,s)=>a+s.kwh,0),tc=strips.reduce((a,s)=>a+s.cost,0);
+  document.getElementById('combined-strip').innerHTML=`<div class="cs-title">Combined today — all devices</div><div class="cs-grid">${strips.map(s=>`<div class="cs-item"><div class="cs-name">${s.dev.short}</div><div class="cs-bar-wrap"><div class="cs-bar" style="height:${Math.round(s.kwh/maxK*50)}px;background:${s.dev.color}"></div></div><div class="cs-kwh">${r4(s.kwh)} <span style="font-size:.7rem;color:var(--muted2)">kWh</span></div><div class="cs-cost">₹${r2(s.cost)}</div></div>`).join('')}</div><div class="total-row"><span style="color:var(--muted2)">All devices today</span><span style="font-weight:500">${r4(tk)} kWh · <span style="color:var(--accent)">₹${r2(tc)}</span></span></div>`;
+}
+function renderToday(){
+  const dk=document.getElementById('today-device').value,today=todayIST();
+  const rows=getRows(dk).filter(r=>r.ts.startsWith(today)),last=rows[rows.length-1]||{};
+  const slot=last.slot||'T1_day';
+  document.getElementById('live-reading').innerHTML=last.watts?`<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px"></span><strong style="color:var(--text)">${last.watts}W</strong> · ${last.volts}V · ${last.amps}A · <span style="color:${SLOT_COLORS[slot]}">${SLOT_LABELS[slot]} · ₹${RATES[slot]}/unit</span>${dk==='all'&&last.device?` · <span class="badge b-${last.device}">${DEVICES[last.device]?.short}</span>`:''}` :'— no recent reading';
+  const bySlot={T1_day:0,T2_peak:0,T3_night:0};
+  rows.forEach(r=>{bySlot[r.slot]=(bySlot[r.slot]||0)+getKwh(r);});
+  const totK=rows.reduce((a,r)=>a+getKwh(r),0),totC=rows.reduce((a,r)=>a+(r.cost||0),0);
+  const sess=rows.filter(r=>r.session_start).length,gap=rows.reduce((a,r)=>a+getGapKwh(r),0);
+  const en=gap>0.01?` · ~${r4(gap)} est.`:'';
+  document.getElementById('today-stats').innerHTML=`<div class="stat-card total"><div class="stat-label">Today total</div><div class="stat-val">${r2(totK)}<span class="unit">kWh</span></div><div class="stat-sub">₹${r2(totC)} · ${sess} session${sess!==1?'s':''}${en}</div></div><div class="stat-card t1"><div class="stat-label">T1 Day</div><div class="stat-val">${r4(bySlot.T1_day)}<span class="unit">kWh</span></div><div class="stat-sub">₹${r2(bySlot.T1_day*RATES.T1_day)}</div></div><div class="stat-card t2"><div class="stat-label">T2 Peak</div><div class="stat-val">${r4(bySlot.T2_peak)}<span class="unit">kWh</span></div><div class="stat-sub">₹${r2(bySlot.T2_peak*RATES.T2_peak)}</div></div><div class="stat-card t3"><div class="stat-label">T3 Night</div><div class="stat-val">${r4(bySlot.T3_night)}<span class="unit">kWh</span></div><div class="stat-sub">₹${r2(bySlot.T3_night*RATES.T3_night)}</div></div>`;
+  if(charts.today)charts.today.destroy();
+  const ctx=document.getElementById('chart-today').getContext('2d');
+  if(dk==='all'){
+    const allR=getAllRows().filter(r=>r.ts.startsWith(today));
+    const lbls=[...new Set(allR.map(r=>fmtTime(r.ts)))];
+    charts.today=new Chart(ctx,{type:'bar',data:{labels:lbls,datasets:Object.entries(DEVICES).map(([key,dev])=>({label:dev.name,data:lbls.map(l=>{const r=data[key].find(x=>x.ts.startsWith(today)&&fmtTime(x.ts)===l);return r?getKwh(r):0;}),backgroundColor:dev.color+'cc',borderRadius:3,stack:'e'}))},options:stackedOptions()});
+  }else{
+    charts.today=new Chart(ctx,{type:'bar',data:{labels:rows.map(r=>fmtTime(r.ts)),datasets:[{label:'Tracked',data:rows.map(r=>r.kwh||0),backgroundColor:rows.map(r=>r.session_start?'#34d399':SLOT_COLORS[r.slot]),borderRadius:3,borderSkipped:false,stack:'e'},{label:'Est. gap',data:rows.map(r=>getGapKwh(r)),backgroundColor:rows.map(r=>SLOT_COLORS_EST[r.slot]),borderRadius:3,borderSkipped:false,stack:'e'}]},options:barOptions(rows)});
+  }
+}
+function renderMonth(){
+  const dk=document.getElementById('month-device').value;
+  const now=new Date(),df=now.toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'}).slice(0,7)+'-01',dt=todayIST();
+  const from=document.getElementById('month-from').value||df,to=document.getElementById('month-to').value||dt;
+  if(!document.getElementById('month-from').value)document.getElementById('month-from').value=df;
+  if(!document.getElementById('month-to').value)document.getElementById('month-to').value=dt;
+  const rows=filterRange(getRows(dk),from,to),dm=groupByDay(rows),days=Object.keys(dm).sort();
+  if(charts.month)charts.month.destroy();
+  const ctx=document.getElementById('chart-month').getContext('2d');
+  if(dk==='all'){
+    charts.month=new Chart(ctx,{type:'bar',data:{labels:days.map(d=>d.slice(5)),datasets:Object.entries(DEVICES).map(([key,dev])=>({label:dev.name,data:days.map(d=>filterRange(data[key],from,to).filter(r=>r.ts.startsWith(d)).reduce((a,r)=>a+getKwh(r),0)),backgroundColor:dev.color+'cc',borderRadius:2,stack:'e'}))},options:stackedOptions()});
+  }else{
+    charts.month=new Chart(ctx,{type:'bar',data:{labels:days.map(d=>d.slice(5)),datasets:[{label:'T1 Day',data:days.map(d=>dm[d].T1_day),backgroundColor:'#38bdf8',borderRadius:2,stack:'s'},{label:'T2 Peak',data:days.map(d=>dm[d].T2_peak),backgroundColor:'#fb923c',borderRadius:2,stack:'s'},{label:'T3 Night',data:days.map(d=>dm[d].T3_night),backgroundColor:'#c084fc',borderRadius:2,stack:'s'}]},options:stackedOptions()});
+  }
+  document.getElementById('month-heatmap').innerHTML=buildHeatmap(dm,from,to,'month');
+  const t1=sumKwh(rows,'T1_day'),t2=sumKwh(rows,'T2_peak'),t3=sumKwh(rows,'T3_night');
+  const tk=t1+t2+t3,tc=t1*RATES.T1_day+t2*RATES.T2_peak+t3*RATES.T3_night;
+  const gap=rows.reduce((a,r)=>a+getGapKwh(r),0);
+  document.getElementById('month-summary').innerHTML=`<div class="breakdown"><div><div class="brow"><span class="brow-label">T1 Day</span><span class="brow-val">${r4(t1)} kWh · ₹${r2(t1*RATES.T1_day)}</span></div><div class="brow"><span class="brow-label">T2 Peak</span><span class="brow-val">${r4(t2)} kWh · ₹${r2(t2*RATES.T2_peak)}</span></div><div class="brow"><span class="brow-label">T3 Night</span><span class="brow-val">${r4(t3)} kWh · ₹${r2(t3*RATES.T3_night)}</span></div></div><div><div class="brow"><span class="brow-label">Days</span><span class="brow-val">${days.length}</span></div><div class="brow"><span class="brow-label">Total</span><span class="brow-val">${r4(tk)} kWh</span></div><div class="brow"><span class="brow-label">Avg/day</span><span class="brow-val">${r4(days.length?tk/days.length:0)} kWh</span></div>${gap>0.01?`<div class="brow"><span class="brow-label" style="color:var(--yellow)">Est. gaps</span><span class="brow-val" style="color:var(--yellow)">~${r4(gap)} kWh</span></div>`:''}<div class="brow"><span class="brow-label">Total cost</span><span class="brow-val" style="color:var(--accent);font-size:1rem">₹${r2(tc)}</span></div></div></div>`;
+}
+function renderBilling(){
+  const dk=document.getElementById('bill-device').value;
+  const dt=todayIST(),fd=new Date(dt);fd.setDate(fd.getDate()-59);
+  const df=fd.toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
+  const from=document.getElementById('bill-from').value||df,to=document.getElementById('bill-to').value||dt;
+  if(!document.getElementById('bill-from').value)document.getElementById('bill-from').value=df;
+  if(!document.getElementById('bill-to').value)document.getElementById('bill-to').value=dt;
+  const rows=filterRange(getRows(dk),from,to),dm=groupByDay(rows),days=Object.keys(dm).sort();
+  const t1=sumKwh(rows,'T1_day'),t2=sumKwh(rows,'T2_peak'),t3=sumKwh(rows,'T3_night');
+  const tk=t1+t2+t3,tc=t1*RATES.T1_day+t2*RATES.T2_peak+t3*RATES.T3_night,fc=tk*7.5;
+  const t1r=tk>0?t1/tk:0,t2r=tk>0?t2/tk:0,t3r=tk>0?t3/tk:0;
+  document.getElementById('bill-3-cards').innerHTML=`<div class="bill-card"><div class="bill-card-label">Our method<br>ToD-tagged intervals</div><div class="bill-card-val">₹${r2(tc)}</div><div class="bill-card-sub">${r4(tk)} kWh tracked</div></div><div class="bill-card"><div class="bill-card-label">Flat rate<br>${r4(tk)} kWh × ₹7.50</div><div class="bill-card-val">₹${r2(fc)}</div><div class="bill-card-sub">No ToD benefit</div></div><div class="bill-card best"><div class="bill-badge">best estimate</div><div class="bill-card-label">ToD-optimised<br>actual slot split</div><div class="bill-card-val">₹${r2(tc)}</div><div class="bill-card-sub">T1 ${Math.round(t1r*100)}% · T2 ${Math.round(t2r*100)}% · T3 ${Math.round(t3r*100)}%</div></div>`;
+  if(charts.billing)charts.billing.destroy();
+  const ctx=document.getElementById('chart-billing').getContext('2d');
+  if(dk==='all'){
+    charts.billing=new Chart(ctx,{type:'bar',data:{labels:days.map(d=>d.slice(5)),datasets:Object.entries(DEVICES).map(([key,dev])=>({label:dev.name,data:days.map(d=>filterRange(data[key],from,to).filter(r=>r.ts.startsWith(d)).reduce((a,r)=>a+getKwh(r),0)),backgroundColor:dev.color+'cc',borderRadius:2,stack:'e'}))},options:stackedOptions()});
+  }else{
+    charts.billing=new Chart(ctx,{type:'bar',data:{labels:days.map(d=>d.slice(5)),datasets:[{label:'T1 Day',data:days.map(d=>dm[d].T1_day),backgroundColor:'#38bdf8',borderRadius:2,stack:'s'},{label:'T2 Peak',data:days.map(d=>dm[d].T2_peak),backgroundColor:'#fb923c',borderRadius:2,stack:'s'},{label:'T3 Night',data:days.map(d=>dm[d].T3_night),backgroundColor:'#c084fc',borderRadius:2,stack:'s'}]},options:stackedOptions()});
+  }
+  document.getElementById('bill-heatmap').innerHTML=buildHeatmap(dm,from,to,'billing');
+  const gap=rows.reduce((a,r)=>a+getGapKwh(r),0);
+  document.getElementById('bill-breakdown').innerHTML=`<div><div class="brow"><span class="brow-label">T1 Day units</span><span class="brow-val">${r4(t1)} kWh</span></div><div class="brow"><span class="brow-label">T1 Day cost</span><span class="brow-val">₹${r2(t1*RATES.T1_day)}</span></div><div class="brow"><span class="brow-label">T2 Peak units</span><span class="brow-val">${r4(t2)} kWh</span></div><div class="brow"><span class="brow-label">T2 Peak cost</span><span class="brow-val">₹${r2(t2*RATES.T2_peak)}</span></div><div class="brow"><span class="brow-label">T3 Night units</span><span class="brow-val">${r4(t3)} kWh</span></div><div class="brow"><span class="brow-label">T3 Night cost</span><span class="brow-val">₹${r2(t3*RATES.T3_night)}</span></div></div><div><div class="brow"><span class="brow-label">Period</span><span class="brow-val">${from} → ${to}</span></div><div class="brow"><span class="brow-label">Days</span><span class="brow-val">${days.length}</span></div><div class="brow"><span class="brow-label">Total units</span><span class="brow-val">${r4(tk)} kWh</span></div><div class="brow"><span class="brow-label">Avg/day</span><span class="brow-val">${r4(days.length?tk/days.length:0)} kWh</span></div><div class="brow"><span class="brow-label">Sessions</span><span class="brow-val">${rows.filter(r=>r.session_start).length}</span></div>${gap>0.01?`<div class="brow"><span class="brow-label" style="color:var(--yellow)">Est. gaps</span><span class="brow-val" style="color:var(--yellow)">~${r4(gap)} kWh</span></div>`:''}<div class="brow"><span class="brow-label">Total bill</span><span class="brow-val" style="color:var(--accent);font-size:1.1rem">₹${r2(tc)}</span></div></div>`;
+}
+function renderMaster(){
+  const today=todayIST();
+  document.getElementById('master-stats').innerHTML=Object.entries(DEVICES).map(([key,dev])=>{
+    const tr=data[key].filter(r=>r.ts.startsWith(today));
+    const kwh=tr.reduce((a,r)=>a+getKwh(r),0),cost=tr.reduce((a,r)=>a+(r.cost||0),0);
+    const last=data[key][data[key].length-1]||{};
+    const on=last.ac_on&&(last.watts||0)>50;
+    return`<div class="master-stat ${key}"><div class="ms-name">${dev.name} ${on?'🟢':'⚫'}</div><div class="ms-val">${r4(kwh)} kWh</div><div class="ms-cost">₹${r2(cost)} today · ${last.watts||0}W live</div></div>`;
+  }).join('');
+  const dt=todayIST(),fd30=new Date(dt);fd30.setDate(fd30.getDate()-29);
+  const from30=fd30.toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
+  const allDays=[...new Set(getAllRows().filter(r=>r.ts>=from30).map(r=>r.ts.slice(0,10)))].sort();
+  if(charts.master)charts.master.destroy();
+  const ctx=document.getElementById('chart-master').getContext('2d');
+  charts.master=new Chart(ctx,{type:'bar',data:{labels:allDays.map(d=>d.slice(5)),datasets:Object.entries(DEVICES).map(([key,dev])=>({label:dev.name,data:allDays.map(d=>data[key].filter(r=>r.ts.startsWith(d)).reduce((a,r)=>a+getKwh(r),0)),backgroundColor:dev.color+'cc',borderRadius:2,stack:'e'}))},options:stackedOptions()});
+  const fd60=new Date(dt);fd60.setDate(fd60.getDate()-59);
+  const from60=fd60.toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
+  const br=filterRange(getAllRows(),from60,dt);
+  const t1=sumKwh(br,'T1_day'),t2=sumKwh(br,'T2_peak'),t3=sumKwh(br,'T3_night');
+  const tk=t1+t2+t3,tc=t1*RATES.T1_day+t2*RATES.T2_peak+t3*RATES.T3_night;
+  document.getElementById('master-bill-cards').innerHTML=`<div class="bill-card"><div class="bill-card-label">Our method<br>all 3 ACs · ToD-tagged</div><div class="bill-card-val">₹${r2(tc)}</div><div class="bill-card-sub">${r4(tk)} kWh · last 60 days</div></div><div class="bill-card"><div class="bill-card-label">Flat rate<br>all 3 ACs × ₹7.50</div><div class="bill-card-val">₹${r2(tk*7.5)}</div><div class="bill-card-sub">No ToD benefit</div></div><div class="bill-card best"><div class="bill-badge">best estimate</div><div class="bill-card-label">Combined ToD<br>all 3 ACs</div><div class="bill-card-val">₹${r2(tc)}</div><div class="bill-card-sub">${r4(tk)} kWh total</div></div>`;
+  document.getElementById('master-breakdown').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">${Object.entries(DEVICES).map(([key,dev])=>{const rows=filterRange(data[key],from60,dt);const t1=sumKwh(rows,'T1_day'),t2=sumKwh(rows,'T2_peak'),t3=sumKwh(rows,'T3_night'),tot=t1+t2+t3,cost=t1*RATES.T1_day+t2*RATES.T2_peak+t3*RATES.T3_night;return`<div style="background:var(--panel2);border-radius:10px;padding:14px;border-left:3px solid ${dev.color}"><div style="font-size:.7rem;font-weight:600;color:var(--muted2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px">${dev.name}</div><div class="brow"><span class="brow-label">T1 Day</span><span class="brow-val">${r4(t1)} kWh</span></div><div class="brow"><span class="brow-label">T2 Peak</span><span class="brow-val">${r4(t2)} kWh</span></div><div class="brow"><span class="brow-label">T3 Night</span><span class="brow-val">${r4(t3)} kWh</span></div><div class="brow"><span class="brow-label">Total</span><span class="brow-val">${r4(tot)} kWh</span></div><div class="brow"><span class="brow-label" style="color:var(--accent)">Bill est.</span><span class="brow-val" style="color:var(--accent)">₹${r2(cost)}</span></div></div>`;}).join('')}</div>`;
+}
+function renderLog(){
+  const dk=document.getElementById('log-device').value;
+  const rows=[...getRows(dk)].reverse().slice(0,300);
+  document.getElementById('log-body').innerHTML=rows.length?rows.map(r=>{
+    const kwh=getKwh(r),gk=getGapKwh(r),dk2=r.device||'ac1';
+    return`<tr${r.gap_estimated?' style="background:rgba(251,191,36,0.04)"':''}><td>${fmtDate(r.ts)} ${fmtTime(r.ts)}</td><td><span class="badge b-${dk2}">${DEVICES[dk2]?.short||dk2}</span></td><td><span class="badge ${BADGE_SLOT[r.slot]}">${SLOT_LABELS[r.slot]}</span></td><td>${r.session_start?'<span class="sdot"></span>':''}${kwh.toFixed(4)}</td><td>₹${(r.cost||0).toFixed(4)}</td><td>${r.watts||'–'}</td><td>${r.volts||'–'}</td><td>${r.gap_estimated?`<span class="badge" style="background:#2d1f00;color:var(--yellow)">+${gk.toFixed(3)} est</span>`:''}</td></tr>`;
+  }).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px">No data</td></tr>';
+}
+function buildHeatmap(dayMap,from,to,id){
+  const lim=dailyLimit,fromDate=new Date(from+'T00:00:00+05:30'),toDate=new Date(to+'T00:00:00+05:30');
+  const dn=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html=`<div class="heatmap-header"><div class="heatmap-limit">Daily limit: <input type="number" id="limit-${id}" value="${lim}" min=".1" max="20" step=".1" onchange="updateLimit(this.value,'${id}')"> kWh</div><div class="heatmap-legend"><div class="hmap-dot" style="background:#0d2d1a;border:1px solid #1a5030"></div>Low <div class="hmap-dot" style="background:#14532d;border:1px solid #166534"></div>OK <div class="hmap-dot" style="background:#78350f;border:1px solid #92400e"></div>High <div class="hmap-dot" style="background:#7f1d1d;border:1px solid #991b1b"></div>Over</div></div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px">${dn.map(d=>`<div class="hmap-day-label">${d}</div>`).join('')}</div><div class="heatmap-grid">`;
+  for(let i=0;i<fromDate.getDay();i++)html+=`<div class="hmap-cell empty"></div>`;
+  let d=new Date(fromDate);
+  while(d<=toDate){
+    const ds=d.toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'}),dd=dayMap[ds],kwh=dd?dd.total:null,num=d.getDate();
+    let cls='no-data';
+    if(kwh!==null){if(kwh<lim*.5)cls='low';else if(kwh<lim*.9)cls='ok';else if(kwh<lim)cls='high';else cls='over';}
+    html+=`<div class="hmap-cell ${cls}" data-date="${ds}" data-kwh="${kwh!==null?kwh.toFixed(3):'–'}" data-cost="${dd?'₹'+r2(dd.cost):'–'}" data-t1="${dd?dd.T1_day.toFixed(3):'–'}" data-t2="${dd?dd.T2_peak.toFixed(3):'–'}" data-t3="${dd?dd.T3_night.toFixed(3):'–'}" onmouseenter="showTooltip(event,this)" onmouseleave="hideTooltip()"><span class="hmap-date">${num}</span></div>`;
+    d.setDate(d.getDate()+1);
+  }
+  return html+`</div>`;
+}
+function updateLimit(val,id){dailyLimit=parseFloat(val)||3.0;localStorage.setItem('daily_limit',dailyLimit);if(id==='month')renderMonth();else renderBilling();}
+function showTooltip(e,el){
+  const tt=document.getElementById('tooltip');
+  tt.innerHTML=`<div class="tt-date">${el.dataset.date}</div><div class="tt-row"><span class="tt-label">Total</span><span class="tt-val">${el.dataset.kwh} kWh</span></div><div class="tt-row"><span class="tt-label">Cost</span><span class="tt-val">${el.dataset.cost}</span></div><div class="tt-row"><span class="tt-label" style="color:var(--t1)">T1 Day</span><span class="tt-val">${el.dataset.t1} kWh</span></div><div class="tt-row"><span class="tt-label" style="color:var(--t2)">T2 Peak</span><span class="tt-val">${el.dataset.t2} kWh</span></div><div class="tt-row"><span class="tt-label" style="color:var(--t3)">T3 Night</span><span class="tt-val">${el.dataset.t3} kWh</span></div>`;
+  tt.classList.add('show');posTooltip(e);
+}
+function posTooltip(e){const tt=document.getElementById('tooltip');let x=e.clientX+12,y=e.clientY+12;if(x+200>window.innerWidth)x=e.clientX-175;if(y+160>window.innerHeight)y=e.clientY-155;tt.style.left=x+'px';tt.style.top=y+'px';}
+function hideTooltip(){document.getElementById('tooltip').classList.remove('show');}
+document.addEventListener('mousemove',e=>{if(document.getElementById('tooltip').classList.contains('show'))posTooltip(e);});
+function isLight(){return document.documentElement.classList.contains('light');}
+function gridColor(){return isLight()?'#dde3ed':'#1a2030';}
+function tickColor(){return isLight()?'#7a8fa8':'#3d4a5c';}
+function ttBg(){return isLight()?'#fff':'#0d1014';}
+function ttBorder(){return isLight()?'#dde3ed':'#1a2030';}
+function ttTitle(){return isLight()?'#1a2235':'#e2e8f5';}
+function ttBody(){return isLight()?'#607080':'#7a8fa8';}
+function barOptions(rows){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:ttBg(),borderColor:ttBorder(),borderWidth:1,titleColor:ttTitle(),bodyColor:ttBody(),callbacks:{label:ctx=>{const r=rows[ctx.dataIndex];return` ${ctx.parsed.y.toFixed(4)} kWh · ₹${((ctx.parsed.y||0)*(r?RATES[r.slot]:6.75)).toFixed(4)}${r?.session_start?' · 🔋 Start':''}`;}}},scales:{x:{ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}},grid:{color:gridColor()}},y:{ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}},grid:{color:gridColor()}}}};}
+function stackedOptions(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor(),font:{family:'Outfit',size:11}}},tooltip:{backgroundColor:ttBg(),borderColor:ttBorder(),borderWidth:1,titleColor:ttTitle(),bodyColor:ttBody()}},scales:{x:{stacked:true,ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}},grid:{color:gridColor()}},y:{stacked:true,ticks:{color:tickColor(),font:{family:'JetBrains Mono',size:9}},grid:{color:gridColor()}}}};}
+function switchTab(tab){['devices','today','month','billing','master','log'].forEach(t=>{document.getElementById('view-'+t).classList.toggle('hidden',t!==tab);});document.querySelectorAll('.tab-btn').forEach((el,i)=>{el.classList.toggle('active',['devices','today','month','billing','master','log'][i]===tab);});}
+function toggleTheme(){const isL=document.documentElement.classList.toggle('light');localStorage.setItem('theme',isL?'light':'dark');document.getElementById('theme-btn').textContent=isL?'☾':'☀';render();}
+function initTheme(){if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light');document.getElementById('theme-btn').textContent='☾';}}
+function showClear(){document.getElementById('modal-bg').classList.add('show');}
+function hideClear(){document.getElementById('modal-bg').classList.remove('show');}
+initTheme();loadData();setInterval(loadData,5*60*1000);
+</script>
+</body>
+</html>
