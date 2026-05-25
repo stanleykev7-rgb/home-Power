@@ -114,11 +114,11 @@ def estimate_gap(cloud, device_id, last_standby_ms, session_start_ms, first_add_
 
         for ev in logs:
             ts_ms = ev["event_time"]
-            if ev["code"] == "cur_current":
+            if ev.get("code") == "cur_current":
                 if int(ev["value"]) > AC_ON_MA and switch_on_ts_ms is None:
                     switch_on_ts_ms = ts_ms
                     print(f"    ⚡ Switch-on at {datetime.fromtimestamp(ts_ms/1000, tz=IST).strftime('%H:%M:%S')} ({ev['value']}mA)")
-            elif ev["code"] == "cur_power" and switch_on_ts_ms and ts_ms >= switch_on_ts_ms:
+            elif ev.get("code") == "cur_power" and switch_on_ts_ms and ts_ms >= switch_on_ts_ms:
                 power_readings.append(int(ev["value"]) / 10.0)
 
         if switch_on_ts_ms is None:
@@ -193,7 +193,7 @@ def process_device(cloud, device, now_utc, now_ist):
         result   = cloud.getdevicelog(device_id, **kwargs)
         res      = result.get("result", {})
         logs     = res.get("logs", [])
-        ele      = [x for x in logs if x["code"] == "add_ele"]
+        ele      = [x for x in logs if x.get("code") == "add_ele"]
         all_events.extend(ele)
         has_next = res.get("has_next", False)
         row_key  = res.get("current_row_key")
