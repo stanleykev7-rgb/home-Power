@@ -1,0 +1,44 @@
+name: Fetch AC Energy Data
+
+on:
+  schedule:
+    - cron: '2,12,22,32,42,52 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [energy-fetch]
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install tinytuya requests
+
+      - name: Fetch energy data
+        env:
+          TUYA_API_ID:        ${{ secrets.TUYA_API_ID }}
+          TUYA_API_SECRET:    ${{ secrets.TUYA_API_SECRET }}
+          TUYA_DEVICE_ID:     ${{ secrets.TUYA_DEVICE_ID }}
+          TUYA_DEVICE_ID_AC2: ${{ secrets.TUYA_DEVICE_ID_AC2 }}
+          TUYA_DEVICE_ID_AC3: ${{ secrets.TUYA_DEVICE_ID_AC3 }}
+          TUYA_REGION:        ${{ secrets.TUYA_REGION }}
+        run: python fetch_energy.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "energy-bot"
+          git config user.email "energy-bot@users.noreply.github.com"
+          git add data/energy_log_ac1.json data/energy_log_ac2.json data/energy_log_ac3.json
+          git diff --staged --quiet || git commit -m "⚡ energy update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
