@@ -45803,7 +45803,7 @@
     "total_kwh": 0.005,
     "cost": 0.0338,
     "watts": 8.1,
-    "volts": 228.1,
+    "volts": 228.9,
     "amps": 0.059,
     "ac_on": true,
     "session_start": false,
