@@ -49227,7 +49227,7 @@
     "cost": 0.4995,
     "watts": 8.9,
     "volts": 236.6,
-    "amps": 0.069,
+    "amps": 0.067,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 40.0,
