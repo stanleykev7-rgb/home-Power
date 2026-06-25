@@ -68084,7 +68084,7 @@
     "total_kwh": 0.004,
     "cost": 0.027,
     "watts": 8.0,
-    "volts": 225.2,
+    "volts": 225.6,
     "amps": 0.055,
     "ac_on": true,
     "session_start": false,
