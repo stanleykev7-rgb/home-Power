@@ -18625,5 +18625,26 @@
     "gap_estimated": false,
     "gap_note": "",
     "source": "tuya_event"
+  },
+  {
+    "ts": "2026-07-05T21:40:15+05:30",
+    "ts_epoch": 1783267815,
+    "device": "ac2",
+    "slot": "T2_peak",
+    "slot_label": "Peak (T2)",
+    "rate": 9.375,
+    "kwh": 0.148,
+    "gap_kwh": 0.0,
+    "total_kwh": 0.148,
+    "cost": 1.3875,
+    "watts": 1048.5,
+    "volts": 227.0,
+    "amps": 5.587,
+    "ac_on": true,
+    "session_start": true,
+    "session_gap_mins": 1000.5,
+    "gap_estimated": false,
+    "gap_note": "correction_too_small",
+    "source": "tuya_event"
   }
 ]
