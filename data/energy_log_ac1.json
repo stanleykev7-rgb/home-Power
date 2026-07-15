@@ -91101,7 +91101,7 @@
     "cost": 0.0469,
     "watts": 8.8,
     "volts": 235.0,
-    "amps": 0.067,
+    "amps": 0.068,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
