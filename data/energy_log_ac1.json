@@ -92130,7 +92130,7 @@
     "cost": 0.0469,
     "watts": 8.6,
     "volts": 233.4,
-    "amps": 0.065,
+    "amps": 0.064,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
