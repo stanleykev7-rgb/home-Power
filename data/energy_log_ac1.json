@@ -93852,7 +93852,7 @@
     "cost": 0.0338,
     "watts": 9.5,
     "volts": 242.7,
-    "amps": 0.076,
+    "amps": 0.078,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
