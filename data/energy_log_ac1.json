@@ -106242,7 +106242,7 @@
     "cost": 0.027,
     "watts": 9.0,
     "volts": 234.2,
-    "amps": 0.067,
+    "amps": 0.066,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
