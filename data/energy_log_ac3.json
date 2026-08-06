@@ -80610,7 +80610,7 @@
     "cost": 0.0656,
     "watts": 13.5,
     "volts": 245.4,
-    "amps": 0.086,
+    "amps": 0.085,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
