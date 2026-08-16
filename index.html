@@ -167,48 +167,23 @@ tr:hover td{background:var(--panel2)}
 .bnav-item.on{color:var(--accent)}
 .bnav-item.mst-nav.on{color:#a78bfa}
 .bnav-icon{font-size:1.1rem;line-height:1}
-.abt-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
-.abt-title{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.abt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.abt-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
-.abt-field{display:flex;flex-direction:column;gap:4px}
-.abt-field label{font-size:.65rem;color:var(--muted2)}
-.abt-field input{height:32px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:0 10px;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--text);width:100%;outline:none}
-.abt-field input:focus{border-color:var(--accent)}
-.abt-tod{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px}
-.abt-tod-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.abt-tod-row:last-child{margin-bottom:0}
-.abt-tod-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.abt-tod-lbl{font-size:.68rem;color:var(--muted2);width:60px;flex-shrink:0}
-.abt-tod-sub{font-size:.62rem;color:var(--muted);flex:1}
-.abt-tod-inp{height:28px;background:var(--panel);border:1px solid var(--border2);border-radius:6px;padding:0 8px;font-size:.68rem;font-family:'JetBrains Mono',monospace;color:var(--text);width:80px;text-align:right;outline:none}
-.abt-save{height:32px;padding:0 18px;border-radius:7px;border:none;background:var(--accent);color:#000;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;margin-top:2px}
-.abt-save:hover{opacity:.88}
-.abt-note{font-size:.62rem;color:var(--muted);margin-top:7px;line-height:1.5}
-.abt-hist-row{display:flex;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.7rem}
-.abt-hist-row:last-child{border-bottom:none}
-.abt-col-date{width:110px;flex-shrink:0;font-size:.65rem;color:var(--muted2)}
-.abt-col-amt{width:72px;text-align:right;flex-shrink:0;font-weight:600}
-.abt-col-ac{width:72px;text-align:right;flex-shrink:0;color:var(--accent);font-size:.68rem}
-.abt-col-oth{width:68px;text-align:right;flex-shrink:0;font-size:.68rem}
-.abt-col-bar{flex:1;padding:0 10px;display:flex;align-items:center;gap:6px}
-.abt-bar-track{flex:1;height:5px;border-radius:3px;background:var(--panel2);overflow:hidden}
-.abt-bar-fill{height:100%;border-radius:3px;background:var(--accent);opacity:.5}
-.abt-col-pct{width:30px;text-align:right;font-size:.62rem;color:var(--muted2)}
-.abt-del{font-size:.7rem;color:var(--muted);cursor:pointer;padding:0 4px;margin-left:4px;background:none;border:none}
-.abt-del:hover{color:#ef4444}
-.fc2-card{background:var(--panel2);border:1px solid var(--green);border-radius:12px;padding:14px 16px;margin-bottom:12px}
-.fc2-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.fc2-title{font-size:.78rem;font-weight:600;color:var(--text)}
-.fc2-ctl{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted2)}
-.fc2-ctl select{background:var(--panel);border:1px solid var(--border2);color:var(--text);font-size:.68rem;font-family:'Outfit',sans-serif;border-radius:6px;padding:3px 7px;outline:none}
-.fc2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.sp-inp{height:30px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:0 8px;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--text);outline:none;width:130px;text-align:right}
+.sp-inp:focus{border-color:var(--accent)}
+.sp-preset-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.72rem}
+.sp-preset-row:last-child{border-bottom:none}
+.sp-active-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.abt-hist-wrap{overflow-x:auto}
+.abt-hist-tbl{width:100%;border-collapse:collapse;font-size:.68rem}
+.abt-hist-tbl th{text-align:left;padding:6px 8px;color:var(--muted2);font-weight:400;font-size:.62rem;border-bottom:1px solid var(--border)}
+.abt-hist-tbl td{padding:6px 8px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;vertical-align:top}
+.abt-hist-tbl tr:last-child td{border-bottom:none}
+.abt-hist-tbl tr:hover td{background:var(--panel2)}
+.fc2-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
 .fc2-cell{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
-.fc2-val{font-size:1.1rem;font-weight:600;margin-bottom:2px}
-.fc2-lbl{font-size:.62rem;color:var(--muted2);line-height:1.3}
-.fc2-breakdown{font-size:.68rem;color:var(--muted2);line-height:1.9;border-top:1px solid var(--border);padding-top:10px}
+.fc2-val{font-size:1.05rem;font-weight:600;margin-bottom:2px}
+.fc2-lbl{font-size:.6rem;color:var(--muted2);line-height:1.3}
+.fc2-breakdown{font-size:.68rem;color:var(--muted2);line-height:1.9}
 .fc2-breakdown b{color:var(--text);font-weight:600}
-.fc2-na{font-size:.75rem;color:var(--muted);padding:14px 0;text-align:center}
 .wk-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px}
 .wk-table th{text-align:left;padding:7px 10px;color:var(--muted2);font-weight:400;font-family:'Outfit',sans-serif;font-size:.7rem;border-bottom:1px solid var(--border)}
 .wk-table td{padding:7px 10px;border-bottom:1px solid var(--border)}
@@ -237,9 +212,9 @@ tr:hover td{background:var(--panel2)}
   </div>
 </div>
 <div class="leg">
-  <div class="li"><div class="ld" style="background:var(--t1)"></div>T1 Day 6am-6pm &#8377;6.75</div>
-  <div class="li"><div class="ld" style="background:var(--t2)"></div>T2 Peak 6-10pm &#8377;9.375</div>
-  <div class="li"><div class="ld" style="background:var(--t3)"></div>T3 Night 10pm-6am &#8377;7.50</div>
+  <div class="li"><div class="ld" style="background:var(--t1)"></div>T1 Day <span id="leg-t1">6am-6pm &#8377;8.28</span></div>
+  <div class="li"><div class="ld" style="background:var(--t2)"></div>T2 Peak <span id="leg-t2">6-10pm &#8377;11.50</span></div>
+  <div class="li"><div class="ld" style="background:var(--t3)"></div>T3 Night <span id="leg-t3">10pm-6am &#8377;9.20</span></div>
   <div class="li"><div class="ld" style="background:var(--green)"></div>Session start</div>
   <div class="li"><div class="ld" style="background:var(--yellow)"></div>Gap estimated</div>
   <div class="li"><div class="ld" style="background:var(--ac1)"></div>Main Room</div>
@@ -253,6 +228,7 @@ tr:hover td{background:var(--panel2)}
   <button class="tb" onclick="sw('billing')">Billing</button>
   <button class="tb mst" onclick="sw('master')">Master</button>
   <button class="tb" onclick="sw('log')">Log</button>
+  <button class="tb" onclick="sw('settings')" style="color:#a78bfa">House Bill</button>
 </div>
 <div class="pg">
 <div id="vd"><div class="dg" id="dcards"></div><div class="cs" id="cstrip"></div></div>
@@ -316,54 +292,6 @@ tr:hover td{background:var(--panel2)}
     <div id="bhmap"></div>
   </div>
   <div class="pn"><div class="pt">ToD breakdown</div><div class="bd" id="bbd"></div></div>
-
-  <div class="pt" style="margin:18px 0 10px">Actual bill entry</div>
-
-  <div class="abt-card">
-    <div class="abt-title">&#128200; Enter billing period actuals</div>
-    <div class="abt-grid">
-      <div class="abt-field"><label>Period start</label><input type="date" id="abt-fr"></div>
-      <div class="abt-field"><label>Period end</label><input type="date" id="abt-to"></div>
-    </div>
-    <div class="abt-grid">
-      <div class="abt-field"><label>Total bill (&#8377;)</label><input type="number" id="abt-amt" placeholder="e.g. 4250" min="0"></div>
-      <div class="abt-field"><label>Total kWh (meter)</label><input type="number" id="abt-kwh" placeholder="e.g. 380" min="0"></div>
-    </div>
-    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">ToD breakdown from bill <span style="color:var(--muted)">(optional — improves forecast accuracy)</span></div>
-    <div class="abt-tod">
-      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#4ade80"></div><div class="abt-tod-lbl">T1 Day</div><div class="abt-tod-sub">6am–6pm &nbsp;&#8377;6.75/unit</div><input class="abt-tod-inp" type="number" id="abt-t1" placeholder="kWh" min="0"></div>
-      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#fb923c"></div><div class="abt-tod-lbl">T2 Peak</div><div class="abt-tod-sub">6pm–10pm &nbsp;&#8377;9.375/unit</div><input class="abt-tod-inp" type="number" id="abt-t2" placeholder="kWh" min="0"></div>
-      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#818cf8"></div><div class="abt-tod-lbl">T3 Night</div><div class="abt-tod-sub">10pm–6am &nbsp;&#8377;7.50/unit</div><input class="abt-tod-inp" type="number" id="abt-t3" placeholder="kWh" min="0"></div>
-    </div>
-    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:8px">AC-tracked kWh for this period (auto from log): <b id="abt-ac-auto" style="color:var(--accent)">--</b></div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <button class="abt-save" onclick="saveActualBill()">Save period</button>
-      <button class="bap" onclick="abtAutoFill()" style="font-size:.68rem">Auto-fill dates</button>
-      <span id="abt-err" style="font-size:.68rem;color:#ef4444"></span>
-    </div>
-    <div class="abt-note">AC-tracked amount is read from the log data for this date range. "Other devices" = actual kWh minus AC-tracked kWh.</div>
-  </div>
-
-  <div class="abt-card" id="abt-hist-wrap">
-    <div class="abt-title">&#128203; Saved billing periods</div>
-    <div id="abt-hist"></div>
-  </div>
-
-  <div class="fc2-card" id="abt-fc-wrap">
-    <div class="fc2-head">
-      <div class="fc2-title">&#127919; Whole-house bill forecast</div>
-      <div class="fc2-ctl">
-        Avg from last
-        <select id="fc2-n" onchange="rFc2()">
-          <option value="1">1 period</option>
-          <option value="2">2 periods</option>
-          <option value="3" selected>3 periods</option>
-          <option value="6">6 periods</option>
-        </select>
-      </div>
-    </div>
-    <div id="fc2-body"><div class="fc2-na">Save at least one billing period to see forecast</div></div>
-  </div>
 </div>
 <div id="vma" class="hide">
   <div class="mag">
@@ -393,6 +321,123 @@ tr:hover td{background:var(--panel2)}
   <div class="pn"><div class="pt">Interval log <span id="log-count" style="font-weight:400;font-size:.7rem;color:var(--muted2)"></span></div>
   <div class="tw"><table><thead><tr><th>Time</th><th>Device</th><th>Slot</th><th>kWh</th><th>Cost</th><th>Watts</th><th>Volts</th><th>Note</th></tr></thead><tbody id="lb"></tbody></table></div></div>
 </div>
+
+<div id="vs" class="hide">
+
+  <div class="pt" style="margin-bottom:12px">Rate presets</div>
+  <div class="pn" id="sp-list-wrap">
+    <div class="pt" style="display:flex;align-items:center;justify-content:space-between">
+      Saved presets
+      <button class="bap" onclick="spNew()">+ New preset</button>
+    </div>
+    <div id="sp-list"></div>
+  </div>
+
+  <div class="pn" id="sp-edit-wrap" style="display:none">
+    <div class="pt" style="display:flex;align-items:center;justify-content:space-between">
+      <span id="sp-edit-title">Edit preset</span>
+      <button class="bap" onclick="spCancelEdit()">&#10005; Cancel</button>
+    </div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:.65rem;color:var(--muted2);margin-bottom:4px">Preset name</div>
+      <input type="text" id="sp-name" style="width:100%;height:32px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:0 10px;font-size:.75rem;font-family:'Outfit',sans-serif;color:var(--text);outline:none">
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">ToD time boundaries</div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl">T1 Day start</span><input type="time" id="sp-t1s" class="sp-inp"></div>
+      <div class="brow"><span class="brl">T2 Peak start</span><input type="time" id="sp-t2s" class="sp-inp"></div>
+      <div class="brow"><span class="brl">T3 Night start</span><input type="time" id="sp-t3s" class="sp-inp"></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">Per-unit rates (&#8377;/kWh)</div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl" style="color:#4ade80">T1 Day rate</span><div style="display:flex;align-items:center;gap:4px"><span style="font-size:.7rem;color:var(--muted2)">&#8377;</span><input type="number" id="sp-r1" step="0.01" min="0" class="sp-inp"></div></div>
+      <div class="brow"><span class="brl" style="color:#fb923c">T2 Peak rate</span><div style="display:flex;align-items:center;gap:4px"><span style="font-size:.7rem;color:var(--muted2)">&#8377;</span><input type="number" id="sp-r2" step="0.01" min="0" class="sp-inp"></div></div>
+      <div class="brow"><span class="brl" style="color:#818cf8">T3 Night rate</span><div style="display:flex;align-items:center;gap:4px"><span style="font-size:.7rem;color:var(--muted2)">&#8377;</span><input type="number" id="sp-r3" step="0.01" min="0" class="sp-inp"></div></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">Default fixed charges per billing period <span style="color:var(--muted)">(editable per period)</span></div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl">Fixed/demand (&#8377;)</span><input type="number" id="sp-f1" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Fuel surcharge (&#8377;)</span><input type="number" id="sp-f2" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Electricity duty (&#8377;)</span><input type="number" id="sp-f3" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Meter rent (&#8377;)</span><input type="number" id="sp-f4" step="0.01" min="0" class="sp-inp"></div>
+    </div>
+    <div id="sp-preview" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.68rem;color:var(--muted2)"></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button class="bap" onclick="spSave()">Save preset</button>
+      <button class="bap" onclick="spSetActive()" id="sp-setactive-btn">Set as active</button>
+      <button class="bap" onclick="spDelete()" style="color:#ef4444;border-color:#ef4444;margin-left:auto">Delete</button>
+    </div>
+    <div id="sp-err" style="font-size:.68rem;color:#ef4444;margin-top:6px"></div>
+  </div>
+
+  <div class="pt" style="margin:18px 0 12px">Actual bill entry</div>
+  <div class="pn">
+    <div class="pt" style="display:flex;align-items:center;justify-content:space-between">
+      Enter billing period actuals
+      <button class="bap" onclick="abtAutoFill()" style="font-size:.68rem">Auto-fill dates</button>
+    </div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl">Period start</span><input type="date" id="abt-fr" class="sp-inp" onchange="abtUpdateAcAuto()"></div>
+      <div class="brow"><span class="brl">Period end</span><input type="date" id="abt-to" class="sp-inp" onchange="abtUpdateAcAuto()"></div>
+      <div class="brow"><span class="brl">Rate preset</span>
+        <select id="abt-preset" class="sp-inp" style="font-family:'Outfit',sans-serif"></select>
+      </div>
+      <div class="brow"><span class="brl">Total bill (&#8377;)</span><input type="number" id="abt-amt" step="0.01" min="0" class="sp-inp" placeholder="e.g. 6800"></div>
+      <div class="brow"><span class="brl">Total kWh (meter)</span><input type="number" id="abt-kwh" step="0.1" min="0" class="sp-inp" placeholder="e.g. 420"></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:4px">AC tracked for this period (from log): <b id="abt-ac-auto" style="color:var(--accent)">--</b></div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">ToD from bill <span style="color:var(--muted)">(optional)</span></div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl" style="color:#4ade80">T1 Day kWh</span><input type="number" id="abt-t1" step="0.1" min="0" class="sp-inp" placeholder="kWh"></div>
+      <div class="brow"><span class="brl" style="color:#fb923c">T2 Peak kWh</span><input type="number" id="abt-t2" step="0.1" min="0" class="sp-inp" placeholder="kWh"></div>
+      <div class="brow"><span class="brl" style="color:#818cf8">T3 Night kWh</span><input type="number" id="abt-t3" step="0.1" min="0" class="sp-inp" placeholder="kWh"></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">Fixed charges — actual amounts from this bill <span style="color:var(--muted)">(pre-filled from preset defaults)</span></div>
+    <div class="bd" style="margin-bottom:10px">
+      <div class="brow"><span class="brl">Fixed/demand (&#8377;)</span><input type="number" id="abt-f1" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Fuel surcharge (&#8377;)</span><input type="number" id="abt-f2" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Electricity duty (&#8377;)</span><input type="number" id="abt-f3" step="0.01" min="0" class="sp-inp"></div>
+      <div class="brow"><span class="brl">Meter rent (&#8377;)</span><input type="number" id="abt-f4" step="0.01" min="0" class="sp-inp"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="bap" onclick="saveActualBill()">Save period</button>
+      <span id="abt-err" style="font-size:.68rem;color:#ef4444"></span>
+    </div>
+    <div style="font-size:.62rem;color:var(--muted);margin-top:7px;line-height:1.5">Other devices = total kWh minus AC-tracked kWh. Other device cost = total bill minus AC cost minus fixed charges.</div>
+  </div>
+
+  <div class="pt" style="margin:18px 0 12px">Saved billing periods</div>
+  <div class="pn">
+    <div id="abt-hist"></div>
+  </div>
+
+  <div class="pt" style="margin:18px 0 12px">Whole-house forecast</div>
+  <div class="pn" style="border-color:var(--green)">
+    <div class="pt" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      Projected total bill
+      <div style="display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted2)">
+        Avg from last
+        <select id="fc2-n" onchange="rFc2()" class="ds" style="height:26px;font-size:.68rem;padding:0 6px">
+          <option value="1">1 period</option>
+          <option value="2">2 periods</option>
+          <option value="3" selected>3 periods</option>
+          <option value="6">6 periods</option>
+        </select>
+      </div>
+    </div>
+    <div id="fc2-body" style="margin-top:10px"></div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="font-size:.65rem;color:var(--muted2);margin-bottom:4px">Fixed charges override for current period <span style="color:var(--muted)">(leave blank to use avg)</span></div>
+      <div class="bd">
+        <div class="brow"><span class="brl">Fixed/demand (&#8377;)</span><input type="number" id="fc2-f1" step="0.01" min="0" class="sp-inp" placeholder="auto" oninput="rFc2()"></div>
+        <div class="brow"><span class="brl">Fuel surcharge (&#8377;)</span><input type="number" id="fc2-f2" step="0.01" min="0" class="sp-inp" placeholder="auto" oninput="rFc2()"></div>
+        <div class="brow"><span class="brl">Electricity duty (&#8377;)</span><input type="number" id="fc2-f3" step="0.01" min="0" class="sp-inp" placeholder="auto" oninput="rFc2()"></div>
+        <div class="brow"><span class="brl">Meter rent (&#8377;)</span><input type="number" id="fc2-f4" step="0.01" min="0" class="sp-inp" placeholder="auto" oninput="rFc2()"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </div>
 <div class="tip" id="tip"></div>
 <nav class="bnav" id="bnav">
@@ -402,6 +447,7 @@ tr:hover td{background:var(--panel2)}
   <button class="bnav-item" onclick="swMob('billing')" id="bn-billing"><span class="bnav-icon">&#128176;</span>Billing</button>
   <button class="bnav-item mst-nav" onclick="swMob('master')" id="bn-master"><span class="bnav-icon">&#128202;</span>Master</button>
   <button class="bnav-item" onclick="swMob('log')" id="bn-log"><span class="bnav-icon">&#128221;</span>Log</button>
+  <button class="bnav-item" onclick="swMob('settings')" id="bn-settings"><span class="bnav-icon">&#9962;</span>House Bill</button>
 </nav>
 <div class="mdbg" id="mdlg">
   <div class="md">
@@ -416,7 +462,10 @@ var DEVS = {
   ac2: {name:'Bedroom 1 AC', short:'Bed 1', color:'#a78bfa', file:'data/energy_log_ac2.json'},
   ac3: {name:"Kevin's Room AC", short:'Kevin', color:'#34d399', file:'data/energy_log_ac3.json'}
 };
-var RATES = {T1_day:6.75, T2_peak:9.375, T3_night:7.50};
+var RATES = {T1_day:8.28, T2_peak:11.50, T3_night:9.20};
+var TOD_BOUNDS = {t1:'06:00', t2:'18:00', t3:'22:00'};
+var SP_KEY = 'sp_presets', SP_ACTIVE = 'sp_active';
+var ABT_KEY = 'abt_periods';
 var SC = {T1_day:'#38bdf8', T2_peak:'#fb923c', T3_night:'#c084fc'};
 var SCE = {T1_day:'#0e4f6a', T2_peak:'#6b3010', T3_night:'#4a2a6b'};
 var SL = {T1_day:'Day (T1)', T2_peak:'Peak (T2)', T3_night:'Night (T3)'};
@@ -523,7 +572,6 @@ function render(){
   rToday();
   rMonth();
   rBill();
-  rAbtSection();
   rMaster();
   rLog();
 }
@@ -764,7 +812,8 @@ function rBill(){
   var dm = gbd(rows);
   var days = Object.keys(dm).sort();
   var t1 = skwh(rows, 'T1_day'), t2 = skwh(rows, 'T2_peak'), t3 = skwh(rows, 'T3_night');
-  var tk = t1 + t2 + t3, tc = t1 * RATES.T1_day + t2 * RATES.T2_peak + t3 * RATES.T3_night, fc = tk * 7.5;
+  var avgRate = (RATES.T1_day + RATES.T2_peak + RATES.T3_night) / 3;
+  var tk = t1 + t2 + t3, tc = t1 * RATES.T1_day + t2 * RATES.T2_peak + t3 * RATES.T3_night, fc = tk * avgRate;
   var t1r = tk > 0 ? t1 / tk : 0, t2r = tk > 0 ? t2 / tk : 0, t3r = tk > 0 ? t3 / tk : 0;
 
   var fd7 = new Date(dt + 'T00:00:00+05:30'); fd7.setDate(fd7.getDate() - 6);
@@ -973,211 +1022,411 @@ function rMaster(){
   si('mabd', bdhtml);
 }
 
-var ABT_KEY = 'abt_periods';
-var CYCLE_ANCHOR = {day:14, monthStep:2};
+var _spEditId = null;
 
-function abtLoad(){ try{ return JSON.parse(localStorage.getItem(ABT_KEY) || '[]'); }catch(e){ return []; } }
-function abtSave(arr){ localStorage.setItem(ABT_KEY, JSON.stringify(arr)); }
+function spLoad(){ try{ return JSON.parse(localStorage.getItem(SP_KEY)||'[]'); }catch(e){ return []; } }
+function spSaveAll(arr){ localStorage.setItem(SP_KEY, JSON.stringify(arr)); }
+function spGetActive(){
+  var arr = spLoad();
+  var aid = localStorage.getItem(SP_ACTIVE);
+  var p = arr.find(function(x){ return x.id===aid; });
+  if(!p && arr.length) p = arr[arr.length-1];
+  return p || null;
+}
+function spApplyActive(){
+  var p = spGetActive();
+  if(!p) return;
+  RATES.T1_day = p.r1; RATES.T2_peak = p.r2; RATES.T3_night = p.r3;
+  TOD_BOUNDS.t1 = p.t1s; TOD_BOUNDS.t2 = p.t2s; TOD_BOUNDS.t3 = p.t3s;
+  function fmt(t){ var p=t.split(':'),h=parseInt(p[0]),m=p[1],am=h<12?'am':'pm'; return (h%12||12)+(m!=='00'?':'+m:'')+''+am; }
+  st('leg-t1', fmt(p.t1s)+'-'+fmt(p.t2s)+' \u20b9'+p.r1);
+  st('leg-t2', fmt(p.t2s)+'-'+fmt(p.t3s)+' \u20b9'+p.r2);
+  st('leg-t3', fmt(p.t3s)+'-'+fmt(p.t1s)+' \u20b9'+p.r3);
+}
+function spInit(){
+  var arr = spLoad();
+  if(!arr.length){
+    var def = {id:'sp_'+Date.now(), name:'KSEB Above 500 \u2014 Jul 2026',
+      t1s:'06:00', t2s:'18:00', t3s:'22:00',
+      r1:8.28, r2:11.50, r3:9.20,
+      f1:620, f2:11.07, f3:1024.93, f4:30,
+      created: new Date().toLocaleDateString('en-CA')};
+    arr = [def];
+    spSaveAll(arr);
+    localStorage.setItem(SP_ACTIVE, def.id);
+  }
+  spApplyActive();
+}
+function spRenderList(){
+  var arr = spLoad();
+  var aid = localStorage.getItem(SP_ACTIVE);
+  if(!arr.length){ si('sp-list','<div style="font-size:.72rem;color:var(--muted);padding:8px 0">No presets yet.</div>'); return; }
+  var html = arr.map(function(p){
+    var isAct = p.id === aid;
+    return '<div class="sp-preset-row">' +
+      (isAct ? '<div class="sp-active-dot"></div>' : '<div style="width:7px"></div>') +
+      '<div style="flex:1;font-size:.72rem;font-weight:'+(isAct?'600':'400')+'">' + p.name + (isAct ? ' <span style="font-size:.62rem;color:var(--green);font-weight:400">(active)</span>' : '') + '</div>' +
+      '<div style="font-size:.62rem;color:var(--muted2);margin-right:8px">&#8377;'+p.r1+'/'+p.r2+'/'+p.r3+'</div>' +
+      '<button class="bap" onclick="spEdit(\''+p.id+'\')" style="font-size:.65rem">Edit</button>' +
+      '</div>';
+  }).join('');
+  si('sp-list', html);
+}
+function spNew(){
+  _spEditId = null;
+  document.getElementById('sp-edit-title').textContent = 'New preset';
+  document.getElementById('sp-name').value = '';
+  document.getElementById('sp-t1s').value = '06:00';
+  document.getElementById('sp-t2s').value = '18:00';
+  document.getElementById('sp-t3s').value = '22:00';
+  document.getElementById('sp-r1').value = '';
+  document.getElementById('sp-r2').value = '';
+  document.getElementById('sp-r3').value = '';
+  document.getElementById('sp-f1').value = '';
+  document.getElementById('sp-f2').value = '';
+  document.getElementById('sp-f3').value = '';
+  document.getElementById('sp-f4').value = '';
+  document.getElementById('sp-setactive-btn').style.display = 'none';
+  document.getElementById('sp-err').textContent = '';
+  document.getElementById('sp-edit-wrap').style.display = '';
+  spUpdatePreview();
+}
+function spEdit(id){
+  var arr = spLoad();
+  var p = arr.find(function(x){ return x.id===id; });
+  if(!p) return;
+  _spEditId = id;
+  document.getElementById('sp-edit-title').textContent = 'Edit — ' + p.name;
+  document.getElementById('sp-name').value = p.name;
+  document.getElementById('sp-t1s').value = p.t1s||'06:00';
+  document.getElementById('sp-t2s').value = p.t2s||'18:00';
+  document.getElementById('sp-t3s').value = p.t3s||'22:00';
+  document.getElementById('sp-r1').value = p.r1;
+  document.getElementById('sp-r2').value = p.r2;
+  document.getElementById('sp-r3').value = p.r3;
+  document.getElementById('sp-f1').value = p.f1||'';
+  document.getElementById('sp-f2').value = p.f2||'';
+  document.getElementById('sp-f3').value = p.f3||'';
+  document.getElementById('sp-f4').value = p.f4||'';
+  var isAct = localStorage.getItem(SP_ACTIVE) === id;
+  document.getElementById('sp-setactive-btn').style.display = isAct ? 'none' : '';
+  document.getElementById('sp-err').textContent = '';
+  document.getElementById('sp-edit-wrap').style.display = '';
+  spUpdatePreview();
+}
+function spCancelEdit(){
+  document.getElementById('sp-edit-wrap').style.display = 'none';
+  _spEditId = null;
+}
+function spUpdatePreview(){
+  var t1s = document.getElementById('sp-t1s').value||'06:00';
+  var t2s = document.getElementById('sp-t2s').value||'18:00';
+  var t3s = document.getElementById('sp-t3s').value||'22:00';
+  var r1 = parseFloat(document.getElementById('sp-r1').value)||0;
+  var r2 = parseFloat(document.getElementById('sp-r2').value)||0;
+  var r3 = parseFloat(document.getElementById('sp-r3').value)||0;
+  var f1 = parseFloat(document.getElementById('sp-f1').value)||0;
+  var f2 = parseFloat(document.getElementById('sp-f2').value)||0;
+  var f3 = parseFloat(document.getElementById('sp-f3').value)||0;
+  var f4 = parseFloat(document.getElementById('sp-f4').value)||0;
+  function fmtT(t){ var p=t.split(':'),h=parseInt(p[0]),m=p[1],ap=h<12?'am':'pm'; return (h%12||12)+(m!=='00'?':'+m:'')+ap; }
+  function hrs(from,to){
+    var fh=parseInt(from.split(':')[0]),th=parseInt(to.split(':')[0]);
+    var d=(th-fh+24)%24; return d+'h';
+  }
+  var totalFixed = r2(f1+f2+f3+f4);
+  si('sp-preview',
+    '<div style="display:flex;flex-direction:column;gap:4px">'+
+    '<div style="display:flex;justify-content:space-between"><span style="color:#4ade80">T1 Day</span><span>'+fmtT(t1s)+'–'+fmtT(t2s)+' ('+hrs(t1s,t2s)+')</span><span style="color:var(--accent)">&#8377;'+r1+'/kWh</span></div>'+
+    '<div style="display:flex;justify-content:space-between"><span style="color:#fb923c">T2 Peak</span><span>'+fmtT(t2s)+'–'+fmtT(t3s)+' ('+hrs(t2s,t3s)+')</span><span style="color:var(--accent)">&#8377;'+r2+'/kWh</span></div>'+
+    '<div style="display:flex;justify-content:space-between"><span style="color:#818cf8">T3 Night</span><span>'+fmtT(t3s)+'–'+fmtT(t1s)+' ('+hrs(t3s,t1s)+')</span><span style="color:var(--accent)">&#8377;'+r3+'/kWh</span></div>'+
+    '<div style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px">Total fixed charges: <b style="color:var(--text)">&#8377;'+totalFixed+'</b> per billing period</div>'+
+    '</div>');
+}
+function spSave(){
+  var name = (document.getElementById('sp-name').value||'').trim();
+  var r1 = parseFloat(document.getElementById('sp-r1').value);
+  var r2 = parseFloat(document.getElementById('sp-r2').value);
+  var r3 = parseFloat(document.getElementById('sp-r3').value);
+  var err = document.getElementById('sp-err');
+  if(!name){ err.textContent='Enter a preset name'; return; }
+  if(!r1||!r2||!r3){ err.textContent='Enter all three rates'; return; }
+  err.textContent='';
+  var arr = spLoad();
+  var rec = {
+    id: _spEditId || ('sp_'+Date.now()),
+    name: name,
+    t1s: document.getElementById('sp-t1s').value||'06:00',
+    t2s: document.getElementById('sp-t2s').value||'18:00',
+    t3s: document.getElementById('sp-t3s').value||'22:00',
+    r1: r1, r2: r2, r3: r3,
+    f1: parseFloat(document.getElementById('sp-f1').value)||0,
+    f2: parseFloat(document.getElementById('sp-f2').value)||0,
+    f3: parseFloat(document.getElementById('sp-f3').value)||0,
+    f4: parseFloat(document.getElementById('sp-f4').value)||0,
+    created: new Date().toLocaleDateString('en-CA')
+  };
+  if(_spEditId){
+    var idx = arr.findIndex(function(x){ return x.id===_spEditId; });
+    if(idx>=0) arr[idx]=rec; else arr.push(rec);
+  } else {
+    arr.push(rec);
+  }
+  spSaveAll(arr);
+  if(!localStorage.getItem(SP_ACTIVE)) localStorage.setItem(SP_ACTIVE, rec.id);
+  spApplyActive();
+  spCancelEdit();
+  spRenderList();
+  abtPopulatePresetDropdown();
+}
+function spSetActive(){
+  if(!_spEditId) return;
+  localStorage.setItem(SP_ACTIVE, _spEditId);
+  spApplyActive();
+  spRenderList();
+  document.getElementById('sp-setactive-btn').style.display = 'none';
+  rFc2();
+}
+function spDelete(){
+  if(!_spEditId) return;
+  if(!confirm('Delete this preset?')) return;
+  var arr = spLoad().filter(function(x){ return x.id!==_spEditId; });
+  spSaveAll(arr);
+  if(localStorage.getItem(SP_ACTIVE)===_spEditId){
+    localStorage.removeItem(SP_ACTIVE);
+    spApplyActive();
+  }
+  spCancelEdit();
+  spRenderList();
+  abtPopulatePresetDropdown();
+}
+['sp-t1s','sp-t2s','sp-t3s','sp-r1','sp-r2','sp-r3','sp-f1','sp-f2','sp-f3','sp-f4'].forEach(function(id){
+  document.addEventListener('input', function(e){ if(e.target && e.target.id===id) spUpdatePreview(); });
+});
 
+function abtLoad(){ try{ return JSON.parse(localStorage.getItem(ABT_KEY)||'[]'); }catch(e){ return []; } }
+function abtSaveAll(arr){ localStorage.setItem(ABT_KEY, JSON.stringify(arr)); }
+
+function abtPopulatePresetDropdown(){
+  var sel = document.getElementById('abt-preset');
+  if(!sel) return;
+  var arr = spLoad();
+  var aid = localStorage.getItem(SP_ACTIVE);
+  sel.innerHTML = arr.map(function(p){
+    return '<option value="'+p.id+'"'+(p.id===aid?' selected':'')+'>'+p.name+'</option>';
+  }).join('');
+  if(!arr.length) sel.innerHTML = '<option value="">No presets</option>';
+  abtPrefillFixedFromPreset();
+}
+function abtPrefillFixedFromPreset(){
+  var sel = document.getElementById('abt-preset');
+  if(!sel||!sel.value) return;
+  var arr = spLoad();
+  var p = arr.find(function(x){ return x.id===sel.value; });
+  if(!p) return;
+  ['f1','f2','f3','f4'].forEach(function(k){
+    var el = document.getElementById('abt-'+k);
+    if(el && !el.value) el.value = p[k]||'';
+  });
+}
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id==='abt-preset') abtPrefillFixedFromPreset();
+  if(e.target && (e.target.id==='abt-fr'||e.target.id==='abt-to')) abtUpdateAcAuto();
+});
+
+function abtUpdateAcAuto(){
+  var fr = document.getElementById('abt-fr') ? document.getElementById('abt-fr').value : '';
+  var to = document.getElementById('abt-to') ? document.getElementById('abt-to').value : '';
+  var el = document.getElementById('abt-ac-auto');
+  if(!el) return;
+  if(!fr||!to){ st('abt-ac-auto','--'); return; }
+  var rows = frange(getRows('all'), fr, to);
+  var kwh = Math.round(rows.reduce(function(a,r){ return a+gk(r); },0)*1000)/1000;
+  var cost = Math.round(rows.reduce(function(a,r){ return a+(r.cost||0); },0)*100)/100;
+  st('abt-ac-auto', kwh+' kWh / \u20b9'+r2(cost));
+}
 function abtAutoFill(){
   var periods = abtLoad();
   var fr, to;
   if(periods.length){
-    var last = periods[periods.length - 1];
-    var lastEnd = new Date(last.to + 'T00:00:00+05:30');
-    lastEnd.setDate(lastEnd.getDate() + 1);
-    fr = lastEnd.toLocaleDateString('en-CA');
-    var toD = new Date(lastEnd.getTime() + 59 * 86400000);
-    to = toD.toLocaleDateString('en-CA');
+    var last = periods[periods.length-1];
+    var d = new Date(last.to+'T00:00:00+05:30');
+    d.setDate(d.getDate()+1);
+    fr = d.toLocaleDateString('en-CA');
+    var d2 = new Date(d.getTime()+59*86400000);
+    to = d2.toLocaleDateString('en-CA');
   } else {
     fr = '2026-07-14';
-    var toD2 = new Date('2026-07-14T00:00:00+05:30');
-    toD2.setDate(toD2.getDate() + 59);
-    to = toD2.toLocaleDateString('en-CA');
+    var d3 = new Date('2026-07-14T00:00:00+05:30');
+    d3.setDate(d3.getDate()+59);
+    to = d3.toLocaleDateString('en-CA');
   }
   document.getElementById('abt-fr').value = fr;
   document.getElementById('abt-to').value = to;
   abtUpdateAcAuto();
+  abtPrefillFixedFromPreset();
 }
-
-function abtUpdateAcAuto(){
-  var fr = document.getElementById('abt-fr').value;
-  var to = document.getElementById('abt-to').value;
-  if(!fr || !to){ st('abt-ac-auto', '--'); return; }
-  var rows = frange(getRows('all'), fr, to);
-  var kwh = rows.reduce(function(a,r){ return a + gk(r); }, 0);
-  var cost = rows.reduce(function(a,r){ return a + (r.cost||0); }, 0);
-  st('abt-ac-auto', r4(kwh) + ' kWh / \u20b9' + r2(cost));
-}
-
-document.addEventListener('change', function(e){
-  if(e.target && (e.target.id === 'abt-fr' || e.target.id === 'abt-to')) abtUpdateAcAuto();
-});
-
 function saveActualBill(){
   var fr = document.getElementById('abt-fr').value;
   var to = document.getElementById('abt-to').value;
   var amt = parseFloat(document.getElementById('abt-amt').value);
   var kwh = parseFloat(document.getElementById('abt-kwh').value);
   var err = document.getElementById('abt-err');
-  err.textContent = '';
-  if(!fr || !to){ err.textContent = 'Enter period dates'; return; }
-  if(!amt || amt <= 0){ err.textContent = 'Enter bill amount'; return; }
-  if(!kwh || kwh <= 0){ err.textContent = 'Enter total kWh'; return; }
-  if(fr >= to){ err.textContent = 'Start must be before end'; return; }
-
-  var t1 = parseFloat(document.getElementById('abt-t1').value) || null;
-  var t2 = parseFloat(document.getElementById('abt-t2').value) || null;
-  var t3 = parseFloat(document.getElementById('abt-t3').value) || null;
-
+  err.textContent='';
+  if(!fr||!to){ err.textContent='Enter period dates'; return; }
+  if(!amt||amt<=0){ err.textContent='Enter bill amount'; return; }
+  if(!kwh||kwh<=0){ err.textContent='Enter total kWh'; return; }
+  if(fr>=to){ err.textContent='Start must be before end'; return; }
+  var presetId = document.getElementById('abt-preset').value;
+  var t1b = parseFloat(document.getElementById('abt-t1').value)||null;
+  var t2b = parseFloat(document.getElementById('abt-t2').value)||null;
+  var t3b = parseFloat(document.getElementById('abt-t3').value)||null;
+  var f1 = parseFloat(document.getElementById('abt-f1').value)||0;
+  var f2 = parseFloat(document.getElementById('abt-f2').value)||0;
+  var f3 = parseFloat(document.getElementById('abt-f3').value)||0;
+  var f4 = parseFloat(document.getElementById('abt-f4').value)||0;
+  var totalFixed = f1+f2+f3+f4;
   var rows = frange(getRows('all'), fr, to);
-  var acKwh = Math.round(rows.reduce(function(a,r){ return a + gk(r); }, 0) * 1000) / 1000;
-  var acCost = Math.round(rows.reduce(function(a,r){ return a + (r.cost||0); }, 0) * 100) / 100;
-  var acT1 = Math.round(skwh(rows,'T1_day') * 1000) / 1000;
-  var acT2 = Math.round(skwh(rows,'T2_peak') * 1000) / 1000;
-  var acT3 = Math.round(skwh(rows,'T3_night') * 1000) / 1000;
-
-  var record = {
-    fr: fr, to: to,
-    amt: amt, kwh: kwh,
-    t1: t1, t2: t2, t3: t3,
-    acKwh: acKwh, acCost: acCost,
-    acT1: acT1, acT2: acT2, acT3: acT3,
-    saved: Date.now()
-  };
-
-  var periods = abtLoad();
-  var exists = periods.findIndex(function(p){ return p.fr === fr && p.to === to; });
-  if(exists >= 0) periods[exists] = record;
-  else periods.push(record);
-  periods.sort(function(a,b){ return a.fr.localeCompare(b.fr); });
-  if(periods.length > 12) periods = periods.slice(-12);
-  abtSave(periods);
-
+  var acKwh = Math.round(rows.reduce(function(a,r){ return a+gk(r); },0)*1000)/1000;
+  var acCost = Math.round(rows.reduce(function(a,r){ return a+(r.cost||0); },0)*100)/100;
+  var acT1 = Math.round(skwh(rows,'T1_day')*1000)/1000;
+  var acT2 = Math.round(skwh(rows,'T2_peak')*1000)/1000;
+  var acT3 = Math.round(skwh(rows,'T3_night')*1000)/1000;
+  var otherKwh = Math.max(0, Math.round((kwh-acKwh)*1000)/1000);
+  var otherAmt = Math.max(0, Math.round((amt-acCost-totalFixed)*100)/100);
+  var rec = { fr:fr, to:to, presetId:presetId,
+    amt:amt, kwh:kwh, t1b:t1b, t2b:t2b, t3b:t3b,
+    f1:f1, f2:f2, f3:f3, f4:f4, totalFixed:totalFixed,
+    acKwh:acKwh, acCost:acCost, acT1:acT1, acT2:acT2, acT3:acT3,
+    otherKwh:otherKwh, otherAmt:otherAmt, saved:Date.now() };
+  var arr = abtLoad();
+  var idx = arr.findIndex(function(p){ return p.fr===fr&&p.to===to; });
+  if(idx>=0) arr[idx]=rec; else arr.push(rec);
+  arr.sort(function(a,b){ return a.fr.localeCompare(b.fr); });
+  if(arr.length>12) arr=arr.slice(-12);
+  abtSaveAll(arr);
   ['abt-fr','abt-to','abt-amt','abt-kwh','abt-t1','abt-t2','abt-t3'].forEach(function(id){
-    document.getElementById(id).value = '';
+    var el=document.getElementById(id); if(el) el.value='';
   });
-  err.textContent = '';
+  err.textContent='';
   rAbtHist();
   rFc2();
 }
-
 function rAbtHist(){
-  var periods = abtLoad();
-  var wrap = document.getElementById('abt-hist');
-  if(!wrap) return;
-  if(!periods.length){ si('abt-hist', '<div style="font-size:.72rem;color:var(--muted);padding:8px 0">No periods saved yet.</div>'); return; }
-
-  var hdr = '<div class="abt-hist-row" style="font-size:.6rem;color:var(--muted);padding-bottom:5px">' +
-    '<div class="abt-col-date">Period</div>' +
-    '<div class="abt-col-amt">Total</div>' +
-    '<div class="abt-col-ac">AC</div>' +
-    '<div class="abt-col-oth">Other</div>' +
-    '<div class="abt-col-bar">AC share</div>' +
-    '<div class="abt-col-pct"></div>' +
-    '<div style="width:24px"></div>' +
-    '</div>';
-
-  var rows = periods.slice().reverse().map(function(p, idx){
-    var otherKwh = Math.max(0, p.kwh - p.acKwh);
-    var otherAmt = Math.max(0, p.amt - p.acCost);
-    var pct = p.kwh > 0 ? Math.round(p.acKwh / p.kwh * 100) : 0;
-    var realIdx = periods.length - 1 - idx;
-    var todLine = (p.t1 !== null) ?
-      '<div style="font-size:.6rem;color:var(--muted);margin-top:2px">Bill ToD: T1 ' + p.t1 + ' / T2 ' + p.t2 + ' / T3 ' + p.t3 + ' kWh</div>' : '';
-    return '<div class="abt-hist-row">' +
-      '<div class="abt-col-date">' + p.fr.slice(5).replace('-','/') + ' – ' + p.to.slice(5).replace('-','/') + '<br><span style="font-size:.58rem;color:var(--muted)">' + p.fr.slice(0,4) + '</span>' + todLine + '</div>' +
-      '<div class="abt-col-amt">&#8377;' + r2(p.amt) + '<br><span style="font-size:.6rem;color:var(--muted);font-weight:400">' + p.kwh + ' kWh</span></div>' +
-      '<div class="abt-col-ac">&#8377;' + r2(p.acCost) + '<br><span style="font-size:.6rem;color:var(--muted)">' + p.acKwh + ' kWh</span></div>' +
-      '<div class="abt-col-oth">&#8377;' + r2(otherAmt) + '<br><span style="font-size:.6rem;color:var(--muted)">' + r2(otherKwh) + ' kWh</span></div>' +
-      '<div class="abt-col-bar"><div class="abt-bar-track"><div class="abt-bar-fill" style="width:' + pct + '%"></div></div></div>' +
-      '<div class="abt-col-pct">' + pct + '%</div>' +
-      '<button class="abt-del" onclick="deleteAbt(' + realIdx + ')" title="Delete">&#10005;</button>' +
-      '</div>';
-  }).join('');
-  si('abt-hist', hdr + rows);
+  var arr = abtLoad();
+  var el = document.getElementById('abt-hist');
+  if(!el) return;
+  if(!arr.length){ si('abt-hist','<div style="font-size:.72rem;color:var(--muted);padding:8px 0">No periods saved yet.</div>'); return; }
+  var presets = spLoad();
+  function pname(id){ var p=presets.find(function(x){return x.id===id;}); return p?p.name:''; }
+  var html = '<div class="abt-hist-wrap"><table class="abt-hist-tbl"><thead><tr>'+
+    '<th>Period</th><th>Preset</th><th>Total</th><th>AC kWh</th><th>Other</th><th>Fixed</th><th>AC%</th><th></th>'+
+    '</tr></thead><tbody>';
+  arr.slice().reverse().forEach(function(p, ri){
+    var realIdx = arr.length-1-ri;
+    var pct = p.kwh>0 ? Math.round(p.acKwh/p.kwh*100) : 0;
+    var todLine = p.t1b!==null ? '<br><span style="font-size:.6rem;color:var(--muted)">T1:'+p.t1b+' T2:'+p.t2b+' T3:'+p.t3b+'</span>' : '';
+    html += '<tr>'+
+      '<td>'+p.fr.slice(5).replace('-','/')+'–'+p.to.slice(5).replace('-','/')+' <span style="color:var(--muted);font-size:.6rem">'+p.fr.slice(0,4)+'</span>'+todLine+'</td>'+
+      '<td style="font-family:\'Outfit\',sans-serif;color:var(--muted2);font-size:.62rem">'+pname(p.presetId)+'</td>'+
+      '<td>&#8377;'+r2(p.amt)+'<br><span style="color:var(--muted);font-size:.6rem">'+p.kwh+' kWh</span></td>'+
+      '<td style="color:var(--accent)">'+p.acKwh+'<br><span style="color:var(--muted);font-size:.6rem">&#8377;'+r2(p.acCost)+'</span></td>'+
+      '<td>'+r2(p.otherAmt)+'<br><span style="color:var(--muted);font-size:.6rem">'+p.otherKwh+' kWh</span></td>'+
+      '<td style="color:var(--muted2)">&#8377;'+r2(p.totalFixed)+'</td>'+
+      '<td>'+pct+'%</td>'+
+      '<td><button class="bap" onclick="deleteAbt('+realIdx+')" style="color:#ef4444;border-color:#ef4444;font-size:.6rem">&#10005;</button></td>'+
+      '</tr>';
+  });
+  html += '</tbody></table></div>';
+  si('abt-hist', html);
 }
-
 function deleteAbt(idx){
-  var periods = abtLoad();
-  periods.splice(idx, 1);
-  abtSave(periods);
+  var arr = abtLoad();
+  arr.splice(idx,1);
+  abtSaveAll(arr);
   rAbtHist();
   rFc2();
 }
-
 function rFc2(){
   var el = document.getElementById('fc2-body');
   if(!el) return;
-  var periods = abtLoad();
-  if(!periods.length){ si('fc2-body', '<div class="fc2-na">Save at least one billing period to see forecast</div>'); return; }
+  var arr = abtLoad();
+  if(!arr.length){ si('fc2-body','<div style="font-size:.75rem;color:var(--muted);padding:10px 0">Save at least one billing period to see forecast.</div>'); return; }
+  var nEl = document.getElementById('fc2-n');
+  var n = parseInt(nEl ? nEl.value : '3')||3;
+  var hist = arr.slice(-n);
 
-  var n = parseInt((document.getElementById('fc2-n') || {value:'3'}).value) || 3;
-  var hist = periods.slice(-n);
+  var avgOtherAmt = hist.reduce(function(a,p){ return a+p.otherAmt; },0)/hist.length;
+  var avgOtherKwh = hist.reduce(function(a,p){ return a+p.otherKwh; },0)/hist.length;
 
-  var otherAmts = hist.map(function(p){ return Math.max(0, p.amt - p.acCost); });
-  var otherKwhs = hist.map(function(p){ return Math.max(0, p.kwh - p.acKwh); });
-  var avgOtherAmt = otherAmts.reduce(function(a,v){ return a+v; },0) / hist.length;
-  var avgOtherKwh = otherKwhs.reduce(function(a,v){ return a+v; },0) / hist.length;
-
-  var hasTod = hist.every(function(p){ return p.t1 !== null && p.t2 !== null && p.t3 !== null; });
-  var todAdj = 0;
-  var todNote = '';
-
+  var hasTod = hist.every(function(p){ return p.t1b!==null&&p.t2b!==null&&p.t3b!==null; });
+  var todAdj=0, todNote='';
   if(hasTod){
-    var avgOtherT1 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t1||0)-(p.acT1||0)); },0) / hist.length;
-    var avgOtherT2 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t2||0)-(p.acT2||0)); },0) / hist.length;
-    var avgOtherT3 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t3||0)-(p.acT3||0)); },0) / hist.length;
-    var recalcAmt = avgOtherT1 * RATES.T1_day + avgOtherT2 * RATES.T2_peak + avgOtherT3 * RATES.T3_night;
-    todAdj = Math.round((recalcAmt - avgOtherAmt) * 100) / 100;
-    avgOtherAmt = recalcAmt;
-    todNote = 'ToD-adjusted other: T1 ' + r2(avgOtherT1) + ' + T2 ' + r2(avgOtherT2) + ' + T3 ' + r2(avgOtherT3) + ' kWh avg &nbsp;&middot;&nbsp; adjustment <b>' + (todAdj >= 0 ? '+' : '') + '&#8377;' + r2(todAdj) + '</b>';
+    var avgOtherT1 = hist.reduce(function(a,p){ return a+Math.max(0,(p.t1b||0)-(p.acT1||0)); },0)/hist.length;
+    var avgOtherT2 = hist.reduce(function(a,p){ return a+Math.max(0,(p.t2b||0)-(p.acT2||0)); },0)/hist.length;
+    var avgOtherT3 = hist.reduce(function(a,p){ return a+Math.max(0,(p.t3b||0)-(p.acT3||0)); },0)/hist.length;
+    var recalc = avgOtherT1*RATES.T1_day + avgOtherT2*RATES.T2_peak + avgOtherT3*RATES.T3_night;
+    todAdj = Math.round((recalc-avgOtherAmt)*100)/100;
+    avgOtherAmt = recalc;
+    todNote = 'ToD-adjusted other: T1 '+r2(avgOtherT1)+' + T2 '+r2(avgOtherT2)+' + T3 '+r2(avgOtherT3)+' kWh &middot; adj <b>'+(todAdj>=0?'+':'')+'&#8377;'+r2(todAdj)+'</b>';
+  } else {
+    todNote = '<span style="color:var(--muted)">No ToD data — enter T1/T2/T3 on saved periods for better accuracy</span>';
   }
 
+  var avgFixed = hist.reduce(function(a,p){ return a+p.totalFixed; },0)/hist.length;
+  var ov1=parseFloat((document.getElementById('fc2-f1')||{}).value)||null;
+  var ov2=parseFloat((document.getElementById('fc2-f2')||{}).value)||null;
+  var ov3=parseFloat((document.getElementById('fc2-f3')||{}).value)||null;
+  var ov4=parseFloat((document.getElementById('fc2-f4')||{}).value)||null;
+  var fixedEst = (ov1!==null||ov2!==null||ov3!==null||ov4!==null)
+    ? (ov1||0)+(ov2||0)+(ov3||0)+(ov4||0)
+    : avgFixed;
+  var fixedNote = (ov1!==null||ov2!==null||ov3!==null||ov4!==null)
+    ? '<span style="color:var(--yellow)">(manual override)</span>'
+    : '(avg of '+hist.length+' period'+(hist.length!==1?'s':'')+')';
+
+  var bfr = (document.getElementById('bfr')||{}).value || todayIST();
+  var bto = (document.getElementById('bto')||{}).value || '';
   var dt = todayIST();
-  var bfr = document.getElementById('bfr') ? document.getElementById('bfr').value : '';
-  var bto = document.getElementById('bto') ? document.getElementById('bto').value : '';
-  if(!bfr) bfr = dt;
-  var frDate = new Date(bfr + 'T00:00:00+05:30');
-  var dtDate = new Date(dt + 'T00:00:00+05:30');
-  var daysElapsed = Math.max(1, Math.round((dtDate - frDate) / 86400000) + 1);
+  var frDate = new Date(bfr+'T00:00:00+05:30');
+  var dtDate = new Date(dt+'T00:00:00+05:30');
+  var daysElapsed = Math.max(1, Math.round((dtDate-frDate)/86400000)+1);
   var periodDays = 60;
-  if(bfr && bto){
-    var toDate2 = new Date(bto + 'T00:00:00+05:30');
-    periodDays = Math.round((toDate2 - frDate) / 86400000) + 1;
-  }
-  var daysLeft = Math.max(0, periodDays - daysElapsed);
+  if(bfr&&bto){ var toD=new Date(bto+'T00:00:00+05:30'); periodDays=Math.round((toD-frDate)/86400000)+1; }
+  var daysLeft = Math.max(0, periodDays-daysElapsed);
 
   var rows = frange(getRows('all'), bfr, dt);
-  var acSoFar = rows.reduce(function(a,r){ return a + gk(r); }, 0);
-  var acCostSoFar = rows.reduce(function(a,r){ return a + (r.cost||0); }, 0);
-  var paceKwh = daysElapsed > 0 ? acSoFar / daysElapsed : 0;
-  var acT1so = skwh(rows,'T1_day'), acT2so = skwh(rows,'T2_peak'), acT3so = skwh(rows,'T3_night');
-  var paceT1 = daysElapsed > 0 ? acT1so/daysElapsed : 0;
-  var paceT2 = daysElapsed > 0 ? acT2so/daysElapsed : 0;
-  var paceT3 = daysElapsed > 0 ? acT3so/daysElapsed : 0;
-  var acProjKwh = acSoFar + paceKwh * daysLeft;
-  var acProjCost = acCostSoFar + (paceT1 * daysLeft * RATES.T1_day + paceT2 * daysLeft * RATES.T2_peak + paceT3 * daysLeft * RATES.T3_night);
+  var acSoFar = rows.reduce(function(a,r){ return a+gk(r); },0);
+  var acCostSoFar = rows.reduce(function(a,r){ return a+(r.cost||0); },0);
+  var paceKwh = daysElapsed>0 ? acSoFar/daysElapsed : 0;
+  var pT1=skwh(rows,'T1_day')/Math.max(1,daysElapsed);
+  var pT2=skwh(rows,'T2_peak')/Math.max(1,daysElapsed);
+  var pT3=skwh(rows,'T3_night')/Math.max(1,daysElapsed);
+  var acProjAdd = pT1*daysLeft*RATES.T1_day + pT2*daysLeft*RATES.T2_peak + pT3*daysLeft*RATES.T3_night;
+  var acProjCost = acCostSoFar + acProjAdd;
+  var acProjKwh = acSoFar + paceKwh*daysLeft;
+  var totalProj = Math.round((acProjCost + avgOtherAmt + fixedEst)*100)/100;
 
-  var totalProj = Math.round((acProjCost + avgOtherAmt) * 100) / 100;
-
-  var html = '<div class="fc2-grid">' +
-    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--accent)">&#8377;' + r2(acCostSoFar) + '</div><div class="fc2-lbl">AC so far<br>' + r4(acSoFar) + ' kWh</div></div>' +
-    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--yellow)">&#8377;' + r2(acProjCost) + '</div><div class="fc2-lbl">AC projected<br>' + r4(acProjKwh) + ' kWh est</div></div>' +
-    '<div class="fc2-cell" style="border-color:var(--green)"><div class="fc2-val" style="color:var(--green)">&#8377;' + r2(totalProj) + '</div><div class="fc2-lbl">Total projected<br>whole house</div></div>' +
-    '</div>' +
-    '<div class="fc2-breakdown">' +
-    'AC projected: <b>&#8377;' + r2(acProjCost) + '</b> &nbsp;(' + daysElapsed + ' days elapsed, ' + daysLeft + ' remaining at &#8377;' + r2(paceKwh * (RATES.T1_day * (paceT1/(paceKwh||1)) + RATES.T2_peak * (paceT2/(paceKwh||1)) + RATES.T3_night * (paceT3/(paceKwh||1)))) + '/day pace)' +
-    '<br>Other devices avg (' + hist.length + ' period' + (hist.length!==1?'s':'') + '): <b>&#8377;' + r2(avgOtherAmt) + '</b> &nbsp;(~' + r2(avgOtherKwh) + ' kWh)' +
-    (todNote ? '<br>' + todNote : ' &nbsp;<span style="color:var(--muted)">(no ToD data — enter T1/T2/T3 on periods for better accuracy)</span>') +
+  var pacePerDay = daysElapsed>0 ? r2((acCostSoFar)/daysElapsed) : '0';
+  var html = '<div class="fc2-grid">'+
+    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--accent)">&#8377;'+r2(acCostSoFar)+'</div><div class="fc2-lbl">AC so far<br>'+r4(acSoFar)+' kWh</div></div>'+
+    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--yellow)">&#8377;'+r2(acProjCost)+'</div><div class="fc2-lbl">AC projected<br>~'+r4(acProjKwh)+' kWh</div></div>'+
+    '<div class="fc2-cell" style="border-color:var(--green)"><div class="fc2-val" style="color:var(--green)">&#8377;'+r2(totalProj)+'</div><div class="fc2-lbl">Total projected<br>whole house</div></div>'+
+    '</div>'+
+    '<div class="fc2-breakdown">'+
+    'AC: <b>&#8377;'+r2(acProjCost)+'</b> (day '+daysElapsed+' of '+periodDays+', &#8377;'+pacePerDay+'/day pace)<br>'+
+    'Other devices: <b>&#8377;'+r2(avgOtherAmt)+'</b> avg ~'+r2(avgOtherKwh)+' kWh<br>'+
+    'Fixed charges: <b>&#8377;'+r2(fixedEst)+'</b> '+fixedNote+'<br>'+
+    todNote+
     '</div>';
   si('fc2-body', html);
 }
-
-function rAbtSection(){
+function rSettingsTab(){
+  spRenderList();
+  abtPopulatePresetDropdown();
+  abtUpdateAcAuto();
   rAbtHist();
   rFc2();
-  abtUpdateAcAuto();
 }
 
 function rWeeks(rows, from, to){
@@ -1294,7 +1543,7 @@ function exportCSV(){
 
 function swMob(tab){
   sw(tab);
-  var tabs = ['devices','today','month','billing','master','log'];
+  var tabs = ['devices','today','month','billing','master','log','settings'];
   tabs.forEach(function(t){
     var el = document.getElementById('bn-' + t);
     if(el) el.classList.toggle('on', t === tab);
@@ -1372,8 +1621,8 @@ function sopts(){
 }
 
 function sw(tab){
-  var tabs = ['devices','today','month','billing','master','log'];
-  var ids = ['vd','vt','vm','vb','vma','vl'];
+  var tabs = ['devices','today','month','billing','master','log','settings'];
+  var ids = ['vd','vt','vm','vb','vma','vl','vs'];
   tabs.forEach(function(t, i){
     var el = document.getElementById(ids[i]);
     if(el) el.classList.toggle('hide', t !== tab);
@@ -1385,6 +1634,7 @@ function sw(tab){
     var el = document.getElementById('bn-' + t);
     if(el) el.classList.toggle('on', t === tab);
   });
+  if(tab === 'settings') rSettingsTab();
 }
 function toggleTheme(){
   var isLt = document.documentElement.classList.toggle('light');
@@ -1402,6 +1652,7 @@ function initTheme(){
   document.getElementById('mlim').value = dlimM;
   document.getElementById('blim').value = dlimB;
   mNavDate = new Date();
+  spInit();
   var bfr = localStorage.getItem('bfr'), bto = localStorage.getItem('bto');
   if(bfr) document.getElementById('bfr').value = bfr;
   if(bto) document.getElementById('bto').value = bto;
