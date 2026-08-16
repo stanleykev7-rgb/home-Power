@@ -167,6 +167,48 @@ tr:hover td{background:var(--panel2)}
 .bnav-item.on{color:var(--accent)}
 .bnav-item.mst-nav.on{color:#a78bfa}
 .bnav-icon{font-size:1.1rem;line-height:1}
+.abt-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.abt-title{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.abt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.abt-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.abt-field{display:flex;flex-direction:column;gap:4px}
+.abt-field label{font-size:.65rem;color:var(--muted2)}
+.abt-field input{height:32px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:0 10px;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--text);width:100%;outline:none}
+.abt-field input:focus{border-color:var(--accent)}
+.abt-tod{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.abt-tod-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.abt-tod-row:last-child{margin-bottom:0}
+.abt-tod-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.abt-tod-lbl{font-size:.68rem;color:var(--muted2);width:60px;flex-shrink:0}
+.abt-tod-sub{font-size:.62rem;color:var(--muted);flex:1}
+.abt-tod-inp{height:28px;background:var(--panel);border:1px solid var(--border2);border-radius:6px;padding:0 8px;font-size:.68rem;font-family:'JetBrains Mono',monospace;color:var(--text);width:80px;text-align:right;outline:none}
+.abt-save{height:32px;padding:0 18px;border-radius:7px;border:none;background:var(--accent);color:#000;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;margin-top:2px}
+.abt-save:hover{opacity:.88}
+.abt-note{font-size:.62rem;color:var(--muted);margin-top:7px;line-height:1.5}
+.abt-hist-row{display:flex;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.7rem}
+.abt-hist-row:last-child{border-bottom:none}
+.abt-col-date{width:110px;flex-shrink:0;font-size:.65rem;color:var(--muted2)}
+.abt-col-amt{width:72px;text-align:right;flex-shrink:0;font-weight:600}
+.abt-col-ac{width:72px;text-align:right;flex-shrink:0;color:var(--accent);font-size:.68rem}
+.abt-col-oth{width:68px;text-align:right;flex-shrink:0;font-size:.68rem}
+.abt-col-bar{flex:1;padding:0 10px;display:flex;align-items:center;gap:6px}
+.abt-bar-track{flex:1;height:5px;border-radius:3px;background:var(--panel2);overflow:hidden}
+.abt-bar-fill{height:100%;border-radius:3px;background:var(--accent);opacity:.5}
+.abt-col-pct{width:30px;text-align:right;font-size:.62rem;color:var(--muted2)}
+.abt-del{font-size:.7rem;color:var(--muted);cursor:pointer;padding:0 4px;margin-left:4px;background:none;border:none}
+.abt-del:hover{color:#ef4444}
+.fc2-card{background:var(--panel2);border:1px solid var(--green);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.fc2-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.fc2-title{font-size:.78rem;font-weight:600;color:var(--text)}
+.fc2-ctl{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted2)}
+.fc2-ctl select{background:var(--panel);border:1px solid var(--border2);color:var(--text);font-size:.68rem;font-family:'Outfit',sans-serif;border-radius:6px;padding:3px 7px;outline:none}
+.fc2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.fc2-cell{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.fc2-val{font-size:1.1rem;font-weight:600;margin-bottom:2px}
+.fc2-lbl{font-size:.62rem;color:var(--muted2);line-height:1.3}
+.fc2-breakdown{font-size:.68rem;color:var(--muted2);line-height:1.9;border-top:1px solid var(--border);padding-top:10px}
+.fc2-breakdown b{color:var(--text);font-weight:600}
+.fc2-na{font-size:.75rem;color:var(--muted);padding:14px 0;text-align:center}
 .wk-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px}
 .wk-table th{text-align:left;padding:7px 10px;color:var(--muted2);font-weight:400;font-family:'Outfit',sans-serif;font-size:.7rem;border-bottom:1px solid var(--border)}
 .wk-table td{padding:7px 10px;border-bottom:1px solid var(--border)}
@@ -274,6 +316,54 @@ tr:hover td{background:var(--panel2)}
     <div id="bhmap"></div>
   </div>
   <div class="pn"><div class="pt">ToD breakdown</div><div class="bd" id="bbd"></div></div>
+
+  <div class="pt" style="margin:18px 0 10px">Actual bill entry</div>
+
+  <div class="abt-card">
+    <div class="abt-title">&#128200; Enter billing period actuals</div>
+    <div class="abt-grid">
+      <div class="abt-field"><label>Period start</label><input type="date" id="abt-fr"></div>
+      <div class="abt-field"><label>Period end</label><input type="date" id="abt-to"></div>
+    </div>
+    <div class="abt-grid">
+      <div class="abt-field"><label>Total bill (&#8377;)</label><input type="number" id="abt-amt" placeholder="e.g. 4250" min="0"></div>
+      <div class="abt-field"><label>Total kWh (meter)</label><input type="number" id="abt-kwh" placeholder="e.g. 380" min="0"></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:6px">ToD breakdown from bill <span style="color:var(--muted)">(optional — improves forecast accuracy)</span></div>
+    <div class="abt-tod">
+      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#4ade80"></div><div class="abt-tod-lbl">T1 Day</div><div class="abt-tod-sub">6am–6pm &nbsp;&#8377;6.75/unit</div><input class="abt-tod-inp" type="number" id="abt-t1" placeholder="kWh" min="0"></div>
+      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#fb923c"></div><div class="abt-tod-lbl">T2 Peak</div><div class="abt-tod-sub">6pm–10pm &nbsp;&#8377;9.375/unit</div><input class="abt-tod-inp" type="number" id="abt-t2" placeholder="kWh" min="0"></div>
+      <div class="abt-tod-row"><div class="abt-tod-dot" style="background:#818cf8"></div><div class="abt-tod-lbl">T3 Night</div><div class="abt-tod-sub">10pm–6am &nbsp;&#8377;7.50/unit</div><input class="abt-tod-inp" type="number" id="abt-t3" placeholder="kWh" min="0"></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted2);margin-bottom:8px">AC-tracked kWh for this period (auto from log): <b id="abt-ac-auto" style="color:var(--accent)">--</b></div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <button class="abt-save" onclick="saveActualBill()">Save period</button>
+      <button class="bap" onclick="abtAutoFill()" style="font-size:.68rem">Auto-fill dates</button>
+      <span id="abt-err" style="font-size:.68rem;color:#ef4444"></span>
+    </div>
+    <div class="abt-note">AC-tracked amount is read from the log data for this date range. "Other devices" = actual kWh minus AC-tracked kWh.</div>
+  </div>
+
+  <div class="abt-card" id="abt-hist-wrap">
+    <div class="abt-title">&#128203; Saved billing periods</div>
+    <div id="abt-hist"></div>
+  </div>
+
+  <div class="fc2-card" id="abt-fc-wrap">
+    <div class="fc2-head">
+      <div class="fc2-title">&#127919; Whole-house bill forecast</div>
+      <div class="fc2-ctl">
+        Avg from last
+        <select id="fc2-n" onchange="rFc2()">
+          <option value="1">1 period</option>
+          <option value="2">2 periods</option>
+          <option value="3" selected>3 periods</option>
+          <option value="6">6 periods</option>
+        </select>
+      </div>
+    </div>
+    <div id="fc2-body"><div class="fc2-na">Save at least one billing period to see forecast</div></div>
+  </div>
 </div>
 <div id="vma" class="hide">
   <div class="mag">
@@ -433,6 +523,7 @@ function render(){
   rToday();
   rMonth();
   rBill();
+  rAbtSection();
   rMaster();
   rLog();
 }
@@ -880,6 +971,213 @@ function rMaster(){
   });
   bdhtml += '</div>';
   si('mabd', bdhtml);
+}
+
+var ABT_KEY = 'abt_periods';
+var CYCLE_ANCHOR = {day:14, monthStep:2};
+
+function abtLoad(){ try{ return JSON.parse(localStorage.getItem(ABT_KEY) || '[]'); }catch(e){ return []; } }
+function abtSave(arr){ localStorage.setItem(ABT_KEY, JSON.stringify(arr)); }
+
+function abtAutoFill(){
+  var periods = abtLoad();
+  var fr, to;
+  if(periods.length){
+    var last = periods[periods.length - 1];
+    var lastEnd = new Date(last.to + 'T00:00:00+05:30');
+    lastEnd.setDate(lastEnd.getDate() + 1);
+    fr = lastEnd.toLocaleDateString('en-CA');
+    var toD = new Date(lastEnd.getTime() + 59 * 86400000);
+    to = toD.toLocaleDateString('en-CA');
+  } else {
+    fr = '2026-07-14';
+    var toD2 = new Date('2026-07-14T00:00:00+05:30');
+    toD2.setDate(toD2.getDate() + 59);
+    to = toD2.toLocaleDateString('en-CA');
+  }
+  document.getElementById('abt-fr').value = fr;
+  document.getElementById('abt-to').value = to;
+  abtUpdateAcAuto();
+}
+
+function abtUpdateAcAuto(){
+  var fr = document.getElementById('abt-fr').value;
+  var to = document.getElementById('abt-to').value;
+  if(!fr || !to){ st('abt-ac-auto', '--'); return; }
+  var rows = frange(getRows('all'), fr, to);
+  var kwh = rows.reduce(function(a,r){ return a + gk(r); }, 0);
+  var cost = rows.reduce(function(a,r){ return a + (r.cost||0); }, 0);
+  st('abt-ac-auto', r4(kwh) + ' kWh / \u20b9' + r2(cost));
+}
+
+document.addEventListener('change', function(e){
+  if(e.target && (e.target.id === 'abt-fr' || e.target.id === 'abt-to')) abtUpdateAcAuto();
+});
+
+function saveActualBill(){
+  var fr = document.getElementById('abt-fr').value;
+  var to = document.getElementById('abt-to').value;
+  var amt = parseFloat(document.getElementById('abt-amt').value);
+  var kwh = parseFloat(document.getElementById('abt-kwh').value);
+  var err = document.getElementById('abt-err');
+  err.textContent = '';
+  if(!fr || !to){ err.textContent = 'Enter period dates'; return; }
+  if(!amt || amt <= 0){ err.textContent = 'Enter bill amount'; return; }
+  if(!kwh || kwh <= 0){ err.textContent = 'Enter total kWh'; return; }
+  if(fr >= to){ err.textContent = 'Start must be before end'; return; }
+
+  var t1 = parseFloat(document.getElementById('abt-t1').value) || null;
+  var t2 = parseFloat(document.getElementById('abt-t2').value) || null;
+  var t3 = parseFloat(document.getElementById('abt-t3').value) || null;
+
+  var rows = frange(getRows('all'), fr, to);
+  var acKwh = Math.round(rows.reduce(function(a,r){ return a + gk(r); }, 0) * 1000) / 1000;
+  var acCost = Math.round(rows.reduce(function(a,r){ return a + (r.cost||0); }, 0) * 100) / 100;
+  var acT1 = Math.round(skwh(rows,'T1_day') * 1000) / 1000;
+  var acT2 = Math.round(skwh(rows,'T2_peak') * 1000) / 1000;
+  var acT3 = Math.round(skwh(rows,'T3_night') * 1000) / 1000;
+
+  var record = {
+    fr: fr, to: to,
+    amt: amt, kwh: kwh,
+    t1: t1, t2: t2, t3: t3,
+    acKwh: acKwh, acCost: acCost,
+    acT1: acT1, acT2: acT2, acT3: acT3,
+    saved: Date.now()
+  };
+
+  var periods = abtLoad();
+  var exists = periods.findIndex(function(p){ return p.fr === fr && p.to === to; });
+  if(exists >= 0) periods[exists] = record;
+  else periods.push(record);
+  periods.sort(function(a,b){ return a.fr.localeCompare(b.fr); });
+  if(periods.length > 12) periods = periods.slice(-12);
+  abtSave(periods);
+
+  ['abt-fr','abt-to','abt-amt','abt-kwh','abt-t1','abt-t2','abt-t3'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+  err.textContent = '';
+  rAbtHist();
+  rFc2();
+}
+
+function rAbtHist(){
+  var periods = abtLoad();
+  var wrap = document.getElementById('abt-hist');
+  if(!wrap) return;
+  if(!periods.length){ si('abt-hist', '<div style="font-size:.72rem;color:var(--muted);padding:8px 0">No periods saved yet.</div>'); return; }
+
+  var hdr = '<div class="abt-hist-row" style="font-size:.6rem;color:var(--muted);padding-bottom:5px">' +
+    '<div class="abt-col-date">Period</div>' +
+    '<div class="abt-col-amt">Total</div>' +
+    '<div class="abt-col-ac">AC</div>' +
+    '<div class="abt-col-oth">Other</div>' +
+    '<div class="abt-col-bar">AC share</div>' +
+    '<div class="abt-col-pct"></div>' +
+    '<div style="width:24px"></div>' +
+    '</div>';
+
+  var rows = periods.slice().reverse().map(function(p, idx){
+    var otherKwh = Math.max(0, p.kwh - p.acKwh);
+    var otherAmt = Math.max(0, p.amt - p.acCost);
+    var pct = p.kwh > 0 ? Math.round(p.acKwh / p.kwh * 100) : 0;
+    var realIdx = periods.length - 1 - idx;
+    var todLine = (p.t1 !== null) ?
+      '<div style="font-size:.6rem;color:var(--muted);margin-top:2px">Bill ToD: T1 ' + p.t1 + ' / T2 ' + p.t2 + ' / T3 ' + p.t3 + ' kWh</div>' : '';
+    return '<div class="abt-hist-row">' +
+      '<div class="abt-col-date">' + p.fr.slice(5).replace('-','/') + ' – ' + p.to.slice(5).replace('-','/') + '<br><span style="font-size:.58rem;color:var(--muted)">' + p.fr.slice(0,4) + '</span>' + todLine + '</div>' +
+      '<div class="abt-col-amt">&#8377;' + r2(p.amt) + '<br><span style="font-size:.6rem;color:var(--muted);font-weight:400">' + p.kwh + ' kWh</span></div>' +
+      '<div class="abt-col-ac">&#8377;' + r2(p.acCost) + '<br><span style="font-size:.6rem;color:var(--muted)">' + p.acKwh + ' kWh</span></div>' +
+      '<div class="abt-col-oth">&#8377;' + r2(otherAmt) + '<br><span style="font-size:.6rem;color:var(--muted)">' + r2(otherKwh) + ' kWh</span></div>' +
+      '<div class="abt-col-bar"><div class="abt-bar-track"><div class="abt-bar-fill" style="width:' + pct + '%"></div></div></div>' +
+      '<div class="abt-col-pct">' + pct + '%</div>' +
+      '<button class="abt-del" onclick="deleteAbt(' + realIdx + ')" title="Delete">&#10005;</button>' +
+      '</div>';
+  }).join('');
+  si('abt-hist', hdr + rows);
+}
+
+function deleteAbt(idx){
+  var periods = abtLoad();
+  periods.splice(idx, 1);
+  abtSave(periods);
+  rAbtHist();
+  rFc2();
+}
+
+function rFc2(){
+  var el = document.getElementById('fc2-body');
+  if(!el) return;
+  var periods = abtLoad();
+  if(!periods.length){ si('fc2-body', '<div class="fc2-na">Save at least one billing period to see forecast</div>'); return; }
+
+  var n = parseInt((document.getElementById('fc2-n') || {value:'3'}).value) || 3;
+  var hist = periods.slice(-n);
+
+  var otherAmts = hist.map(function(p){ return Math.max(0, p.amt - p.acCost); });
+  var otherKwhs = hist.map(function(p){ return Math.max(0, p.kwh - p.acKwh); });
+  var avgOtherAmt = otherAmts.reduce(function(a,v){ return a+v; },0) / hist.length;
+  var avgOtherKwh = otherKwhs.reduce(function(a,v){ return a+v; },0) / hist.length;
+
+  var hasTod = hist.every(function(p){ return p.t1 !== null && p.t2 !== null && p.t3 !== null; });
+  var todAdj = 0;
+  var todNote = '';
+
+  if(hasTod){
+    var avgOtherT1 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t1||0)-(p.acT1||0)); },0) / hist.length;
+    var avgOtherT2 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t2||0)-(p.acT2||0)); },0) / hist.length;
+    var avgOtherT3 = hist.reduce(function(a,p){ return a + Math.max(0,(p.t3||0)-(p.acT3||0)); },0) / hist.length;
+    var recalcAmt = avgOtherT1 * RATES.T1_day + avgOtherT2 * RATES.T2_peak + avgOtherT3 * RATES.T3_night;
+    todAdj = Math.round((recalcAmt - avgOtherAmt) * 100) / 100;
+    avgOtherAmt = recalcAmt;
+    todNote = 'ToD-adjusted other: T1 ' + r2(avgOtherT1) + ' + T2 ' + r2(avgOtherT2) + ' + T3 ' + r2(avgOtherT3) + ' kWh avg &nbsp;&middot;&nbsp; adjustment <b>' + (todAdj >= 0 ? '+' : '') + '&#8377;' + r2(todAdj) + '</b>';
+  }
+
+  var dt = todayIST();
+  var bfr = document.getElementById('bfr') ? document.getElementById('bfr').value : '';
+  var bto = document.getElementById('bto') ? document.getElementById('bto').value : '';
+  if(!bfr) bfr = dt;
+  var frDate = new Date(bfr + 'T00:00:00+05:30');
+  var dtDate = new Date(dt + 'T00:00:00+05:30');
+  var daysElapsed = Math.max(1, Math.round((dtDate - frDate) / 86400000) + 1);
+  var periodDays = 60;
+  if(bfr && bto){
+    var toDate2 = new Date(bto + 'T00:00:00+05:30');
+    periodDays = Math.round((toDate2 - frDate) / 86400000) + 1;
+  }
+  var daysLeft = Math.max(0, periodDays - daysElapsed);
+
+  var rows = frange(getRows('all'), bfr, dt);
+  var acSoFar = rows.reduce(function(a,r){ return a + gk(r); }, 0);
+  var acCostSoFar = rows.reduce(function(a,r){ return a + (r.cost||0); }, 0);
+  var paceKwh = daysElapsed > 0 ? acSoFar / daysElapsed : 0;
+  var acT1so = skwh(rows,'T1_day'), acT2so = skwh(rows,'T2_peak'), acT3so = skwh(rows,'T3_night');
+  var paceT1 = daysElapsed > 0 ? acT1so/daysElapsed : 0;
+  var paceT2 = daysElapsed > 0 ? acT2so/daysElapsed : 0;
+  var paceT3 = daysElapsed > 0 ? acT3so/daysElapsed : 0;
+  var acProjKwh = acSoFar + paceKwh * daysLeft;
+  var acProjCost = acCostSoFar + (paceT1 * daysLeft * RATES.T1_day + paceT2 * daysLeft * RATES.T2_peak + paceT3 * daysLeft * RATES.T3_night);
+
+  var totalProj = Math.round((acProjCost + avgOtherAmt) * 100) / 100;
+
+  var html = '<div class="fc2-grid">' +
+    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--accent)">&#8377;' + r2(acCostSoFar) + '</div><div class="fc2-lbl">AC so far<br>' + r4(acSoFar) + ' kWh</div></div>' +
+    '<div class="fc2-cell"><div class="fc2-val" style="color:var(--yellow)">&#8377;' + r2(acProjCost) + '</div><div class="fc2-lbl">AC projected<br>' + r4(acProjKwh) + ' kWh est</div></div>' +
+    '<div class="fc2-cell" style="border-color:var(--green)"><div class="fc2-val" style="color:var(--green)">&#8377;' + r2(totalProj) + '</div><div class="fc2-lbl">Total projected<br>whole house</div></div>' +
+    '</div>' +
+    '<div class="fc2-breakdown">' +
+    'AC projected: <b>&#8377;' + r2(acProjCost) + '</b> &nbsp;(' + daysElapsed + ' days elapsed, ' + daysLeft + ' remaining at &#8377;' + r2(paceKwh * (RATES.T1_day * (paceT1/(paceKwh||1)) + RATES.T2_peak * (paceT2/(paceKwh||1)) + RATES.T3_night * (paceT3/(paceKwh||1)))) + '/day pace)' +
+    '<br>Other devices avg (' + hist.length + ' period' + (hist.length!==1?'s':'') + '): <b>&#8377;' + r2(avgOtherAmt) + '</b> &nbsp;(~' + r2(avgOtherKwh) + ' kWh)' +
+    (todNote ? '<br>' + todNote : ' &nbsp;<span style="color:var(--muted)">(no ToD data — enter T1/T2/T3 on periods for better accuracy)</span>') +
+    '</div>';
+  si('fc2-body', html);
+}
+
+function rAbtSection(){
+  rAbtHist();
+  rFc2();
+  abtUpdateAcAuto();
 }
 
 function rWeeks(rows, from, to){
