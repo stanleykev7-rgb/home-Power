@@ -126444,7 +126444,7 @@
     "cost": 0.0338,
     "watts": 8.6,
     "volts": 230.0,
-    "amps": 0.063,
+    "amps": 0.061,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
