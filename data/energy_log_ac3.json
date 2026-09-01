@@ -111193,5 +111193,26 @@
     "gap_estimated": false,
     "gap_note": "",
     "source": "tuya_event"
+  },
+  {
+    "ts": "2026-09-02T01:02:37+05:30",
+    "ts_epoch": 1788291157,
+    "device": "ac3",
+    "slot": "T3_night",
+    "slot_label": "Night (T3)",
+    "rate": 7.5,
+    "kwh": 0.1,
+    "gap_kwh": 0.0,
+    "total_kwh": 0.1,
+    "cost": 0.75,
+    "watts": 290.6,
+    "volts": 241.2,
+    "amps": 1.563,
+    "ac_on": true,
+    "session_start": false,
+    "session_gap_mins": 21.9,
+    "gap_estimated": false,
+    "gap_note": "",
+    "source": "tuya_event"
   }
 ]
