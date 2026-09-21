@@ -168002,7 +168002,7 @@
     "total_kwh": 0.005,
     "cost": 0.0469,
     "watts": 8.7,
-    "volts": 235.8,
+    "volts": 234.2,
     "amps": 0.069,
     "ac_on": true,
     "session_start": false,
