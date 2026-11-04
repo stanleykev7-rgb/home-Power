@@ -222960,7 +222960,7 @@
     "cost": 0.0375,
     "watts": 9.7,
     "volts": 245.6,
-    "amps": 0.081,
+    "amps": 0.082,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
