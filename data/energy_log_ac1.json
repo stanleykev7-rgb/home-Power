@@ -239865,7 +239865,7 @@
     "cost": 0.03,
     "watts": 9.4,
     "volts": 242.3,
-    "amps": 0.076,
+    "amps": 0.075,
     "ac_on": true,
     "session_start": false,
     "session_gap_mins": 30.0,
